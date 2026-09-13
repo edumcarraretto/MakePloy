@@ -269,7 +269,7 @@ export function FeaturesGrid() {
                 </div>
                 <div className="txt">
                   <strong>O caminho certo</strong>
-                  <span>Dados, mercado, marketing e mais de 20 fatores trabalham juntos para definir o próximo passo.</span>
+                  <span>Mercado, público e mais de 20 fatores definem o próximo passo.</span>
                 </div>
               </div>
               <div className="row">
