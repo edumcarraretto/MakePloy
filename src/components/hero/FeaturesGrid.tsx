@@ -376,15 +376,15 @@ export function FeaturesGrid() {
                 <div className="labels">
                   <div className="lab on">
                     <b>Rápido</b>
-                    <span>Questões simples</span>
+                    <span>●○○</span>
                   </div>
                   <div className="lab">
                     <b>Detalhado</b>
-                    <span>Tarefas exigentes</span>
+                    <span>●●○</span>
                   </div>
                   <div className="lab">
                     <b>Profundo</b>
-                    <span>Problemas complexos</span>
+                    <span>●●●</span>
                   </div>
                 </div>
                 <div className="selector">
