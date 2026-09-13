@@ -268,8 +268,8 @@ export function FeaturesGrid() {
                   </svg>
                 </div>
                 <div className="txt">
-                  <strong>Defina a direção</strong>
-                  <span>Público, mercado e objetivos transformam intenção em direção.</span>
+                  <strong>O caminho certo</strong>
+                  <span>Dados, mercado, marketing e mais de 20 fatores trabalham juntos para definir o próximo passo.</span>
                 </div>
               </div>
               <div className="row">
