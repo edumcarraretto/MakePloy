@@ -341,7 +341,7 @@ export function FeaturesGrid() {
                     <path className="tick" d="M7.8 12.3l2.9 2.9L16.2 9.7" />
                   </svg>
                 </span>
-                <span className="label">Contexto compreendido</span>
+                <span className="label">Entende cada detalhe</span>
                 <span className="rail">
                   <i></i>
                 </span>
@@ -356,7 +356,7 @@ export function FeaturesGrid() {
                     <path className="tick" d="M7.8 12.3l2.9 2.9L16.2 9.7" />
                   </svg>
                 </span>
-                <span className="label">Direção estruturada</span>
+                <span className="label">Nada se perde</span>
                 <span className="rail">
                   <i></i>
                 </span>
@@ -371,7 +371,7 @@ export function FeaturesGrid() {
                     <path className="tick" d="M7.8 12.3l2.9 2.9L16.2 9.7" />
                   </svg>
                 </span>
-                <span className="label">Construção iniciada</span>
+                <span className="label">Melhora cada etapa</span>
                 <time>{currentTime || 'Calculando...'}</time>
               </div>
             </div>
