@@ -376,8 +376,8 @@ export function FeaturesGrid() {
               </div>
             </div>
           </div>
-          <h3>Pesquisa que chega à construção</h3>
-          <p>O que foi descoberto continua disponível para criar, escrever e programar.</p>
+          <h3>Melhora a cada etapa</h3>
+          <p>A MakePloy evolui conforme avança, sem perder o que já aprendeu.</p>
         </section>
 
         {/* 4 */}
