@@ -290,8 +290,8 @@ export function FeaturesGrid() {
                   </svg>
                 </div>
                 <div className="txt">
-                  <strong>Publique sem encerrar</strong>
-                  <span>Coloque no ar, opere e desenvolva a próxima versão.</span>
+                  <strong>Depois de publicar</strong>
+                  <span>Seu projeto vai ao ar. A MakePloy continua presente em cada etapa.</span>
                 </div>
               </div>
             </div>
