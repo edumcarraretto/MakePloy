@@ -423,8 +423,8 @@ export function FeaturesGrid() {
               </div>
             </div>
           </div>
-          <h3>Profundidade sob demanda</h3>
-          <p>Seja rápido no simples. Aprofunde o que exige mais contexto.</p>
+          <h3>Raciocínio ajustável</h3>
+          <p>Rápido no simples. Mais profundo quando necessário.</p>
         </section>
 
         {/* 5 */}
