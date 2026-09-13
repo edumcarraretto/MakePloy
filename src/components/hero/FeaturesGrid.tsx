@@ -317,8 +317,8 @@ export function FeaturesGrid() {
                   </svg>
                 </span>
                 <span className="bk-label" translate="no">
-                  <b className="l1">Entendendo o projeto</b>
-                  <b className="l2">Próximo passo definido</b>
+                  <b className="l1">Lendo cada parte…</b>
+                  <b className="l2">Direção definida</b>
                 </span>
               </div>
             </div>
