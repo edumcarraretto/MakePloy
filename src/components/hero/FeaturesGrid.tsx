@@ -357,7 +357,7 @@ export function FeaturesGrid() {
                     <path className="tick" d="M7.8 12.3l2.9 2.9L16.2 9.7" />
                   </svg>
                 </span>
-                <span className="label">Melhora cada etapa</span>
+                <span className="label">Evolui com você</span>
               </div>
             </div>
           </div>
