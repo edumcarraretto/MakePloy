@@ -323,8 +323,8 @@ export function FeaturesGrid() {
               </div>
             </div>
           </div>
-          <h3>Contexto antes de execução</h3>
-          <p>Objetivos, decisões e histórico orientam cada etapa.</p>
+          <h3>Leva tudo em conta</h3>
+          <p>A MakePloy não aplica a mesma resposta a todos. O próximo passo é definido a partir do seu projeto.</p>
         </section>
 
         {/* 3 */}
