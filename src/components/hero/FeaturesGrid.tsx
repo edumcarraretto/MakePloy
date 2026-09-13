@@ -9,7 +9,6 @@ export function FeaturesGrid() {
   const backupRef = useRef<HTMLDivElement>(null)
   const funRef = useRef<HTMLDivElement>(null)
   
-  const [currentTime, setCurrentTime] = useState('')
   const [animationsActive, setAnimationsActive] = useState(false)
 
   useEffect(() => {
@@ -25,19 +24,6 @@ export function FeaturesGrid() {
 
     observer.observe(section)
     return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date()
-      const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
-      const dateStr = `${now.getDate().toString().padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`
-      const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-      setCurrentTime(`${dateStr} · ${timeStr}`)
-    }
-    updateTime()
-    const interval = setInterval(updateTime, 60000)
-    return () => clearInterval(interval)
   }, [])
 
   useEffect(() => {
@@ -372,7 +358,6 @@ export function FeaturesGrid() {
                   </svg>
                 </span>
                 <span className="label">Melhora cada etapa</span>
-                <time>{currentTime || 'Calculando...'}</time>
               </div>
             </div>
           </div>
