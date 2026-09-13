@@ -323,7 +323,7 @@ export function FeaturesGrid() {
               </div>
             </div>
           </div>
-          <h3>Leva tudo em conta</h3>
+          <h3>Nada é padrão</h3>
           <p>A MakePloy não aplica a mesma resposta a todos. Seu projeto define o próximo passo.</p>
         </section>
 
