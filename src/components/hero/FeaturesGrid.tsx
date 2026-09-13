@@ -376,15 +376,15 @@ export function FeaturesGrid() {
                 <div className="labels">
                   <div className="lab on">
                     <b>Rápido</b>
-                    <span>~ 15 Segs</span>
+                    <span>Essencial</span>
                   </div>
                   <div className="lab">
                     <b>Detalhado</b>
-                    <span>~ 45 Segs</span>
+                    <span>Mais análise</span>
                   </div>
                   <div className="lab">
                     <b>Profundo</b>
-                    <span>~ 60 Segs</span>
+                    <span>Complexo</span>
                   </div>
                 </div>
                 <div className="selector">
