@@ -257,8 +257,8 @@ export function FeaturesGrid() {
                   </svg>
                 </div>
                 <div className="txt">
-                  <strong>Traga o ponto de partida</strong>
-                  <span>Uma ideia, um plano ou um projeto existente. O contexto define o início.</span>
+                  <strong>Onde tudo começa</strong>
+                  <span>O que você tem em mente já é suficiente. A partir daí, tudo ganha forma.</span>
                 </div>
               </div>
               <div className="row">
