@@ -317,8 +317,10 @@
 
 .features-wrapper .ava svg {
   color: #ffffff;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.16));
+  filter: drop-shadow(0 1.5px 2.5px rgba(0, 0, 0, 0.18));
   transition: transform .4s ease;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .features-wrapper .ava[data-pos="left"] { 
@@ -343,12 +345,12 @@
 .features-wrapper .ava[data-pos="exit"]  { transform: translateX(-175px) scale(0.45); opacity: 0; }
 .features-wrapper .ava[data-pos="enter"] { transform: translateX(175px) scale(0.45); opacity: 0; }
 
-/* Gradientes limpos e modernos, sem aspecto 3D */
-.features-wrapper .ava.c1 { background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%); } /* Pesquisa - Azul Céu */
-.features-wrapper .ava.c2 { background: linear-gradient(135deg, #F472B6 0%, #A855F7 100%); } /* Design - Rosa / Roxo */
-.features-wrapper .ava.c3 { background: linear-gradient(135deg, #34D399 0%, #059669 100%); } /* Código - Menta / Esmeralda */
-.features-wrapper .ava.c4 { background: linear-gradient(135deg, #FB7185 0%, #E11D48 100%); } /* Lançamento - Coral / Vermelho */
-.features-wrapper .ava.c5 { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); } /* Métricas - Âmbar / Dourado */
+/* Gradientes lapidados, modernos e sofisticados */
+.features-wrapper .ava.c1 { background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%); } /* Pesquisa - Safira */
+.features-wrapper .ava.c2 { background: linear-gradient(135deg, #C084FC 0%, #7C3AED 100%); } /* Design - Violeta / Orquídea */
+.features-wrapper .ava.c3 { background: linear-gradient(135deg, #34D399 0%, #059669 100%); } /* Código - Esmeralda */
+.features-wrapper .ava.c4 { background: linear-gradient(135deg, #FB7185 0%, #E11D48 100%); } /* Deploy - Coral Rubi */
+.features-wrapper .ava.c5 { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); } /* Inteligência - Âmbar Dourado */
 
 @media (max-width: 860px) {
   .features-wrapper {
