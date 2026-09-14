@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Target, Search, PenLine, Palette, Code2, Workflow, Rocket, ChartNoAxesCombined } from 'lucide-react'
+import { Search, Palette, Code2, Rocket, BarChart3 } from 'lucide-react'
 import './FeaturesGrid.css'
 
 export function FeaturesGrid() {
@@ -430,17 +430,14 @@ export function FeaturesGrid() {
         {/* 5 */}
         <section className="card fun">
           <div className="stage" ref={funRef}>
-            <div className="ava c1"><Target size={34} strokeWidth={2.2} /></div>
-            <div className="ava c2"><Search size={34} strokeWidth={2.2} /></div>
-            <div className="ava c3"><PenLine size={34} strokeWidth={2.2} /></div>
-            <div className="ava c4"><Palette size={34} strokeWidth={2.2} /></div>
-            <div className="ava c5"><Code2 size={34} strokeWidth={2.2} /></div>
-            <div className="ava c6"><Workflow size={34} strokeWidth={2.2} /></div>
-            <div className="ava c7"><Rocket size={34} strokeWidth={2.2} /></div>
-            <div className="ava c8"><ChartNoAxesCombined size={34} strokeWidth={2.2} /></div>
+            <div className="ava c1"><Search size={34} strokeWidth={2.2} /></div>
+            <div className="ava c2"><Palette size={34} strokeWidth={2.2} /></div>
+            <div className="ava c3"><Code2 size={34} strokeWidth={2.2} /></div>
+            <div className="ava c4"><Rocket size={34} strokeWidth={2.2} /></div>
+            <div className="ava c5"><BarChart3 size={34} strokeWidth={2.2} /></div>
           </div>
-          <h3>Especialidades sem silos</h3>
-          <p>Pesquisa, design, conteúdo, código e operação trabalham sobre a mesma base.</p>
+          <h3>Tudo no mesmo lugar</h3>
+          <p>Pesquisa, design, código e muito mais, em uma única plataforma.</p>
         </section>
       </div>
     </section>
