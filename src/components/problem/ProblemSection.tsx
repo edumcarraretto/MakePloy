@@ -15,10 +15,9 @@ export function ProblemSection() {
           transition={{ duration: 0.5 }}
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-10 sm:mb-16 text-neutral-900 dark:text-white tracking-tight px-2 leading-[1.25]"
         >
-          O custo não está na ferramenta.{' '}
+          Uma ideia. Muitos caminhos.{' '}
           <br className="hidden sm:inline" />
-          Está em reconstruir{' '}
-          <HighlightText variant="coral">o contexto.</HighlightText>
+          <HighlightText variant="coral">Uma direção.</HighlightText>
         </motion.h2>
 
         {/* Desktop Image Container (hidden on mobile, visible on md+) */}
