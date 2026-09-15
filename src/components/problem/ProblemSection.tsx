@@ -27,17 +27,26 @@ export function ProblemSection() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, delay: 0.2 }}
           className="hidden md:block w-full"
+          style={{
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)',
+            maskImage: 'linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)'
+          }}
         >
           <img 
-            src="/images/novaimagem-v2-2048.webp"
+            src="/images/diagrama-problem-v3.svg"
             alt="Como um projeto perde continuidade: contexto disperso, decisões repetidas e retrabalho crescente"
             loading="lazy"
             decoding="async"
             width={2480}
             height={709}
             draggable={false}
-            className="w-full h-auto object-contain select-none"
-            style={{ imageRendering: 'auto', maxWidth: '100%' }}
+            className="w-full h-auto object-contain select-none antialiased"
+            style={{ 
+              imageRendering: 'high-quality', 
+              maxWidth: '100%',
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden'
+            }}
           />
         </motion.div>
 

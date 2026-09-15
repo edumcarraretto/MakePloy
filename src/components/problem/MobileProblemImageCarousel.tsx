@@ -54,18 +54,21 @@ export function MobileProblemImageCarousel() {
             {/* Image Frame: displays exact third of the original image */}
             <div className="relative w-full overflow-hidden flex items-center" style={{ aspectRatio: '1.15 / 1' }}>
               <img
-                src="/images/novaimagem-v2-2048.webp"
+                src="/images/diagrama-problem-v3.svg"
                 alt={`Etapa ${index + 1} de 3`}
                 width={2480}
                 height={709}
                 loading="lazy"
                 decoding="async"
                 draggable={false}
-                className="absolute top-0 bottom-0 h-full w-[300%] max-w-none object-cover select-none pointer-events-none transition-transform duration-300"
+                className="absolute top-0 bottom-0 h-full w-[300%] max-w-none object-cover select-none pointer-events-none transition-transform duration-300 antialiased"
                 style={{
                   left: '0%',
-                  transform: `translateX(-${offset}%)`,
-                  imageRendering: 'auto',
+                  transform: `translateX(-${offset}%) translateZ(0)`,
+                  backfaceVisibility: 'hidden',
+                  imageRendering: 'high-quality',
+                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)',
+                  maskImage: 'linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)'
                 }}
               />
             </div>
