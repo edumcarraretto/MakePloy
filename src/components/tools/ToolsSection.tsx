@@ -351,7 +351,7 @@ export function ToolsSection() {
           <br />
           <HighlightText variant="yellow">No mesmo lugar.</HighlightText>
         </h2>
-        <p className="mt-4 text-sm sm:text-base text-gray-500 max-w-md mx-auto leading-relaxed">
+        <p className="mt-4 text-sm sm:text-base text-gray-500 max-w-lg mx-auto leading-relaxed">
           +40 ferramentas para tudo o que vem pela frente, sem precisar sair da MakePloy.
         </p>
       </motion.div>
