@@ -119,59 +119,59 @@ export function DocumentsMockup() {
 // Cérebro — Project intelligence preview
 // ─────────────────────────────────────────────
 export function AIMockup() {
-  const sources = [
-    { label: 'Mercado', dot: 'bg-violet-400' },
-    { label: 'Público', dot: 'bg-sky-400' },
-    { label: 'Decisões', dot: 'bg-amber-400' },
-    { label: 'Documentos', dot: 'bg-emerald-400' },
-    { label: 'Histórico', dot: 'bg-rose-400' },
-  ]
+  const sources = ['Mercado', 'Público', 'Documentos', 'Histórico', 'Decisões']
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-gradient-to-br from-gray-50/30 to-white/10 flex items-center justify-center">
-      {/* Main intelligence panel */}
-      <div className="w-[94%] max-w-[230px] rounded-xl border border-gray-100 bg-white/95 shadow-xl shadow-fuchsia-900/5 p-2.5">
-        {/* Processing status */}
-        <div className="flex items-center gap-1.5 pb-2 border-b border-gray-100">
-          <div className="w-5 h-5 rounded-md bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-sm shrink-0">
-            <Sparkles className="w-3 h-3 text-white" />
+    <div className="w-full h-full relative overflow-hidden bg-white flex items-center justify-center">
+      <div className="w-[92%] max-w-[228px] rounded-[14px] border border-gray-200/80 bg-white shadow-[0_18px_45px_-32px_rgba(15,23,42,0.45)] overflow-hidden">
+        {/* Context header */}
+        <div className="flex items-center gap-2 px-3 pt-3 pb-2.5">
+          <div className="w-5 h-5 rounded-[6px] bg-gray-950 text-white flex items-center justify-center shrink-0">
+            <Sparkles className="w-2.5 h-2.5" strokeWidth={2.25} />
           </div>
-          <span className="text-[8.5px] font-semibold text-gray-800 tracking-tight whitespace-nowrap">
-            Analisando o projeto...
-          </span>
-          <div className="ml-auto flex items-center gap-0.5" aria-hidden="true">
-            <span className="w-1 h-1 rounded-full bg-fuchsia-400" />
-            <span className="w-1 h-1 rounded-full bg-fuchsia-300" />
-            <span className="w-1 h-1 rounded-full bg-fuchsia-200" />
-          </div>
-        </div>
-
-        {/* Context sources */}
-        <div className="grid grid-cols-2 gap-1 mt-2">
-          {sources.map((source, index) => (
-            <div
-              key={source.label}
-              className={[
-                'flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/70 px-1.5 py-1',
-                index === sources.length - 1 ? 'col-span-2' : '',
-              ].join(' ')}
-            >
-              <span className={`w-1.5 h-1.5 rounded-full ${source.dot} shrink-0`} />
-              <span className="text-[7px] font-medium text-gray-600 leading-none">
-                {source.label}
-              </span>
-              <CheckCircle2 className="w-2.5 h-2.5 text-gray-300 ml-auto shrink-0" strokeWidth={2.5} />
+          <div className="min-w-0">
+            <div className="text-[8px] font-semibold text-gray-900 tracking-[-0.01em] leading-none">
+              Analisando contexto
             </div>
-          ))}
+            <div className="text-[6px] text-gray-400 mt-1 leading-none">
+              Projeto atual
+            </div>
+          </div>
+          <div className="ml-auto text-[6px] font-medium text-gray-400 tabular-nums">
+            5 fontes
+          </div>
         </div>
 
-        {/* Decision output */}
-        <div className="relative mt-2 rounded-lg border border-fuchsia-100/80 bg-gradient-to-r from-fuchsia-50/80 via-white to-violet-50/70 px-2 py-1.5 text-left">
-          <div className="text-[5.5px] uppercase tracking-[0.14em] font-bold text-fuchsia-500 mb-0.5">
-            Próximo passo
+        {/* Subtle progress line */}
+        <div className="h-px bg-gray-100 mx-3 overflow-hidden">
+          <div className="h-full w-[72%] bg-gray-900" />
+        </div>
+
+        {/* Sources */}
+        <div className="px-3 pt-2.5 pb-2.5">
+          <div className="text-[5.5px] uppercase tracking-[0.14em] font-semibold text-gray-400 mb-1.5">
+            Contexto considerado
           </div>
-          <div className="text-[7px] font-semibold text-gray-800 leading-tight">
-            Validar a direção antes de construir.
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[6.5px] leading-none text-gray-600">
+            {sources.map((source, index) => (
+              <span key={source} className="inline-flex items-center gap-1">
+                {index > 0 && <span className="text-gray-300">•</span>}
+                <span>{source}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Decision */}
+        <div className="border-t border-gray-100 px-3 py-2.5 bg-gray-50/55">
+          <div className="flex items-center justify-between gap-2 mb-1">
+            <span className="text-[5.5px] uppercase tracking-[0.14em] font-semibold text-gray-400">
+              Direção sugerida
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+          </div>
+          <div className="text-[7.25px] font-semibold text-gray-900 leading-[1.35] tracking-[-0.01em]">
+            Validar a proposta antes de construir.
           </div>
         </div>
       </div>
