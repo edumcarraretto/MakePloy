@@ -66,7 +66,6 @@ export function MobileProblemImageCarousel() {
                   left: '0%',
                   transform: `translateX(-${offset}%) translateZ(0)`,
                   backfaceVisibility: 'hidden',
-                  imageRendering: 'high-quality',
                   WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)',
                   maskImage: 'linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)'
                 }}

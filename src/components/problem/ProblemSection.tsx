@@ -42,7 +42,6 @@ export function ProblemSection() {
             draggable={false}
             className="w-full h-auto object-contain select-none antialiased"
             style={{ 
-              imageRendering: 'high-quality', 
               maxWidth: '100%',
               transform: 'translateZ(0)',
               backfaceVisibility: 'hidden'
