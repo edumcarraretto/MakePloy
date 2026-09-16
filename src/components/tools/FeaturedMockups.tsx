@@ -464,223 +464,216 @@ export function VisualMockup() {
 }
 
 export function CodingMockup() {
-  const id = useId()
-  const safeId = id.replace(/:/g, '')
+  const safeId = useId().replace(/[^a-zA-Z0-9]/g, '')
 
-  const generateStyles = () => {
-    let css = `
-      /* File Explorer Selection */
-      @keyframes cSel1-${safeId} {
-        0%,11% { opacity: 0 }
-        12%,48% { opacity: 1 }
-        49%,100% { opacity: 0 }
-      }
-      .c-sel1-${safeId} { animation: cSel1-${safeId} 20s infinite; }
-      
-      @keyframes cSel2-${safeId} {
-        0%,48% { opacity: 0 }
-        49%,95% { opacity: 1 }
-        96%,100% { opacity: 0 }
-      }
-      .c-sel2-${safeId} { animation: cSel2-${safeId} 20s infinite; }
-
-      @keyframes cTxt2-${safeId} {
-        0%,48% { fill: #a1a1aa }
-        49%,95% { fill: #3b82f6 }
-        96%,100% { fill: #a1a1aa }
-      }
-      .c-txt2-${safeId} { animation: cTxt2-${safeId} 20s infinite; }
-
-      /* Tabs */
-      @keyframes cTab1-${safeId} {
-        0%,11% { fill: transparent }
-        12%,48% { fill: #e5e7eb }
-        49%,100% { fill: transparent }
-      }
-      .c-tab1-${safeId} { animation: cTab1-${safeId} 20s infinite; }
-      
-      @keyframes cTab2-${safeId} {
-        0%,48% { fill: transparent }
-        49%,95% { fill: #e5e7eb }
-        96%,100% { fill: transparent }
-      }
-      .c-tab2-${safeId} { animation: cTab2-${safeId} 20s infinite; }
-      
-      @keyframes cTab1Txt-${safeId} {
-        0%,11% { fill: #374151 }
-        12%,48% { fill: #000000 }
-        49%,100% { fill: #374151 }
-      }
-      .c-tab1-txt-${safeId} { animation: cTab1Txt-${safeId} 20s infinite; }
-      
-      @keyframes cTab2Txt-${safeId} {
-        0%,48% { fill: #374151 }
-        49%,95% { fill: #000000 }
-        96%,100% { fill: #374151 }
-      }
-      .c-tab2-txt-${safeId} { animation: cTab2Txt-${safeId} 20s infinite; }
-
-      /* Code Containers */
-      @keyframes cCode1-${safeId} {
-        0%,14% { opacity: 0 }
-        15%,48% { opacity: 1 }
-        49%,100% { opacity: 0 }
-      }
-      .c-code1-${safeId} { animation: cCode1-${safeId} 20s infinite; }
-      
-      @keyframes cCode2-${safeId} {
-        0%,49% { opacity: 0 }
-        50%,95% { opacity: 1 }
-        96%,100% { opacity: 0 }
-      }
-      .c-code2-${safeId} { animation: cCode2-${safeId} 20s infinite; }
-    `
-
-    // Files cascade
-    for (let i = 0; i < 6; i++) {
-      const start = 5 + i * 1.5;
-      const full = start + 2;
-      css += `
-        @keyframes cFile${i}-${safeId} {
-          0%,${start}% { opacity: 0; transform: translateX(-4px) }
-          ${full}%,95% { opacity: 1; transform: translateX(0) }
-          98%,100% { opacity: 0; transform: translateX(-4px) }
-        }
-        .c-f${i}-${safeId} { animation: cFile${i}-${safeId} 20s infinite ease-out; }
-      `
+  const generateStyles = () => `
+    /* Scene 1: Logs & Backend (0-16%) */
+    @keyframes c-s1-${safeId} {
+      0%, 15% { opacity: 1; transform: scale(1); }
+      16%, 100% { opacity: 0; transform: scale(0.95); }
     }
+    .c-s1-${safeId} { animation: c-s1-${safeId} 30s infinite cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
 
-    // Code lines for index.tsx (14 lines)
-    for (let i = 0; i < 14; i++) {
-      const start = 15 + i * 2;
-      const full = start + 1.5;
-      css += `
-        @keyframes cCode1L${i}-${safeId} {
-          0%,${start}% { width: 0px }
-          ${full}%,100% { width: 120px }
-        }
-        .c-c1-l${i}-${safeId} { animation: cCode1L${i}-${safeId} 20s infinite linear; }
-      `
+    /* Scene 2: Canvas & Cmd Palette (16-30%) */
+    @keyframes c-s2-${safeId} {
+      0%, 15% { opacity: 0; transform: scale(1.05); }
+      16%, 29% { opacity: 1; transform: scale(1); }
+      30%, 100% { opacity: 0; transform: scale(0.95); }
     }
+    .c-s2-${safeId} { animation: c-s2-${safeId} 30s infinite cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
 
-    // Code lines for auth.ts (14 lines)
-    for (let i = 0; i < 14; i++) {
-      const start = 50 + i * 2;
-      const full = start + 1.5;
-      css += `
-        @keyframes cCode2L${i}-${safeId} {
-          0%,${start}% { width: 0px }
-          ${full}%,100% { width: 120px }
-        }
-        .c-c2-l${i}-${safeId} { animation: cCode2L${i}-${safeId} 20s infinite linear; }
-      `
+    /* Scene 3: DB Connection (30-40%) */
+    @keyframes c-s3-${safeId} {
+      0%, 29% { opacity: 0; transform: scale(1.05); }
+      30%, 39% { opacity: 1; transform: scale(1); }
+      40%, 100% { opacity: 0; transform: scale(0.95); }
     }
+    .c-s3-${safeId} { animation: c-s3-${safeId} 30s infinite cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
 
-    return css
-  }
+    /* Scene 4: CPU Alert (40-53%) */
+    @keyframes c-s4-${safeId} {
+      0%, 39% { opacity: 0; transform: scale(1.05); }
+      40%, 52% { opacity: 1; transform: scale(1); }
+      53%, 100% { opacity: 0; transform: scale(0.95); }
+    }
+    .c-s4-${safeId} { animation: c-s4-${safeId} 30s infinite cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+
+    /* Scene 5: Dashboard (53-66%) */
+    @keyframes c-s5-${safeId} {
+      0%, 52% { opacity: 0; transform: scale(1.05); }
+      53%, 65% { opacity: 1; transform: scale(1); }
+      66%, 100% { opacity: 0; transform: scale(0.95); }
+    }
+    .c-s5-${safeId} { animation: c-s5-${safeId} 30s infinite cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+
+    /* Scene 6: Warnings (66-80%) */
+    @keyframes c-s6-${safeId} {
+      0%, 65% { opacity: 0; transform: scale(1.05); }
+      66%, 79% { opacity: 1; transform: scale(1); }
+      80%, 100% { opacity: 0; transform: scale(0.95); }
+    }
+    .c-s6-${safeId} { animation: c-s6-${safeId} 30s infinite cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+
+    /* Scene 7: Scaling (80-100%) */
+    @keyframes c-s7-${safeId} {
+      0%, 79% { opacity: 0; transform: scale(1.5); }
+      80%, 97% { opacity: 1; transform: scale(1); }
+      98%, 100% { opacity: 0; transform: scale(0.8); }
+    }
+    .c-s7-${safeId} { animation: c-s7-${safeId} 30s infinite cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+  `
 
   return (
-    <svg viewBox="0 0 160 160" className="w-full h-full" aria-hidden="true">
+    <svg viewBox="0 0 240 150" className="w-full h-full" aria-hidden="true">
       <defs>
-        {/* Clip paths for code 1 (index.tsx) */}
-        {Array.from({length: 14}).map((_, i) => (
-          <clipPath key={`c1-${i}`} id={`${safeId}-c1-clip-${i}`}>
-            <rect x="35" y={18 + i * 6} width="0" height="8" className={`c-c1-l${i}-${safeId}`} />
-          </clipPath>
-        ))}
-
-        {/* Clip paths for code 2 (auth.ts) */}
-        {Array.from({length: 14}).map((_, i) => (
-          <clipPath key={`c2-${i}`} id={`${safeId}-c2-clip-${i}`}>
-            <rect x="35" y={18 + i * 6} width="0" height="8" className={`c-c2-l${i}-${safeId}`} />
-          </clipPath>
-        ))}
-        
         <style>{generateStyles()}</style>
       </defs>
+      
+      {/* S1: Logs */}
+      <g className={`c-s1-${safeId}`}>
+        {/* Backend Card */}
+        <rect x="20" y="50" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+        <rect x="35" y="60" width="20" height="20" rx="4" fill="#3b82f6" />
+        <text x="45" y="90" fontSize="6" fill="#a1a1aa" textAnchor="middle">Backend</text>
 
-      {/* IDE Header */}
-      <circle cx="16" cy="14" r="2.5" fill="#ef4444" />
-      <circle cx="24" cy="14" r="2.5" fill="#f59e0b" />
-      <circle cx="32" cy="14" r="2.5" fill="#22c55e" />
-      
-      {/* Tabs */}
-      <rect x="40" y="6" width="30" height="14" className={`c-tab1-${safeId}`} />
-      <text x="44" y="16" fontSize="5" fontWeight="600" className={`c-tab1-txt-${safeId}`}>index.tsx</text>
-      
-      <rect x="70" y="6" width="30" height="14" className={`c-tab2-${safeId}`} />
-      <text x="74" y="16" fontSize="5" fontWeight="600" className={`c-tab2-txt-${safeId}`}>auth.ts</text>
-      
-      {/* Dividers */}
-      <path d="M10 20 H150" stroke="#ffffff" strokeWidth="1" />
-      <path d="M55 20 V110" stroke="#ffffff" strokeWidth="1" />
+        {/* Logs Window */}
+        <rect x="85" y="20" width="135" height="110" rx="6" fill="#09090b" stroke="#27272a" />
+        <circle cx="95" cy="30" r="2" fill="#ef4444" />
+        <circle cx="102" cy="30" r="2" fill="#f59e0b" />
+        <circle cx="109" cy="30" r="2" fill="#22c55e" />
+        <text x="95" y="45" fontSize="4" fill="#a1a1aa" fontFamily="monospace">
+          <tspan x="95" dy="0">&gt; Building container image...</tspan>
+          <tspan x="95" dy="8">&gt; Pushing to registry: success</tspan>
+          <tspan x="95" dy="8">&gt; Starting deployment worker...</tspan>
+          <tspan x="95" dy="8">&gt; Provisioning resources [OK]</tspan>
+          <tspan x="95" dy="8">&gt; Health check passed in 234ms</tspan>
+          <tspan x="95" dy="8" fill="#10b981">&gt; Deployment successful. Traffic routed.</tspan>
+        </text>
 
-      {/* File Explorer */}
-      <text x="14" y="32" fontSize="4.5" fontWeight="800" fill="#71717a" letterSpacing="0.5">EXPLORER</text>
-      
-      <g className={`c-f0-${safeId}`}>
-        <path d="M13 41 L14.5 43 L16 41" stroke="#a1a1aa" strokeWidth="1" fill="none" />
-        <text x="18" y="44" fontSize="5" fill="#d4d4d8" fontWeight="500">src</text>
-      </g>
-      
-      <g className={`c-f1-${safeId}`}>
-        <path d="M16 50 L17.5 52 L19 50" stroke="#a1a1aa" strokeWidth="1" fill="none" />
-        <text x="21" y="53" fontSize="5" fill="#d4d4d8" fontWeight="500">components</text>
-      </g>
-      
-      <g className={`c-f2-${safeId}`}>
-        <rect x="19" y="57" width="28" height="9" rx="2" fill="#000000" className={`c-sel1-${safeId}`} />
-        <text x="24" y="63.5" fontSize="5" fill="#3b82f6" fontWeight="600">index.tsx</text>
-      </g>
-      
-      <g className={`c-f3-${safeId}`}>
-        <text x="24" y="73.5" fontSize="5" fill="#a1a1aa" fontWeight="500">styles.css</text>
-      </g>
-      
-      <g className={`c-f4-${safeId}`}>
-        <path d="M16 79.5 L17.5 81.5 L19 79.5" stroke="#a1a1aa" strokeWidth="1" fill="none" />
-        <text x="21" y="82.5" fontSize="5" fill="#d4d4d8" fontWeight="500">api</text>
-      </g>
-      
-      <g className={`c-f5-${safeId}`}>
-        <rect x="19" y="86.5" width="28" height="9" rx="2" fill="#000000" className={`c-sel2-${safeId}`} />
-        <text x="24" y="93" fontSize="5" fontWeight="600" className={`c-txt2-${safeId}`}>auth.ts</text>
+        {/* Success Toast */}
+        <rect x="150" y="115" width="60" height="12" rx="4" fill="#064e3b" stroke="#059669" />
+        <text x="180" y="123" fontSize="4" fill="#34d399" textAnchor="middle" fontWeight="bold">Deploy Completo</text>
       </g>
 
-      {/* Code Editor 1: index.tsx */}
-      <g className={`c-code1-${safeId}`} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="5">
-        <g clipPath={`url(#${safeId}-c1-clip-0)`}><text x="60" y="32"><tspan fill="#d946ef" fontWeight="600">export function </tspan><tspan fill="#3b82f6" fontWeight="600">Login</tspan><tspan fill="#d4d4d8">() {'{'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-1)`}><text x="60" y="38"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#d4d4d8">[email, setEmail] = </tspan><tspan fill="#3b82f6">useState</tspan><tspan fill="#d4d4d8">(</tspan><tspan fill="#10b981">''</tspan><tspan fill="#d4d4d8">)</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-2)`}><text x="60" y="44"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#d4d4d8">[pass, setPass] = </tspan><tspan fill="#3b82f6">useState</tspan><tspan fill="#d4d4d8">(</tspan><tspan fill="#10b981">''</tspan><tspan fill="#d4d4d8">)</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-3)`}><text x="60" y="50"></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-4)`}><text x="60" y="56"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#3b82f6">handleLogin </tspan><tspan fill="#d4d4d8">= </tspan><tspan fill="#d946ef" fontWeight="600">async </tspan><tspan fill="#d4d4d8">() =&gt; {'{'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-5)`}><text x="60" y="62"><tspan fill="#d946ef" fontWeight="600">    await </tspan><tspan fill="#3b82f6">loginWithEmail</tspan><tspan fill="#d4d4d8">(email, pass)</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-6)`}><text x="60" y="68"><tspan fill="#d4d4d8">  {'}'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-7)`}><text x="60" y="74"></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-8)`}><text x="60" y="80"><tspan fill="#d946ef" fontWeight="600">  return </tspan><tspan fill="#d4d4d8">(</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-9)`}><text x="60" y="86"><tspan fill="#d4d4d8">    &lt;</tspan><tspan fill="#ef4444">form </tspan><tspan fill="#3b82f6">onSubmit</tspan><tspan fill="#d4d4d8">=</tspan><tspan fill="#3b82f6">{'{'}handleLogin{'}'}</tspan><tspan fill="#d4d4d8">&gt;</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-10)`}><text x="60" y="92"><tspan fill="#d4d4d8">      &lt;</tspan><tspan fill="#ef4444">input </tspan><tspan fill="#3b82f6">type</tspan><tspan fill="#d4d4d8">=</tspan><tspan fill="#10b981">"email"</tspan><tspan fill="#d4d4d8"> /&gt;</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-11)`}><text x="60" y="98"><tspan fill="#d4d4d8">      &lt;</tspan><tspan fill="#ef4444">button</tspan><tspan fill="#d4d4d8">&gt;Sign In&lt;/</tspan><tspan fill="#ef4444">button</tspan><tspan fill="#d4d4d8">&gt;</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-12)`}><text x="60" y="104"><tspan fill="#d4d4d8">    &lt;/</tspan><tspan fill="#ef4444">form</tspan><tspan fill="#d4d4d8">&gt;</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-13)`}><text x="60" y="110"><tspan fill="#d4d4d8">  )</tspan></text></g>
+      {/* S2: Cmd Palette */}
+      <g className={`c-s2-${safeId}`}>
+        <rect x="95" y="50" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+        <rect x="110" y="60" width="20" height="20" rx="4" fill="#3b82f6" />
+        <text x="120" y="90" fontSize="6" fill="#a1a1aa" textAnchor="middle">Backend</text>
+
+        <rect x="70" y="25" width="100" height="100" rx="8" fill="#09090b" stroke="#27272a" opacity="0.9" />
+        <rect x="80" y="35" width="80" height="12" rx="4" fill="#18181b" />
+        <text x="85" y="43" fontSize="5" fill="#a1a1aa">Criar novo recurso...</text>
+        <rect x="80" y="55" width="80" height="15" rx="4" fill="#27272a" />
+        <text x="95" y="65" fontSize="5" fill="#e4e4e7">PostgreSQL Database</text>
+        <rect x="80" y="75" width="80" height="15" rx="4" fill="#18181b" />
+        <text x="95" y="85" fontSize="5" fill="#a1a1aa">Redis Cache</text>
+        <rect x="80" y="95" width="80" height="15" rx="4" fill="#18181b" />
+        <text x="95" y="105" fontSize="5" fill="#a1a1aa">S3 Storage</text>
       </g>
 
-      {/* Code Editor 2: auth.ts */}
-      <g className={`c-code2-${safeId}`} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="5">
-        <g clipPath={`url(#${safeId}-c2-clip-0)`}><text x="60" y="32"><tspan fill="#d946ef" fontWeight="600">import </tspan><tspan fill="#27272a">{'{'} supabase {'}'} </tspan><tspan fill="#d946ef" fontWeight="600">from </tspan><tspan fill="#10b981">"./client"</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-1)`}><text x="60" y="38"></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-2)`}><text x="60" y="44"><tspan fill="#d946ef" fontWeight="600">export async function </tspan><tspan fill="#3b82f6" fontWeight="600">loginWithEmail</tspan><tspan fill="#d4d4d8">(</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-3)`}><text x="60" y="50"><tspan fill="#ef4444">  email</tspan><tspan fill="#d4d4d8">: </tspan><tspan fill="#3b82f6">string</tspan><tspan fill="#d4d4d8">,</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-4)`}><text x="60" y="56"><tspan fill="#ef4444">  pass</tspan><tspan fill="#d4d4d8">: </tspan><tspan fill="#3b82f6">string</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-5)`}><text x="60" y="62"><tspan fill="#d4d4d8">) {'{'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-6)`}><text x="60" y="68"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#d4d4d8">{'{'} data, error {'}'} = </tspan><tspan fill="#d946ef" fontWeight="600">await </tspan><tspan fill="#3b82f6">supabase</tspan><tspan fill="#d4d4d8">.auth</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-7)`}><text x="60" y="74"><tspan fill="#d4d4d8">    .</tspan><tspan fill="#3b82f6">signInWithPassword</tspan><tspan fill="#d4d4d8">({'{'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-8)`}><text x="60" y="80"><tspan fill="#d4d4d8">      email,</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-9)`}><text x="60" y="86"><tspan fill="#d4d4d8">      password: pass,</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-10)`}><text x="60" y="92"><tspan fill="#d4d4d8">    {'}'})</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-11)`}><text x="60" y="98"></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-12)`}><text x="60" y="104"><tspan fill="#d946ef" fontWeight="600">  if </tspan><tspan fill="#d4d4d8">(error) </tspan><tspan fill="#d946ef" fontWeight="600">throw </tspan><tspan fill="#d4d4d8">error</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-13)`}><text x="60" y="110"><tspan fill="#d946ef" fontWeight="600">  return </tspan><tspan fill="#d4d4d8">data</tspan></text></g>
+      {/* S3: DB Connection */}
+      <g className={`c-s3-${safeId}`}>
+        <rect x="60" y="50" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+        <rect x="75" y="60" width="20" height="20" rx="4" fill="#3b82f6" />
+        <text x="85" y="90" fontSize="6" fill="#a1a1aa" textAnchor="middle">Backend</text>
+
+        <rect x="130" y="50" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+        <rect x="145" y="60" width="20" height="20" rx="4" fill="#10b981" />
+        <text x="155" y="90" fontSize="6" fill="#a1a1aa" textAnchor="middle">Postgres</text>
+
+        {/* Connection Line */}
+        <path d="M 110 75 L 130 75" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 4" />
+        <circle cx="120" cy="75" r="3" fill="#3b82f6" />
+      </g>
+
+      {/* S4: CPU Alert */}
+      <g className={`c-s4-${safeId}`}>
+        {/* Backend - Red Alert */}
+        <rect x="60" y="50" width="50" height="50" rx="8" fill="#450a0a" stroke="#ef4444" />
+        <rect x="75" y="60" width="20" height="20" rx="4" fill="#ef4444" />
+        <text x="85" y="90" fontSize="6" fill="#fca5a5" textAnchor="middle">Backend</text>
+
+        {/* Postgres - Normal */}
+        <rect x="130" y="50" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+        <rect x="145" y="60" width="20" height="20" rx="4" fill="#10b981" />
+        <text x="155" y="90" fontSize="6" fill="#a1a1aa" textAnchor="middle">Postgres</text>
+
+        <path d="M 110 75 L 130 75" stroke="#3b82f6" strokeWidth="2" />
+
+        {/* Floating Alert Panel */}
+        <rect x="150" y="10" width="80" height="35" rx="6" fill="#09090b" stroke="#ef4444" />
+        <text x="160" y="22" fontSize="5" fill="#ef4444" fontWeight="bold">ALERTA: CPU Alta</text>
+        <text x="160" y="30" fontSize="4" fill="#a1a1aa">Backend spike &gt; 95%</text>
+        {/* Mini Chart */}
+        <path d="M 160 40 L 170 38 L 180 39 L 190 25 L 200 15 L 210 10 L 220 12" stroke="#ef4444" strokeWidth="1" fill="none" />
+      </g>
+
+      {/* S5: Dashboard */}
+      <g className={`c-s5-${safeId}`}>
+        <rect x="10" y="10" width="220" height="130" rx="8" fill="#09090b" stroke="#27272a" />
+        <text x="20" y="25" fontSize="6" fill="#e4e4e7" fontWeight="bold">Observabilidade</text>
+        
+        {/* Graphs */}
+        <rect x="20" y="35" width="95" height="45" rx="4" fill="#18181b" />
+        <text x="25" y="45" fontSize="4" fill="#a1a1aa">CPU Usage (%)</text>
+        <path d="M 25 70 L 40 68 L 55 60 L 70 30 L 85 40 L 100 45 L 110 40" stroke="#3b82f6" strokeWidth="1.5" fill="none" />
+
+        <rect x="125" y="35" width="95" height="45" rx="4" fill="#18181b" />
+        <text x="130" y="45" fontSize="4" fill="#a1a1aa">Memory (GB)</text>
+        <path d="M 130 70 L 150 68 L 170 65 L 190 60 L 210 58 L 215 50" stroke="#10b981" strokeWidth="1.5" fill="none" />
+
+        <rect x="20" y="90" width="200" height="40" rx="4" fill="#18181b" />
+        <text x="25" y="100" fontSize="4" fill="#a1a1aa">Network Latency (ms)</text>
+        <path d="M 25 120 L 50 115 L 80 125 L 110 110 L 140 120 L 170 115 L 200 120 L 215 110" stroke="#8b5cf6" strokeWidth="1.5" fill="none" />
+      </g>
+
+      {/* S6: Canvas Warnings */}
+      <g className={`c-s6-${safeId}`}>
+        <rect x="60" y="50" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+        <rect x="75" y="60" width="20" height="20" rx="4" fill="#3b82f6" />
+        <text x="85" y="90" fontSize="6" fill="#a1a1aa" textAnchor="middle">Backend</text>
+
+        <rect x="130" y="50" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+        <rect x="145" y="60" width="20" height="20" rx="4" fill="#10b981" />
+        <text x="155" y="90" fontSize="6" fill="#a1a1aa" textAnchor="middle">Postgres</text>
+
+        <path d="M 110 75 L 130 75" stroke="#3b82f6" strokeWidth="2" />
+
+        {/* Warning Indicator */}
+        <circle cx="105" cy="45" r="8" fill="#422006" stroke="#f59e0b" />
+        <text x="105" y="47.5" fontSize="7" fill="#f59e0b" textAnchor="middle" fontWeight="bold">!</text>
+      </g>
+
+      {/* S7: Scaling */}
+      <g className={`c-s7-${safeId}`}>
+        <g transform="scale(0.6) translate(80, 40)">
+          {/* Main Nodes */}
+          <rect x="100" y="100" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+          <text x="125" y="130" fontSize="8" fill="#a1a1aa" textAnchor="middle">Backend</text>
+
+          <rect x="180" y="100" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+          <text x="205" y="130" fontSize="8" fill="#a1a1aa" textAnchor="middle">Postgres</text>
+
+          <rect x="100" y="30" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+          <text x="125" y="60" fontSize="8" fill="#a1a1aa" textAnchor="middle">Frontend</text>
+
+          <rect x="20" y="100" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+          <text x="45" y="130" fontSize="8" fill="#a1a1aa" textAnchor="middle">Redis</text>
+
+          <rect x="100" y="170" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+          <text x="125" y="200" fontSize="8" fill="#a1a1aa" textAnchor="middle">Worker</text>
+          
+          <rect x="180" y="170" width="50" height="50" rx="8" fill="#18181b" stroke="#27272a" />
+          <text x="205" y="200" fontSize="8" fill="#a1a1aa" textAnchor="middle">S3</text>
+
+          {/* Connections */}
+          <path d="M 125 80 L 125 100" stroke="#3b82f6" strokeWidth="2" />
+          <path d="M 150 125 L 180 125" stroke="#10b981" strokeWidth="2" />
+          <path d="M 70 125 L 100 125" stroke="#ef4444" strokeWidth="2" />
+          <path d="M 125 150 L 125 170" stroke="#8b5cf6" strokeWidth="2" />
+          <path d="M 150 195 L 180 195" stroke="#f59e0b" strokeWidth="2" />
+        </g>
       </g>
     </svg>
   )
