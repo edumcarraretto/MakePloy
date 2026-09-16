@@ -287,7 +287,7 @@ function FeaturedToolCard({
           ].join(' ')}
         />
         {/* Mockup preview area */}
-        <div className="relative flex-1 min-h-0 overflow-visible flex items-center justify-center p-2 md:p-3 pb-0 z-20">
+        <div className={`relative flex-1 min-h-0 overflow-visible flex items-center justify-center pb-0 z-20 ${tool.id === 'assistente-ia' ? 'px-1.5 pt-1.5 md:px-2 md:pt-2' : 'p-2 md:p-3'}`}>
           {mockup}
         </div>
 
