@@ -269,8 +269,9 @@ function FeaturedToolCard({
     >
       <div
         className={[
-          'h-full w-full flex flex-col overflow-hidden bg-white',
-          'border-r border-b border-gray-200/60',
+          'h-full w-full flex flex-col overflow-hidden',
+          tool.id === 'assistente-ia' ? 'bg-[#0a0a0f]' : 'bg-white',
+          tool.id === 'assistente-ia' ? 'border-r border-b border-zinc-800/60' : 'border-r border-b border-gray-200/60',
           centerCornerRounding,
           'transition-all duration-200 ease-out',
         ].join(' ')}
@@ -280,7 +281,7 @@ function FeaturedToolCard({
             'absolute inset-0 opacity-80 pointer-events-none',
             tool.id === 'projetos' ? 'bg-[radial-gradient(ellipse_at_top,rgba(244,114,182,0.16)_0%,rgba(192,132,252,0.10)_45%,transparent_75%)]' :
             tool.id === 'documentos' ? 'bg-[radial-gradient(ellipse_at_top,rgba(191,219,254,0.45)_0%,transparent_70%)]' :
-            tool.id === 'assistente-ia' ? 'bg-[radial-gradient(ellipse_at_top,rgba(244,114,182,0.18)_0%,transparent_70%)]' :
+            tool.id === 'assistente-ia' ? 'bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.25)_0%,rgba(236,72,153,0.12)_40%,transparent_70%)]' :
             tool.id === 'conversas' ? 'bg-[radial-gradient(ellipse_at_top,rgba(192,132,252,0.2)_0%,transparent_70%)]' :
             ''
           ].join(' ')}
@@ -315,7 +316,8 @@ function FeaturedToolCard({
           <span
             className={[
               isMobileOrTablet ? 'text-base' : 'text-xl md:text-2xl',
-              'font-bold tracking-tight text-gray-900'
+              'font-bold tracking-tight',
+              tool.id === 'assistente-ia' ? 'text-white' : 'text-gray-900'
             ].join(' ')}
           >
             {tool.title}

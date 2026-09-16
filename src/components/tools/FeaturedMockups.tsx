@@ -486,7 +486,7 @@ export function CodingMockup() {
 
       @keyframes cTxt2-${safeId} {
         0%,48% { fill: #a1a1aa }
-        49%,95% { fill: #2563eb }
+        49%,95% { fill: #3b82f6 }
         96%,100% { fill: #a1a1aa }
       }
       .c-txt2-${safeId} { animation: cTxt2-${safeId} 20s infinite; }
@@ -494,17 +494,31 @@ export function CodingMockup() {
       /* Tabs */
       @keyframes cTab1-${safeId} {
         0%,11% { fill: transparent }
-        12%,48% { fill: #e4e4e7 }
+        12%,48% { fill: #e5e7eb }
         49%,100% { fill: transparent }
       }
       .c-tab1-${safeId} { animation: cTab1-${safeId} 20s infinite; }
       
       @keyframes cTab2-${safeId} {
         0%,48% { fill: transparent }
-        49%,95% { fill: #e4e4e7 }
+        49%,95% { fill: #e5e7eb }
         96%,100% { fill: transparent }
       }
       .c-tab2-${safeId} { animation: cTab2-${safeId} 20s infinite; }
+      
+      @keyframes cTab1Txt-${safeId} {
+        0%,11% { fill: #374151 }
+        12%,48% { fill: #000000 }
+        49%,100% { fill: #374151 }
+      }
+      .c-tab1-txt-${safeId} { animation: cTab1Txt-${safeId} 20s infinite; }
+      
+      @keyframes cTab2Txt-${safeId} {
+        0%,48% { fill: #374151 }
+        49%,95% { fill: #000000 }
+        96%,100% { fill: #374151 }
+      }
+      .c-tab2-txt-${safeId} { animation: cTab2Txt-${safeId} 20s infinite; }
 
       /* Code Containers */
       @keyframes cCode1-${safeId} {
@@ -566,7 +580,7 @@ export function CodingMockup() {
   }
 
   return (
-    <svg viewBox="0 0 120 120" className="w-full h-full" aria-hidden="true">
+    <svg viewBox="0 0 160 160" className="w-full h-full" aria-hidden="true">
       <defs>
         {/* Clip paths for code 1 (index.tsx) */}
         {Array.from({length: 14}).map((_, i) => (
@@ -586,87 +600,87 @@ export function CodingMockup() {
       </defs>
 
       {/* IDE Header */}
-      <circle cx="8" cy="6" r="2" fill="#ef4444" />
-      <circle cx="14" cy="6" r="2" fill="#f59e0b" />
-      <circle cx="20" cy="6" r="2" fill="#22c55e" />
+      <circle cx="16" cy="14" r="2.5" fill="#ef4444" />
+      <circle cx="24" cy="14" r="2.5" fill="#f59e0b" />
+      <circle cx="32" cy="14" r="2.5" fill="#22c55e" />
       
       {/* Tabs */}
-      <rect x="28" y="0" width="30" height="12" className={`c-tab1-${safeId}`} />
-      <text x="32" y="8" fontSize="5" fill="#27272a" fontWeight="600">index.tsx</text>
+      <rect x="40" y="6" width="30" height="14" className={`c-tab1-${safeId}`} />
+      <text x="44" y="16" fontSize="5" fontWeight="600" className={`c-tab1-txt-${safeId}`}>index.tsx</text>
       
-      <rect x="58" y="0" width="30" height="12" className={`c-tab2-${safeId}`} />
-      <text x="62" y="8" fontSize="5" fill="#27272a" fontWeight="600">auth.ts</text>
+      <rect x="70" y="6" width="30" height="14" className={`c-tab2-${safeId}`} />
+      <text x="74" y="16" fontSize="5" fontWeight="600" className={`c-tab2-txt-${safeId}`}>auth.ts</text>
       
       {/* Dividers */}
-      <path d="M0 12 H120" stroke="#e4e4e7" strokeWidth="1" />
-      <path d="M35 12 V120" stroke="#e4e4e7" strokeWidth="1" />
+      <path d="M10 20 H150" stroke="#ffffff" strokeWidth="1" />
+      <path d="M55 20 V110" stroke="#ffffff" strokeWidth="1" />
 
       {/* File Explorer */}
-      <text x="4" y="22" fontSize="4" fontWeight="800" fill="#71717a" letterSpacing="0.5">EXPLORER</text>
+      <text x="14" y="32" fontSize="4.5" fontWeight="800" fill="#71717a" letterSpacing="0.5">EXPLORER</text>
       
       <g className={`c-f0-${safeId}`}>
-        <path d="M3 31 L4.5 33 L6 31" stroke="#a1a1aa" strokeWidth="0.8" fill="none" />
-        <text x="8" y="34" fontSize="5" fill="#27272a" fontWeight="500">src</text>
+        <path d="M13 41 L14.5 43 L16 41" stroke="#a1a1aa" strokeWidth="1" fill="none" />
+        <text x="18" y="44" fontSize="5" fill="#d4d4d8" fontWeight="500">src</text>
       </g>
       
       <g className={`c-f1-${safeId}`}>
-        <path d="M6 40 L7.5 42 L9 40" stroke="#a1a1aa" strokeWidth="0.8" fill="none" />
-        <text x="11" y="43" fontSize="5" fill="#27272a" fontWeight="500">components</text>
+        <path d="M16 50 L17.5 52 L19 50" stroke="#a1a1aa" strokeWidth="1" fill="none" />
+        <text x="21" y="53" fontSize="5" fill="#d4d4d8" fontWeight="500">components</text>
       </g>
       
       <g className={`c-f2-${safeId}`}>
-        <rect x="9" y="47" width="24" height="8" rx="2" className={`c-sel1-${safeId}`} />
-        <text x="14" y="53.5" fontSize="5" fill="#2563eb" fontWeight="600">index.tsx</text>
+        <rect x="19" y="57" width="28" height="9" rx="2" fill="#000000" className={`c-sel1-${safeId}`} />
+        <text x="24" y="63.5" fontSize="5" fill="#3b82f6" fontWeight="600">index.tsx</text>
       </g>
       
       <g className={`c-f3-${safeId}`}>
-        <text x="14" y="62.5" fontSize="5" fill="#a1a1aa" fontWeight="500">styles.css</text>
+        <text x="24" y="73.5" fontSize="5" fill="#a1a1aa" fontWeight="500">styles.css</text>
       </g>
       
       <g className={`c-f4-${safeId}`}>
-        <path d="M6 68.5 L7.5 70.5 L9 68.5" stroke="#a1a1aa" strokeWidth="0.8" fill="none" />
-        <text x="11" y="71.5" fontSize="5" fill="#27272a" fontWeight="500">api</text>
+        <path d="M16 79.5 L17.5 81.5 L19 79.5" stroke="#a1a1aa" strokeWidth="1" fill="none" />
+        <text x="21" y="82.5" fontSize="5" fill="#d4d4d8" fontWeight="500">api</text>
       </g>
       
       <g className={`c-f5-${safeId}`}>
-        <rect x="9" y="75.5" width="24" height="8" rx="2" className={`c-sel2-${safeId}`} />
-        <text x="14" y="82" fontSize="5" fontWeight="600" className={`c-txt2-${safeId}`}>auth.ts</text>
+        <rect x="19" y="86.5" width="28" height="9" rx="2" fill="#000000" className={`c-sel2-${safeId}`} />
+        <text x="24" y="93" fontSize="5" fontWeight="600" className={`c-txt2-${safeId}`}>auth.ts</text>
       </g>
 
       {/* Code Editor 1: index.tsx */}
       <g className={`c-code1-${safeId}`} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="5">
-        <g clipPath={`url(#${safeId}-c1-clip-0)`}><text x="40" y="24"><tspan fill="#d946ef" fontWeight="600">export function </tspan><tspan fill="#3b82f6" fontWeight="600">Login</tspan><tspan fill="#27272a">() {'{'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-1)`}><text x="40" y="30"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#27272a">[email, setEmail] = </tspan><tspan fill="#0ea5e9">useState</tspan><tspan fill="#27272a">(</tspan><tspan fill="#16a34a">''</tspan><tspan fill="#27272a">)</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-2)`}><text x="40" y="36"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#27272a">[pass, setPass] = </tspan><tspan fill="#0ea5e9">useState</tspan><tspan fill="#27272a">(</tspan><tspan fill="#16a34a">''</tspan><tspan fill="#27272a">)</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-3)`}><text x="40" y="42"></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-4)`}><text x="40" y="48"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#3b82f6">handleLogin </tspan><tspan fill="#27272a">= </tspan><tspan fill="#d946ef" fontWeight="600">async </tspan><tspan fill="#27272a">() =&gt; {'{'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-5)`}><text x="40" y="54"><tspan fill="#d946ef" fontWeight="600">    await </tspan><tspan fill="#3b82f6">loginWithEmail</tspan><tspan fill="#27272a">(email, pass)</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-6)`}><text x="40" y="60"><tspan fill="#27272a">  {'}'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-7)`}><text x="40" y="66"></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-8)`}><text x="40" y="72"><tspan fill="#d946ef" fontWeight="600">  return </tspan><tspan fill="#27272a">(</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-9)`}><text x="40" y="78"><tspan fill="#27272a">    &lt;</tspan><tspan fill="#e11d48">form </tspan><tspan fill="#d97706">onSubmit</tspan><tspan fill="#27272a">=</tspan><tspan fill="#0ea5e9">{'{'}handleLogin{'}'}</tspan><tspan fill="#27272a">&gt;</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-10)`}><text x="40" y="84"><tspan fill="#27272a">      &lt;</tspan><tspan fill="#e11d48">input </tspan><tspan fill="#d97706">type</tspan><tspan fill="#27272a">=</tspan><tspan fill="#16a34a">"email"</tspan><tspan fill="#27272a"> /&gt;</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-11)`}><text x="40" y="90"><tspan fill="#27272a">      &lt;</tspan><tspan fill="#e11d48">button</tspan><tspan fill="#27272a">&gt;Sign In&lt;/</tspan><tspan fill="#e11d48">button</tspan><tspan fill="#27272a">&gt;</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-12)`}><text x="40" y="96"><tspan fill="#27272a">    &lt;/</tspan><tspan fill="#e11d48">form</tspan><tspan fill="#27272a">&gt;</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c1-clip-13)`}><text x="40" y="102"><tspan fill="#27272a">  )</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-0)`}><text x="60" y="32"><tspan fill="#d946ef" fontWeight="600">export function </tspan><tspan fill="#3b82f6" fontWeight="600">Login</tspan><tspan fill="#d4d4d8">() {'{'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-1)`}><text x="60" y="38"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#d4d4d8">[email, setEmail] = </tspan><tspan fill="#3b82f6">useState</tspan><tspan fill="#d4d4d8">(</tspan><tspan fill="#10b981">''</tspan><tspan fill="#d4d4d8">)</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-2)`}><text x="60" y="44"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#d4d4d8">[pass, setPass] = </tspan><tspan fill="#3b82f6">useState</tspan><tspan fill="#d4d4d8">(</tspan><tspan fill="#10b981">''</tspan><tspan fill="#d4d4d8">)</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-3)`}><text x="60" y="50"></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-4)`}><text x="60" y="56"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#3b82f6">handleLogin </tspan><tspan fill="#d4d4d8">= </tspan><tspan fill="#d946ef" fontWeight="600">async </tspan><tspan fill="#d4d4d8">() =&gt; {'{'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-5)`}><text x="60" y="62"><tspan fill="#d946ef" fontWeight="600">    await </tspan><tspan fill="#3b82f6">loginWithEmail</tspan><tspan fill="#d4d4d8">(email, pass)</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-6)`}><text x="60" y="68"><tspan fill="#d4d4d8">  {'}'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-7)`}><text x="60" y="74"></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-8)`}><text x="60" y="80"><tspan fill="#d946ef" fontWeight="600">  return </tspan><tspan fill="#d4d4d8">(</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-9)`}><text x="60" y="86"><tspan fill="#d4d4d8">    &lt;</tspan><tspan fill="#ef4444">form </tspan><tspan fill="#3b82f6">onSubmit</tspan><tspan fill="#d4d4d8">=</tspan><tspan fill="#3b82f6">{'{'}handleLogin{'}'}</tspan><tspan fill="#d4d4d8">&gt;</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-10)`}><text x="60" y="92"><tspan fill="#d4d4d8">      &lt;</tspan><tspan fill="#ef4444">input </tspan><tspan fill="#3b82f6">type</tspan><tspan fill="#d4d4d8">=</tspan><tspan fill="#10b981">"email"</tspan><tspan fill="#d4d4d8"> /&gt;</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-11)`}><text x="60" y="98"><tspan fill="#d4d4d8">      &lt;</tspan><tspan fill="#ef4444">button</tspan><tspan fill="#d4d4d8">&gt;Sign In&lt;/</tspan><tspan fill="#ef4444">button</tspan><tspan fill="#d4d4d8">&gt;</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-12)`}><text x="60" y="104"><tspan fill="#d4d4d8">    &lt;/</tspan><tspan fill="#ef4444">form</tspan><tspan fill="#d4d4d8">&gt;</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-13)`}><text x="60" y="110"><tspan fill="#d4d4d8">  )</tspan></text></g>
       </g>
 
       {/* Code Editor 2: auth.ts */}
       <g className={`c-code2-${safeId}`} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="5">
-        <g clipPath={`url(#${safeId}-c2-clip-0)`}><text x="40" y="24"><tspan fill="#d946ef" fontWeight="600">import </tspan><tspan fill="#27272a">{'{'} supabase {'}'} </tspan><tspan fill="#d946ef" fontWeight="600">from </tspan><tspan fill="#16a34a">'./client'</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-1)`}><text x="40" y="30"></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-2)`}><text x="40" y="36"><tspan fill="#d946ef" fontWeight="600">export async function </tspan><tspan fill="#3b82f6" fontWeight="600">loginWithEmail</tspan><tspan fill="#27272a">(</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-3)`}><text x="40" y="42"><tspan fill="#e11d48">  email</tspan><tspan fill="#27272a">: </tspan><tspan fill="#0ea5e9">string</tspan><tspan fill="#27272a">,</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-4)`}><text x="40" y="48"><tspan fill="#e11d48">  pass</tspan><tspan fill="#27272a">: </tspan><tspan fill="#0ea5e9">string</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-5)`}><text x="40" y="54"><tspan fill="#27272a">) {'{'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-6)`}><text x="40" y="60"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#27272a">{'{'} data, error {'}'} = </tspan><tspan fill="#d946ef" fontWeight="600">await </tspan><tspan fill="#0ea5e9">supabase</tspan><tspan fill="#27272a">.auth</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-7)`}><text x="40" y="66"><tspan fill="#27272a">    .</tspan><tspan fill="#3b82f6">signInWithPassword</tspan><tspan fill="#27272a">({'{'}</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-8)`}><text x="40" y="72"><tspan fill="#27272a">      email,</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-9)`}><text x="40" y="78"><tspan fill="#27272a">      password: pass,</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-10)`}><text x="40" y="84"><tspan fill="#27272a">    {'}'})</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-11)`}><text x="40" y="90"></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-12)`}><text x="40" y="96"><tspan fill="#d946ef" fontWeight="600">  if </tspan><tspan fill="#27272a">(error) </tspan><tspan fill="#d946ef" fontWeight="600">throw </tspan><tspan fill="#27272a">error</tspan></text></g>
-        <g clipPath={`url(#${safeId}-c2-clip-13)`}><text x="40" y="102"><tspan fill="#d946ef" fontWeight="600">  return </tspan><tspan fill="#27272a">data</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-0)`}><text x="60" y="32"><tspan fill="#d946ef" fontWeight="600">import </tspan><tspan fill="#27272a">{'{'} supabase {'}'} </tspan><tspan fill="#d946ef" fontWeight="600">from </tspan><tspan fill="#10b981">"./client"</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-1)`}><text x="60" y="38"></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-2)`}><text x="60" y="44"><tspan fill="#d946ef" fontWeight="600">export async function </tspan><tspan fill="#3b82f6" fontWeight="600">loginWithEmail</tspan><tspan fill="#d4d4d8">(</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-3)`}><text x="60" y="50"><tspan fill="#ef4444">  email</tspan><tspan fill="#d4d4d8">: </tspan><tspan fill="#3b82f6">string</tspan><tspan fill="#d4d4d8">,</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-4)`}><text x="60" y="56"><tspan fill="#ef4444">  pass</tspan><tspan fill="#d4d4d8">: </tspan><tspan fill="#3b82f6">string</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-5)`}><text x="60" y="62"><tspan fill="#d4d4d8">) {'{'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-6)`}><text x="60" y="68"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#d4d4d8">{'{'} data, error {'}'} = </tspan><tspan fill="#d946ef" fontWeight="600">await </tspan><tspan fill="#3b82f6">supabase</tspan><tspan fill="#d4d4d8">.auth</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-7)`}><text x="60" y="74"><tspan fill="#d4d4d8">    .</tspan><tspan fill="#3b82f6">signInWithPassword</tspan><tspan fill="#d4d4d8">({'{'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-8)`}><text x="60" y="80"><tspan fill="#d4d4d8">      email,</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-9)`}><text x="60" y="86"><tspan fill="#d4d4d8">      password: pass,</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-10)`}><text x="60" y="92"><tspan fill="#d4d4d8">    {'}'})</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-11)`}><text x="60" y="98"></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-12)`}><text x="60" y="104"><tspan fill="#d946ef" fontWeight="600">  if </tspan><tspan fill="#d4d4d8">(error) </tspan><tspan fill="#d946ef" fontWeight="600">throw </tspan><tspan fill="#d4d4d8">error</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-13)`}><text x="60" y="110"><tspan fill="#d946ef" fontWeight="600">  return </tspan><tspan fill="#d4d4d8">data</tspan></text></g>
       </g>
     </svg>
   )
