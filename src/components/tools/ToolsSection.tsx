@@ -301,7 +301,9 @@ function FeaturedToolCard({
           ) : tool.id === 'documentos' ? (
             <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#0ea5e9] shrink-0`} strokeWidth={2.5} />
           ) : tool.id === 'assistente-ia' ? (
-            <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#d946ef] shrink-0`} strokeWidth={2.5} />
+            <span className={`${isMobileOrTablet ? 'text-xl' : 'text-[28px]'} font-bold bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent shrink-0 tracking-tighter`}>
+              &lt;/&gt;
+            </span>
           ) : tool.id === 'conversas' ? (
             <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#7c3aed] shrink-0`} strokeWidth={2.5} />
           ) : (

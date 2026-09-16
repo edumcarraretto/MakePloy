@@ -464,26 +464,210 @@ export function VisualMockup() {
 }
 
 export function CodingMockup() {
+  const id = useId()
+  const safeId = id.replace(/:/g, '')
+
+  const generateStyles = () => {
+    let css = `
+      /* File Explorer Selection */
+      @keyframes cSel1-${safeId} {
+        0%,11% { opacity: 0 }
+        12%,48% { opacity: 1 }
+        49%,100% { opacity: 0 }
+      }
+      .c-sel1-${safeId} { animation: cSel1-${safeId} 20s infinite; }
+      
+      @keyframes cSel2-${safeId} {
+        0%,48% { opacity: 0 }
+        49%,95% { opacity: 1 }
+        96%,100% { opacity: 0 }
+      }
+      .c-sel2-${safeId} { animation: cSel2-${safeId} 20s infinite; }
+
+      @keyframes cTxt2-${safeId} {
+        0%,48% { fill: #a1a1aa }
+        49%,95% { fill: #2563eb }
+        96%,100% { fill: #a1a1aa }
+      }
+      .c-txt2-${safeId} { animation: cTxt2-${safeId} 20s infinite; }
+
+      /* Tabs */
+      @keyframes cTab1-${safeId} {
+        0%,11% { fill: transparent }
+        12%,48% { fill: #e4e4e7 }
+        49%,100% { fill: transparent }
+      }
+      .c-tab1-${safeId} { animation: cTab1-${safeId} 20s infinite; }
+      
+      @keyframes cTab2-${safeId} {
+        0%,48% { fill: transparent }
+        49%,95% { fill: #e4e4e7 }
+        96%,100% { fill: transparent }
+      }
+      .c-tab2-${safeId} { animation: cTab2-${safeId} 20s infinite; }
+
+      /* Code Containers */
+      @keyframes cCode1-${safeId} {
+        0%,14% { opacity: 0 }
+        15%,48% { opacity: 1 }
+        49%,100% { opacity: 0 }
+      }
+      .c-code1-${safeId} { animation: cCode1-${safeId} 20s infinite; }
+      
+      @keyframes cCode2-${safeId} {
+        0%,49% { opacity: 0 }
+        50%,95% { opacity: 1 }
+        96%,100% { opacity: 0 }
+      }
+      .c-code2-${safeId} { animation: cCode2-${safeId} 20s infinite; }
+    `
+
+    // Files cascade
+    for (let i = 0; i < 6; i++) {
+      const start = 5 + i * 1.5;
+      const full = start + 2;
+      css += `
+        @keyframes cFile${i}-${safeId} {
+          0%,${start}% { opacity: 0; transform: translateX(-4px) }
+          ${full}%,95% { opacity: 1; transform: translateX(0) }
+          98%,100% { opacity: 0; transform: translateX(-4px) }
+        }
+        .c-f${i}-${safeId} { animation: cFile${i}-${safeId} 20s infinite ease-out; }
+      `
+    }
+
+    // Code lines for index.tsx (14 lines)
+    for (let i = 0; i < 14; i++) {
+      const start = 15 + i * 2;
+      const full = start + 1.5;
+      css += `
+        @keyframes cCode1L${i}-${safeId} {
+          0%,${start}% { width: 0px }
+          ${full}%,100% { width: 120px }
+        }
+        .c-c1-l${i}-${safeId} { animation: cCode1L${i}-${safeId} 20s infinite linear; }
+      `
+    }
+
+    // Code lines for auth.ts (14 lines)
+    for (let i = 0; i < 14; i++) {
+      const start = 50 + i * 2;
+      const full = start + 1.5;
+      css += `
+        @keyframes cCode2L${i}-${safeId} {
+          0%,${start}% { width: 0px }
+          ${full}%,100% { width: 120px }
+        }
+        .c-c2-l${i}-${safeId} { animation: cCode2L${i}-${safeId} 20s infinite linear; }
+      `
+    }
+
+    return css
+  }
+
   return (
-    <svg viewBox="0 0 240 150" className="w-full h-full" aria-hidden="true">
-      <rect x="10" y="10" width="220" height="27" rx="8" fill="white" stroke="#fbcfe8" />
-      <Sparkles x="20" y="19" width="10" height="10" color="#db2777" />
-      <text x="36" y="27" fontSize="9" fill="#475569">Crie uma tela de cadastro</text>
-      <rect x="10" y="45" width="220" height="96" rx="9" fill="#18181b" />
-      <Code2 x="20" y="54" width="10" height="10" color="#f9a8d4" />
-      <text x="35" y="62" fontSize="8" fill="#d4d4d8">Sua ideia ganhando forma</text>
-      <path d="M10 70 H230" stroke="#3f3f46" />
-      <g fontFamily="monospace" fontSize="8">
-        <text x="20" y="87" fill="#f9a8d4">{'<Cadastro>'}</text>
-        <text x="27" y="101" fill="#c4b5fd">{'<Nome />'}</text>
-        <text x="27" y="115" fill="#c4b5fd">{'<Email />'}</text>
-        <text x="20" y="129" fill="#f9a8d4">{'</Cadastro>'}</text>
+    <svg viewBox="0 0 120 120" className="w-full h-full" aria-hidden="true">
+      <defs>
+        {/* Clip paths for code 1 (index.tsx) */}
+        {Array.from({length: 14}).map((_, i) => (
+          <clipPath key={`c1-${i}`} id={`${safeId}-c1-clip-${i}`}>
+            <rect x="35" y={18 + i * 6} width="0" height="8" className={`c-c1-l${i}-${safeId}`} />
+          </clipPath>
+        ))}
+
+        {/* Clip paths for code 2 (auth.ts) */}
+        {Array.from({length: 14}).map((_, i) => (
+          <clipPath key={`c2-${i}`} id={`${safeId}-c2-clip-${i}`}>
+            <rect x="35" y={18 + i * 6} width="0" height="8" className={`c-c2-l${i}-${safeId}`} />
+          </clipPath>
+        ))}
+        
+        <style>{generateStyles()}</style>
+      </defs>
+
+      {/* IDE Header */}
+      <circle cx="8" cy="6" r="2" fill="#ef4444" />
+      <circle cx="14" cy="6" r="2" fill="#f59e0b" />
+      <circle cx="20" cy="6" r="2" fill="#22c55e" />
+      
+      {/* Tabs */}
+      <rect x="28" y="0" width="30" height="12" className={`c-tab1-${safeId}`} />
+      <text x="32" y="8" fontSize="5" fill="#27272a" fontWeight="600">index.tsx</text>
+      
+      <rect x="58" y="0" width="30" height="12" className={`c-tab2-${safeId}`} />
+      <text x="62" y="8" fontSize="5" fill="#27272a" fontWeight="600">auth.ts</text>
+      
+      {/* Dividers */}
+      <path d="M0 12 H120" stroke="#e4e4e7" strokeWidth="1" />
+      <path d="M35 12 V120" stroke="#e4e4e7" strokeWidth="1" />
+
+      {/* File Explorer */}
+      <text x="4" y="22" fontSize="4" fontWeight="800" fill="#71717a" letterSpacing="0.5">EXPLORER</text>
+      
+      <g className={`c-f0-${safeId}`}>
+        <path d="M3 31 L4.5 33 L6 31" stroke="#a1a1aa" strokeWidth="0.8" fill="none" />
+        <text x="8" y="34" fontSize="5" fill="#27272a" fontWeight="500">src</text>
       </g>
-      <rect x="126" y="79" width="94" height="54" rx="5" fill="white" />
-      <text x="134" y="90" fontSize="7" fontWeight="600" fill="#27272a">Crie sua conta</text>
-      <rect x="134" y="96" width="78" height="9" rx="2" fill="#f4f4f5" />
-      <rect x="134" y="109" width="78" height="9" rx="2" fill="#f4f4f5" />
-      <rect x="134" y="122" width="78" height="7" rx="2" fill="#ec4899" />
+      
+      <g className={`c-f1-${safeId}`}>
+        <path d="M6 40 L7.5 42 L9 40" stroke="#a1a1aa" strokeWidth="0.8" fill="none" />
+        <text x="11" y="43" fontSize="5" fill="#27272a" fontWeight="500">components</text>
+      </g>
+      
+      <g className={`c-f2-${safeId}`}>
+        <rect x="9" y="47" width="24" height="8" rx="2" className={`c-sel1-${safeId}`} />
+        <text x="14" y="53.5" fontSize="5" fill="#2563eb" fontWeight="600">index.tsx</text>
+      </g>
+      
+      <g className={`c-f3-${safeId}`}>
+        <text x="14" y="62.5" fontSize="5" fill="#a1a1aa" fontWeight="500">styles.css</text>
+      </g>
+      
+      <g className={`c-f4-${safeId}`}>
+        <path d="M6 68.5 L7.5 70.5 L9 68.5" stroke="#a1a1aa" strokeWidth="0.8" fill="none" />
+        <text x="11" y="71.5" fontSize="5" fill="#27272a" fontWeight="500">api</text>
+      </g>
+      
+      <g className={`c-f5-${safeId}`}>
+        <rect x="9" y="75.5" width="24" height="8" rx="2" className={`c-sel2-${safeId}`} />
+        <text x="14" y="82" fontSize="5" fontWeight="600" className={`c-txt2-${safeId}`}>auth.ts</text>
+      </g>
+
+      {/* Code Editor 1: index.tsx */}
+      <g className={`c-code1-${safeId}`} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="5">
+        <g clipPath={`url(#${safeId}-c1-clip-0)`}><text x="40" y="24"><tspan fill="#d946ef" fontWeight="600">export function </tspan><tspan fill="#3b82f6" fontWeight="600">Login</tspan><tspan fill="#27272a">() {'{'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-1)`}><text x="40" y="30"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#27272a">[email, setEmail] = </tspan><tspan fill="#0ea5e9">useState</tspan><tspan fill="#27272a">(</tspan><tspan fill="#16a34a">''</tspan><tspan fill="#27272a">)</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-2)`}><text x="40" y="36"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#27272a">[pass, setPass] = </tspan><tspan fill="#0ea5e9">useState</tspan><tspan fill="#27272a">(</tspan><tspan fill="#16a34a">''</tspan><tspan fill="#27272a">)</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-3)`}><text x="40" y="42"></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-4)`}><text x="40" y="48"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#3b82f6">handleLogin </tspan><tspan fill="#27272a">= </tspan><tspan fill="#d946ef" fontWeight="600">async </tspan><tspan fill="#27272a">() =&gt; {'{'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-5)`}><text x="40" y="54"><tspan fill="#d946ef" fontWeight="600">    await </tspan><tspan fill="#3b82f6">loginWithEmail</tspan><tspan fill="#27272a">(email, pass)</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-6)`}><text x="40" y="60"><tspan fill="#27272a">  {'}'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-7)`}><text x="40" y="66"></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-8)`}><text x="40" y="72"><tspan fill="#d946ef" fontWeight="600">  return </tspan><tspan fill="#27272a">(</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-9)`}><text x="40" y="78"><tspan fill="#27272a">    &lt;</tspan><tspan fill="#e11d48">form </tspan><tspan fill="#d97706">onSubmit</tspan><tspan fill="#27272a">=</tspan><tspan fill="#0ea5e9">{'{'}handleLogin{'}'}</tspan><tspan fill="#27272a">&gt;</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-10)`}><text x="40" y="84"><tspan fill="#27272a">      &lt;</tspan><tspan fill="#e11d48">input </tspan><tspan fill="#d97706">type</tspan><tspan fill="#27272a">=</tspan><tspan fill="#16a34a">"email"</tspan><tspan fill="#27272a"> /&gt;</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-11)`}><text x="40" y="90"><tspan fill="#27272a">      &lt;</tspan><tspan fill="#e11d48">button</tspan><tspan fill="#27272a">&gt;Sign In&lt;/</tspan><tspan fill="#e11d48">button</tspan><tspan fill="#27272a">&gt;</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-12)`}><text x="40" y="96"><tspan fill="#27272a">    &lt;/</tspan><tspan fill="#e11d48">form</tspan><tspan fill="#27272a">&gt;</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c1-clip-13)`}><text x="40" y="102"><tspan fill="#27272a">  )</tspan></text></g>
+      </g>
+
+      {/* Code Editor 2: auth.ts */}
+      <g className={`c-code2-${safeId}`} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="5">
+        <g clipPath={`url(#${safeId}-c2-clip-0)`}><text x="40" y="24"><tspan fill="#d946ef" fontWeight="600">import </tspan><tspan fill="#27272a">{'{'} supabase {'}'} </tspan><tspan fill="#d946ef" fontWeight="600">from </tspan><tspan fill="#16a34a">'./client'</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-1)`}><text x="40" y="30"></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-2)`}><text x="40" y="36"><tspan fill="#d946ef" fontWeight="600">export async function </tspan><tspan fill="#3b82f6" fontWeight="600">loginWithEmail</tspan><tspan fill="#27272a">(</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-3)`}><text x="40" y="42"><tspan fill="#e11d48">  email</tspan><tspan fill="#27272a">: </tspan><tspan fill="#0ea5e9">string</tspan><tspan fill="#27272a">,</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-4)`}><text x="40" y="48"><tspan fill="#e11d48">  pass</tspan><tspan fill="#27272a">: </tspan><tspan fill="#0ea5e9">string</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-5)`}><text x="40" y="54"><tspan fill="#27272a">) {'{'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-6)`}><text x="40" y="60"><tspan fill="#d946ef" fontWeight="600">  const </tspan><tspan fill="#27272a">{'{'} data, error {'}'} = </tspan><tspan fill="#d946ef" fontWeight="600">await </tspan><tspan fill="#0ea5e9">supabase</tspan><tspan fill="#27272a">.auth</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-7)`}><text x="40" y="66"><tspan fill="#27272a">    .</tspan><tspan fill="#3b82f6">signInWithPassword</tspan><tspan fill="#27272a">({'{'}</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-8)`}><text x="40" y="72"><tspan fill="#27272a">      email,</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-9)`}><text x="40" y="78"><tspan fill="#27272a">      password: pass,</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-10)`}><text x="40" y="84"><tspan fill="#27272a">    {'}'})</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-11)`}><text x="40" y="90"></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-12)`}><text x="40" y="96"><tspan fill="#d946ef" fontWeight="600">  if </tspan><tspan fill="#27272a">(error) </tspan><tspan fill="#d946ef" fontWeight="600">throw </tspan><tspan fill="#27272a">error</tspan></text></g>
+        <g clipPath={`url(#${safeId}-c2-clip-13)`}><text x="40" y="102"><tspan fill="#d946ef" fontWeight="600">  return </tspan><tspan fill="#27272a">data</tspan></text></g>
+      </g>
     </svg>
   )
 }
