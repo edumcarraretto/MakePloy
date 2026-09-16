@@ -297,23 +297,168 @@ export function BrainMockup() {
 }
 
 export function VisualMockup() {
+  const id = useId()
+  const safeId = id.replace(/:/g, '')
+
+  const pieces = [
+    // Navbar (Movido ainda mais para cima, y=5)
+    { id: 'nB', t: 0, x: 160, y: 5 },
+    { id: 'nL', t: 4, x: 40, y: 5 },
+    { id: 'nM', t: 8, x: 160, y: 5 },
+    { id: 'nC', t: 12, x: 260, y: 5 },
+    // Hero Text (Distribuído melhor)
+    { id: 'hT', t: 16, x: 90, y: 70 },
+    { id: 'hS', t: 20, x: 90, y: 95 },
+    { id: 'hB', t: 24, x: 90, y: 120 },
+    // Hero Graphic
+    { id: 'gB', t: 28, x: 235, y: 90 },
+    { id: 'gI', t: 32, x: 235, y: 90 },
+    // Features (Movido para baixo, y=175)
+    { id: 'f1B', t: 36, x: 60, y: 175 },
+    { id: 'f1C', t: 40, x: 60, y: 175 },
+    { id: 'f2B', t: 44, x: 160, y: 175 },
+    { id: 'f2C', t: 48, x: 160, y: 175 },
+    { id: 'f3B', t: 52, x: 260, y: 175 },
+    { id: 'f3C', t: 56, x: 260, y: 175 },
+  ]
+
+  const generateStyles = () => {
+    let css = ''
+    pieces.forEach(p => {
+      css += `
+        .a-${p.id}O1-${safeId} { animation: ${p.id}O1-${safeId} 20s infinite cubic-bezier(0.2,0.8,0.2,1); }
+        .a-${p.id}O2-${safeId} { animation: ${p.id}O2-${safeId} 20s infinite cubic-bezier(0.2,0.8,0.2,1); }
+        .a-${p.id}F-${safeId}  { animation: ${p.id}F-${safeId} 20s infinite cubic-bezier(.34,1.56,.64,1); }
+        
+        @keyframes ${p.id}O1-${safeId} {
+          ${p.t === 0 ? '' : `0%,${p.t - 0.1}% {opacity:0; transform:translate(160px,115px) scale(0.6) rotate(0deg)}`}
+          ${p.t}% {opacity:1; transform:translate(160px,105px) scale(0.85) rotate(-2deg)}
+          ${p.t + 1}% {opacity:1; transform:translate(160px,95px) scale(0.95) rotate(2deg)}
+          ${p.t + 1.1}%,100% {opacity:0; transform:translate(160px,95px) scale(0.95) rotate(2deg)}
+        }
+        @keyframes ${p.id}O2-${safeId} {
+          0%,${p.t + 0.9}% {opacity:0; transform:translate(160px,115px) scale(0.6) rotate(0deg)}
+          ${p.t + 1}% {opacity:1; transform:translate(160px,105px) scale(0.85) rotate(2deg)}
+          ${p.t + 2}% {opacity:1; transform:translate(160px,95px) scale(0.95) rotate(-2deg)}
+          ${p.t + 2.1}%,100% {opacity:0; transform:translate(160px,95px) scale(0.95) rotate(-2deg)}
+        }
+        @keyframes ${p.id}F-${safeId} {
+          0%,${p.t + 1.9}% {opacity:0; transform:translate(160px,110px) scale(0.6)}
+          ${p.t + 2}% {opacity:1; transform:translate(160px,90px) scale(1.1)}
+          ${p.t + 4}%,88% {opacity:1; transform:translate(${p.x}px,${p.y}px) scale(1)}
+          93%,100% {opacity:0; transform:translate(${p.x}px,${p.y}px) scale(0.8)}
+        }
+      `
+    })
+    return css
+  }
+
+  const renderPiece = (id: string, O1: React.ReactNode, O2: React.ReactNode, F: React.ReactNode) => (
+    <g key={id}>
+      <g className={`a-${id}O1-${safeId}`}>{O1}</g>
+      <g className={`a-${id}O2-${safeId}`}>{O2}</g>
+      <g className={`a-${id}F-${safeId}`}>{F}</g>
+    </g>
+  )
+
   return (
-    <svg viewBox="0 0 240 150" className="w-full h-full" aria-hidden="true">
-      <rect x="10" y="10" width="220" height="130" rx="10" fill="white" stroke="#e2e8f0" />
-      <path d="M10 31 H230" stroke="#e2e8f0" />
-      <Sparkles x="20" y="16" width="9" height="9" color="#0284c7" />
-      <text x="34" y="24" fontSize="9" fill="#475569">Da ideia à interface</text>
-      <rect x="20" y="42" width="29" height="87" rx="4" fill="#f1f5f9" />
-      {['#38bdf8', '#a5b4fc', '#fcd34d'].map((color, i) => <rect key={color} x="28" y={51 + i * 20} width="13" height="13" rx="4" fill={color} />)}
-      <rect x="59" y="42" width="160" height="87" rx="4" fill="#f0f9ff" />
-      <text x="71" y="57" fontSize="7" fontWeight="600" fill="#0284c7">SEU PROJETO</text>
-      <text x="71" y="74" fontSize="10" fontWeight="700" fill="#0f172a">Uma ideia. Muitas formas.</text>
-      <rect x="71" y="83" width="92" height="3" rx="1.5" fill="#bae6fd" />
-      <rect x="71" y="91" width="69" height="3" rx="1.5" fill="#bae6fd" />
-      <rect x="71" y="104" width="60" height="15" rx="4" fill="#0284c7" />
-      <text x="101" y="114" textAnchor="middle" fontSize="7" fill="white">Começar agora</text>
-      <rect x="66" y="63" width="148" height="17" fill="none" stroke="#38bdf8" strokeDasharray="3 2" />
-      <MousePointer2 x="199" y="76" width="15" height="15" fill="#0284c7" color="white" />
+    <svg viewBox="0 -15 320 215" className="w-full h-full overflow-visible" aria-hidden="true">
+      <defs>
+        <filter id={`${safeId}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#000000" floodOpacity="0.08" />
+        </filter>
+        <style>{generateStyles()}</style>
+      </defs>
+
+      {/* --- NAVBAR --- */}
+      {renderPiece('nB', 
+        <rect x="-145" y="-15" width="290" height="30" rx="8" fill="none" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />,
+        <rect x="-145" y="-15" width="290" height="30" rx="8" fill="#f1f5f9" />,
+        <rect x="-145" y="-15" width="290" height="30" rx="8" fill="white" stroke="#e2e8f0" strokeWidth="1" filter={`url(#${safeId}-shadow)`} />
+      )}
+      
+      {renderPiece('nL',
+        <circle cx="0" cy="0" r="8" fill="none" stroke="#94a3b8" strokeWidth="2" />,
+        <rect x="-8" y="-8" width="16" height="16" rx="4" fill="#cbd5e1" />,
+        <circle cx="0" cy="0" r="8" fill="#4f46e5" />
+      )}
+      
+      {renderPiece('nM',
+        <rect x="-40" y="-2" width="80" height="4" rx="2" fill="#cbd5e1" />,
+        <><rect x="-40" y="-2" width="20" height="4" rx="2" fill="#94a3b8" /><rect x="20" y="-2" width="20" height="4" rx="2" fill="#94a3b8" /></>,
+        <><rect x="-35" y="-2" width="20" height="4" rx="2" fill="#94a3b8" /><rect x="-5" y="-2" width="25" height="4" rx="2" fill="#94a3b8" /><rect x="30" y="-2" width="20" height="4" rx="2" fill="#94a3b8" /></>
+      )}
+
+      {renderPiece('nC',
+        <rect x="-20" y="-10" width="40" height="20" rx="10" fill="none" stroke="#94a3b8" strokeWidth="2" />,
+        <rect x="-20" y="-10" width="40" height="20" rx="4" fill="#cbd5e1" />,
+        <rect x="-20" y="-10" width="40" height="20" rx="6" fill="#4f46e5" />
+      )}
+
+      {/* --- HERO TEXT --- */}
+      {renderPiece('hT',
+        <rect x="-50" y="-15" width="100" height="30" rx="6" fill="none" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />,
+        <rect x="-50" y="-15" width="100" height="30" rx="6" fill="#f1f5f9" />,
+        <><rect x="-50" y="-10" width="100" height="12" rx="4" fill="#0f172a" /><rect x="-50" y="6" width="80" height="12" rx="4" fill="#0f172a" /></>
+      )}
+
+      {renderPiece('hS',
+        <rect x="-50" y="-3" width="100" height="6" rx="3" fill="#e2e8f0" />,
+        <rect x="-50" y="-6" width="100" height="12" rx="6" fill="#f1f5f9" />,
+        <><rect x="-50" y="-5" width="110" height="6" rx="3" fill="#64748b" /><rect x="-50" y="5" width="70" height="6" rx="3" fill="#64748b" /></>
+      )}
+
+      {renderPiece('hB',
+        <rect x="-50" y="-9" width="95" height="18" rx="9" fill="none" stroke="#cbd5e1" strokeWidth="2" />,
+        <rect x="-50" y="-9" width="45" height="18" rx="9" fill="#e2e8f0" />,
+        <><rect x="-50" y="-9" width="45" height="18" rx="6" fill="#4f46e5" /><rect x="5" y="-9" width="45" height="18" rx="6" fill="#e2e8f0" /></>
+      )}
+
+      {/* --- HERO GRAPHIC --- */}
+      {renderPiece('gB',
+        <rect x="-55" y="-40" width="110" height="80" rx="10" fill="none" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />,
+        <rect x="-55" y="-40" width="110" height="80" rx="10" fill="#f1f5f9" />,
+        <rect x="-55" y="-40" width="110" height="80" rx="10" fill="#e0e7ff" filter={`url(#${safeId}-shadow)`} />
+      )}
+
+      {renderPiece('gI',
+        <circle cx="0" cy="0" r="20" fill="#c7d2fe" />,
+        <rect x="-30" y="-20" width="60" height="40" rx="8" fill="#c7d2fe" />,
+        <>
+          <rect x="-45" y="-30" width="90" height="15" rx="4" fill="white" />
+          <circle cx="-35" cy="-22.5" r="4" fill="#818cf8" />
+          <rect x="-25" y="-24" width="30" height="3" rx="1.5" fill="#c7d2fe" />
+          <rect x="-45" y="-10" width="40" height="40" rx="4" fill="white" />
+          <rect x="5" y="-10" width="40" height="40" rx="4" fill="#4f46e5" />
+        </>
+      )}
+
+      {/* --- FEATURE CARDS --- */}
+      {[
+        { id: 'f1', colorBase: '#ecfdf5', colorDot: '#10b981' },
+        { id: 'f2', colorBase: '#f5f3ff', colorDot: '#8b5cf6' },
+        { id: 'f3', colorBase: '#fffbeb', colorDot: '#f59e0b' }
+      ].map((f) => (
+        <g key={f.id}>
+          {renderPiece(`${f.id}B`,
+            <rect x="-42.5" y="-25" width="85" height="50" rx="8" fill="none" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />,
+            <rect x="-42.5" y="-25" width="85" height="50" rx="8" fill="#f1f5f9" />,
+            <rect x="-42.5" y="-25" width="85" height="50" rx="8" fill="white" stroke="#e2e8f0" strokeWidth="1" filter={`url(#${safeId}-shadow)`} />
+          )}
+          {renderPiece(`${f.id}C`,
+            <rect x="-20" y="-15" width="40" height="30" rx="4" fill="#f1f5f9" />,
+            <circle cx="0" cy="0" r="10" fill="#e2e8f0" />,
+            <>
+              <rect x="-32.5" y="-15" width="16" height="16" rx="4" fill={f.colorBase} />
+              <circle cx="-24.5" cy="-7" r="4" fill={f.colorDot} />
+              <rect x="-10" y="-13" width="35" height="4" rx="2" fill="#334155" />
+              <rect x="-10" y="-5" width="20" height="4" rx="2" fill="#94a3b8" />
+              <rect x="-32.5" y="10" width="65" height="4" rx="2" fill="#cbd5e1" />
+              <rect x="-32.5" y="18" width="40" height="4" rx="2" fill="#cbd5e1" />
+            </>
+          )}
+        </g>
+      ))}
     </svg>
   )
 }
