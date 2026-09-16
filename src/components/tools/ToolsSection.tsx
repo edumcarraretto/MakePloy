@@ -278,7 +278,7 @@ function FeaturedToolCard({
         <div
           className={[
             'absolute inset-0 opacity-80 pointer-events-none',
-            tool.id === 'projetos' ? 'bg-[radial-gradient(ellipse_at_top,rgba(253,230,138,0.45)_0%,transparent_70%)]' :
+            tool.id === 'projetos' ? 'bg-[radial-gradient(ellipse_at_top,rgba(244,114,182,0.16)_0%,rgba(192,132,252,0.10)_45%,transparent_75%)]' :
             tool.id === 'documentos' ? 'bg-[radial-gradient(ellipse_at_top,rgba(191,219,254,0.45)_0%,transparent_70%)]' :
             tool.id === 'assistente-ia' ? 'bg-[radial-gradient(ellipse_at_top,rgba(244,114,182,0.18)_0%,transparent_70%)]' :
             tool.id === 'conversas' ? 'bg-[radial-gradient(ellipse_at_top,rgba(192,132,252,0.2)_0%,transparent_70%)]' :
@@ -286,16 +286,18 @@ function FeaturedToolCard({
           ].join(' ')}
         />
         {/* Mockup preview area */}
-        <div className="relative flex-1 min-h-0 overflow-hidden flex items-center justify-center p-2 md:p-4 pb-0">
+        <div className="relative flex-1 min-h-0 overflow-hidden flex items-center justify-center p-2 md:p-3 pb-0">
           {mockup}
         </div>
 
         {/* Card label */}
-        <div className="relative flex items-center justify-center gap-2 pb-3 md:pb-5 pt-2 shrink-0">
+        <div className="relative flex items-center justify-center gap-2 pb-3 md:pb-4 pt-1 shrink-0">
           {tool.id === 'projetos' ? (
-            <div className={`flex items-center justify-center bg-[#3b5bd6] text-white ${isMobileOrTablet ? 'w-5 h-5 rounded-[4px]' : 'w-6 h-6 rounded-[6px]'} shadow-sm shrink-0`}>
-              <Icon className={isMobileOrTablet ? 'w-3 h-3' : 'w-3.5 h-3.5'} strokeWidth={3} />
-            </div>
+            <img
+              src="/nova-logo-128.webp"
+              alt="MakePloy"
+              className={`${isMobileOrTablet ? 'w-7 h-7' : 'w-10 h-10'} object-contain shrink-0 rounded-[6px]`}
+            />
           ) : tool.id === 'documentos' ? (
             <div className={`flex items-center justify-center bg-[#0ea5e9] text-white ${isMobileOrTablet ? 'w-5 h-5 rounded-[4px]' : 'w-6 h-6 rounded-[6px]'} shadow-sm shrink-0`}>
               <Icon className={isMobileOrTablet ? 'w-3 h-3' : 'w-3.5 h-3.5'} strokeWidth={3} />
@@ -314,7 +316,13 @@ function FeaturedToolCard({
               strokeWidth={2.5}
             />
           )}
-          <span className={`${isMobileOrTablet ? 'text-sm' : 'text-base'} font-bold text-gray-800 tracking-tight`}>
+          <span
+            className={[
+              isMobileOrTablet ? (tool.id === 'projetos' ? 'text-base' : 'text-sm') : tool.id === 'projetos' ? 'text-xl md:text-2xl' : 'text-base',
+              'font-bold tracking-tight',
+              tool.id === 'projetos' ? 'text-gray-900' : 'text-gray-800'
+            ].join(' ')}
+          >
             {tool.title}
           </span>
         </div>

@@ -43,10 +43,10 @@ import {
   Route,
   Inbox,
   Users,
-  LayoutTemplate,
-  FileText,
+  Palette,
+  Code2,
   Brain,
-  Hash,
+  Rocket,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -55,6 +55,7 @@ export type ToolStatus = 'available' | 'coming_soon' | 'unavailable'
 export interface Tool {
   id: string
   title: string
+  description?: string
   icon: LucideIcon
   status: ToolStatus
   featured: boolean
@@ -70,8 +71,9 @@ export const tools: Tool[] = [
   // Featured cards
   {
     id: 'projetos',
-    title: 'Projetos',
-    icon: LayoutTemplate,
+    title: 'Cérebro',
+    description: 'Cruza todo o contexto e orienta cada etapa.',
+    icon: Brain,
     status: 'available',
     featured: true,
     colSpan: 2,
@@ -83,8 +85,9 @@ export const tools: Tool[] = [
   },
   {
     id: 'documentos',
-    title: 'Documentos',
-    icon: FileText,
+    title: 'Criação visual',
+    description: 'Transforma ideias em interfaces e elementos visuais.',
+    icon: Palette,
     status: 'available',
     featured: true,
     colSpan: 2,
@@ -96,8 +99,9 @@ export const tools: Tool[] = [
   },
   {
     id: 'assistente-ia',
-    title: 'Cérebro',
-    icon: Brain,
+    title: 'Vibe Coding',
+    description: 'Transforma intenção e interface em código funcional.',
+    icon: Code2,
     status: 'available',
     featured: true,
     colSpan: 2,
@@ -109,8 +113,9 @@ export const tools: Tool[] = [
   },
   {
     id: 'conversas',
-    title: 'Bater papo',
-    icon: Hash,
+    title: 'Deploy',
+    description: 'Prepara e coloca o projeto no ar.',
+    icon: Rocket,
     status: 'available',
     featured: true,
     colSpan: 2,
