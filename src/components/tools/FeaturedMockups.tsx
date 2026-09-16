@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from 'react'
-import { Check, Code2, Globe, MousePointer2, Sparkles } from 'lucide-react'
+import { Check, Code2, Globe, Sparkles } from 'lucide-react'
 
 const BRAIN_PHRASES = [
   'Quero uma ideia de SaaS',
