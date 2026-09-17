@@ -131,6 +131,49 @@ const NAVIGABLE_FILES = FILE_TREE.filter((f) => !f.isDir).map((f) => f.name)
 
 const getTabId = (fileName: string) => `editor-tab-${fileName.replace(/[^a-zA-Z0-9]/g, '-')}`
 
+// ─── File Icon Helper ─────────────────────────────────────────────────────────
+
+function FileIcon({ name, isDir }: { name: string; isDir: boolean }) {
+  if (isDir) {
+    return (
+      <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400">
+        <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+      </svg>
+    )
+  }
+  
+  if (name.endsWith('.css')) {
+    return (
+      <svg width="1em" height="1em" viewBox="0 0 128 128">
+        <path fill="#1572B6" d="M14.05 15.65l8.63 96.88L64 124l41.34-11.47 8.61-96.88H14.05z"/>
+        <path fill="#33A9DC" d="M64 114.7l31.25-8.68L101.46 25H64v89.7z"/>
+        <path fill="#FFF" d="M64 48H39l-1.33-14.96H64V48zm0 29.89H41.52l1.63 18.3 20.85 5.79V102l-28.79-8-1.03-11.53H64v-14.58z"/>
+        <path fill="#EBEBEB" d="M64 48h25l1.33-14.96H64V48zm0 29.89V63.31l12.72-.01-1.02-11.43H64V37.91h37.49l-3.32 37.11-20.86 5.78v-11.66z"/>
+      </svg>
+    )
+  }
+
+  // React TSX
+  if (name.endsWith('.tsx') || name.endsWith('.ts')) {
+    return (
+      <svg width="1em" height="1em" viewBox="-11.5 -10.23174 23 20.46348" className="text-[#61dafb]">
+        <circle cx="0" cy="0" r="2.05" fill="currentColor"/>
+        <g stroke="currentColor" strokeWidth="1" fill="none">
+          <ellipse rx="11" ry="4.2"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+        </g>
+      </svg>
+    )
+  }
+
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-500">
+      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>
+    </svg>
+  )
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function IntegratedCodeEditorPreview() {
@@ -251,11 +294,9 @@ export function IntegratedCodeEditorPreview() {
               onClick={() => isNavigable && handleFileClick(file.name)}
               disabled={!isNavigable}
             >
-              {file.isDir ? (
-                <span className="text-[6px] text-neutral-500">▸</span>
-              ) : (
-                <span className={`text-[6px] ${isActive ? 'text-violet-400' : 'text-neutral-600'}`}>◇</span>
-              )}
+              <span className="w-3 h-3 shrink-0 flex items-center justify-center text-[8px] mr-1">
+                <FileIcon name={file.name} isDir={file.isDir} />
+              </span>
               <span className="truncate">{file.name}</span>
             </button>
           )
