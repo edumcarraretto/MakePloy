@@ -249,7 +249,7 @@ export function IntegratedCodeEditorPreview() {
       }}
     >
       {/* File tree sidebar */}
-      <div className="w-[72px] shrink-0 border-r border-white/[0.08] flex flex-col pt-2 overflow-y-auto no-scrollbar">
+      <div className="w-[100px] shrink-0 border-r border-white/[0.08] flex flex-col pt-2 overflow-y-auto no-scrollbar">
         <div className="px-2 mb-1.5">
           <div className="text-[7px] font-medium text-neutral-500 uppercase tracking-wider">
             Arquivos
