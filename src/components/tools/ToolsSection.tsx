@@ -301,20 +301,10 @@ function FeaturedToolCard({
           ) : tool.id === 'documentos' ? (
             <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#0ea5e9] shrink-0`} strokeWidth={2.5} />
           ) : tool.id === 'assistente-ia' ? (
-            <div className="relative shrink-0 flex items-center justify-center">
-              <svg width="0" height="0" className="absolute">
-                <linearGradient id="vibe-coding-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop stopColor="#d946ef" offset="0%" />
-                  <stop stopColor="#a855f7" offset="50%" />
-                  <stop stopColor="#3b82f6" offset="100%" />
-                </linearGradient>
-              </svg>
-              <TerminalSquare 
-                className={`${isMobileOrTablet ? 'w-[22px] h-[22px]' : 'w-7 h-7'} shrink-0`} 
-                strokeWidth={2.5} 
-                style={{ stroke: 'url(#vibe-coding-gradient)' }}
-              />
-            </div>
+            <TerminalSquare 
+              className={`${isMobileOrTablet ? 'w-[22px] h-[22px]' : 'w-7 h-7'} text-[#d946ef] shrink-0`} 
+              strokeWidth={2.5} 
+            />
           ) : tool.id === 'conversas' ? (
             <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#7c3aed] shrink-0`} strokeWidth={2.5} />
           ) : (
