@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
-import { ArrowRight, Code2 } from 'lucide-react'
+import { ArrowRight, TerminalSquare } from 'lucide-react'
 import { openEarlyAccess } from '@/lib/earlyAccess'
 import { HighlightText } from '@/components/text/HighlightText'
 import { tools, type Tool } from '@/components/tools/toolsData'
@@ -309,7 +309,7 @@ function FeaturedToolCard({
                   <stop stopColor="#3b82f6" offset="100%" />
                 </linearGradient>
               </svg>
-              <Code2 
+              <TerminalSquare 
                 className={`${isMobileOrTablet ? 'w-[22px] h-[22px]' : 'w-7 h-7'} shrink-0`} 
                 strokeWidth={2.5} 
                 style={{ stroke: 'url(#vibe-coding-gradient)' }}
