@@ -206,7 +206,7 @@ export function IntegratedCodeEditorPreview() {
           setOpenTabs((prevTabs) => {
             if (prevTabs.includes(nextFile)) return prevTabs
             const newTabs = [...prevTabs, nextFile]
-            if (newTabs.length > 3) return newTabs.slice(newTabs.length - 3)
+            if (newTabs.length > 2) return newTabs.slice(newTabs.length - 2)
             return newTabs
           })
 
@@ -233,7 +233,7 @@ export function IntegratedCodeEditorPreview() {
     setOpenTabs((prev) => {
       if (prev.includes(fileName)) return prev
       const newTabs = [...prev, fileName]
-      if (newTabs.length > 3) return newTabs.slice(newTabs.length - 3)
+      if (newTabs.length > 2) return newTabs.slice(newTabs.length - 2)
       return newTabs
     })
   }
