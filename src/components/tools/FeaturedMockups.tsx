@@ -466,10 +466,8 @@ export function VisualMockup() {
 
 export function CodingMockup() {
   return (
-    <div className="w-full h-full p-4 overflow-hidden flex items-center justify-center -ml-4">
-      <div className="w-[125%] h-[125%] transform scale-75 origin-center">
-        <IntegratedCodeEditorPreview />
-      </div>
+    <div className="w-full h-full overflow-hidden [&>div]:rounded-none [&>div]:border-none [&>div]:bg-transparent">
+      <IntegratedCodeEditorPreview />
     </div>
   )
 }
