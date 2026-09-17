@@ -136,26 +136,48 @@ const getTabId = (fileName: string) => `editor-tab-${fileName.replace(/[^a-zA-Z0
 export function IntegratedCodeEditorPreview() {
   const [activeFile, setActiveFile] = useState(NAVIGABLE_FILES[0])
   const [openTabs, setOpenTabs] = useState<string[]>(['App.tsx', 'index.css', 'Home.tsx'])
+  const [typedChars, setTypedChars] = useState(0)
 
   useEffect(() => {
-    // Check if the user prefers reduced motion
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (mediaQuery.matches) return
+    if (mediaQuery.matches) {
+      setTypedChars(99999)
+      return
+    }
 
-    const interval = setInterval(() => {
-      setActiveFile((prev) => {
-        const currentIndex = NAVIGABLE_FILES.indexOf(prev)
-        const nextIndex = (currentIndex + 1) % NAVIGABLE_FILES.length
-        return NAVIGABLE_FILES[nextIndex]
-      })
-    }, 2500) // Change every 2.5 seconds
+    const currentFileContent = FILE_CONTENTS[activeFile]
+    if (!currentFileContent) return
 
-    return () => clearInterval(interval)
-  }, [])
+    const totalChars = currentFileContent.lines.reduce((acc, line) => {
+      const lineChars = line.tokens.reduce((acc2, token) => acc2 + token.text.length, 0)
+      return acc + (lineChars === 0 ? 1 : lineChars)
+    }, 0)
+
+    if (typedChars >= totalChars) {
+      const timer = setTimeout(() => {
+        setActiveFile((prev) => {
+          const currentIndex = NAVIGABLE_FILES.indexOf(prev)
+          const nextIndex = (currentIndex + 1) % NAVIGABLE_FILES.length
+          return NAVIGABLE_FILES[nextIndex]
+        })
+        setTypedChars(0)
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+
+    const timer = setTimeout(() => {
+      setTypedChars(prev => prev + Math.floor(Math.random() * 4) + 1)
+    }, Math.random() * 30 + 10)
+
+    return () => clearTimeout(timer)
+  }, [activeFile, typedChars])
 
   const handleFileClick = (fileName: string) => {
     if (!FILE_CONTENTS[fileName]) return
-    setActiveFile(fileName)
+    if (fileName !== activeFile) {
+      setActiveFile(fileName)
+      setTypedChars(0)
+    }
     if (!openTabs.includes(fileName)) {
       setOpenTabs((prev) => [...prev, fileName])
     }
@@ -168,6 +190,7 @@ export function IntegratedCodeEditorPreview() {
     setOpenTabs(newTabs)
     if (activeFile === fileName) {
       setActiveFile(newTabs[newTabs.length - 1])
+      setTypedChars(0)
     }
   }
 
@@ -183,7 +206,10 @@ export function IntegratedCodeEditorPreview() {
 
     event.preventDefault()
     const nextTab = openTabs[nextIndex]
-    setActiveFile(nextTab)
+    if (activeFile !== nextTab) {
+      setActiveFile(nextTab)
+      setTypedChars(0)
+    }
     document.getElementById(getTabId(nextTab))?.focus()
   }
 
@@ -276,40 +302,74 @@ export function IntegratedCodeEditorPreview() {
         </div>
 
         {/* Code */}
-        {content && (
-          <div
-            className="flex-1 overflow-hidden py-1.5"
-          >
-            {content.lines.map((line) => (
-              <div
-                key={line.num}
-                className={[
-                  'flex items-center h-[14px] px-1',
-                  line.highlighted ? 'bg-violet-500/[0.08]' : '',
-                ].join(' ')}
-              >
-                {/* Line number */}
-                <span className="w-6 shrink-0 text-right pr-2 text-[7px] text-neutral-600 select-none">
-                  {line.num}
-                </span>
+        {content && (() => {
+          let currentChars = 0;
+          let hasRenderedCursor = false;
 
-                {/* Highlight bar */}
-                {line.highlighted && (
-                  <div className="w-[2px] h-full bg-violet-500 shrink-0 mr-1 rounded-full" />
-                )}
+          return (
+            <div className="flex-1 overflow-hidden py-1.5">
+              {content.lines.map((line) => {
+                const lineStartChars = currentChars;
+                
+                let lineTokens: { text: string; color: string }[] = [];
+                for (const token of line.tokens) {
+                  if (currentChars < typedChars) {
+                    const charsToTake = Math.min(token.text.length, typedChars - currentChars);
+                    lineTokens.push({
+                      ...token,
+                      text: token.text.slice(0, charsToTake)
+                    });
+                  }
+                  currentChars += token.text.length;
+                }
 
-                {/* Tokens */}
-                <div className="flex items-center gap-0 text-[7px] whitespace-nowrap overflow-hidden">
-                  {line.tokens.map((token, j) => (
-                    <span key={j} className={token.color}>
-                      {token.text}
+                if (line.tokens.length === 0) {
+                  currentChars += 1;
+                }
+
+                const isVisible = lineStartChars <= typedChars || typedChars === 99999;
+                if (!isVisible) return null;
+
+                const showCursor = !hasRenderedCursor && typedChars <= currentChars && typedChars !== 99999;
+                if (showCursor) {
+                  hasRenderedCursor = true;
+                }
+
+                return (
+                  <div
+                    key={line.num}
+                    className={[
+                      'flex items-center h-[14px] px-1',
+                      line.highlighted ? 'bg-violet-500/[0.08]' : '',
+                    ].join(' ')}
+                  >
+                    {/* Line number */}
+                    <span className="w-6 shrink-0 text-right pr-2 text-[7px] text-neutral-600 select-none">
+                      {line.num}
                     </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+
+                    {/* Highlight bar */}
+                    {line.highlighted && (
+                      <div className="w-[2px] h-full bg-violet-500 shrink-0 mr-1 rounded-full" />
+                    )}
+
+                    {/* Tokens */}
+                    <div className="flex items-center gap-0 text-[7px] whitespace-nowrap overflow-hidden relative">
+                      {lineTokens.map((token, j) => (
+                        <span key={j} className={token.color} style={{ whiteSpace: 'pre' }}>
+                          {token.text}
+                        </span>
+                      ))}
+                      {showCursor && (
+                        <span className="inline-block w-[4px] h-[10px] bg-white/80 animate-pulse ml-[1px] translate-y-[1px]" />
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        })()}
 
         {/* Status bar */}
         <div className="flex items-center justify-between px-2 py-1 border-t border-white/[0.06] bg-[#080809] shrink-0">
