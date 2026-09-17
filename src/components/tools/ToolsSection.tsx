@@ -304,16 +304,16 @@ function FeaturedToolCard({
             <div className="relative shrink-0 flex items-center justify-center">
               <svg width="0" height="0" className="absolute">
                 <linearGradient id="vibe-coding-brand-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop stopColor="#ff2d55" offset="0%" />
-                  <stop stopColor="#ff7a00" offset="25%" />
-                  <stop stopColor="#facc15" offset="45%" />
-                  <stop stopColor="#22c55e" offset="67%" />
-                  <stop stopColor="#168cff" offset="100%" />
+                  <stop stopColor="#ff2d55" stopOpacity="0.75" offset="0%" />
+                  <stop stopColor="#ff7a00" stopOpacity="0.75" offset="25%" />
+                  <stop stopColor="#facc15" stopOpacity="0.75" offset="45%" />
+                  <stop stopColor="#22c55e" stopOpacity="0.75" offset="67%" />
+                  <stop stopColor="#168cff" stopOpacity="0.75" offset="100%" />
                 </linearGradient>
               </svg>
               <TerminalSquare 
                 className={`${isMobileOrTablet ? 'w-[22px] h-[22px]' : 'w-7 h-7'} shrink-0`} 
-                strokeWidth={2.5} 
+                strokeWidth={1.75} 
                 style={{ stroke: 'url(#vibe-coding-brand-gradient)' }}
               />
             </div>

@@ -1,5 +1,6 @@
 import { useEffect, useId, useState } from 'react'
-import { Check, Code2, Globe, Sparkles } from 'lucide-react'
+import { Check, Globe, Server, Database, Activity } from 'lucide-react'
+import { motion, AnimatePresence } from 'motion/react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
 const BRAIN_PHRASES = [
@@ -473,23 +474,184 @@ export function CodingMockup() {
 }
 
 export function DeployMockup() {
+  const [stage, setStage] = useState(0)
+
+  useEffect(() => {
+    let mounted = true
+    const run = async () => {
+      while (mounted) {
+        setStage(0)
+        await new Promise((r) => setTimeout(r, 4500))
+        if (!mounted) break
+        setStage(1)
+        await new Promise((r) => setTimeout(r, 4000))
+        if (!mounted) break
+        setStage(2)
+        await new Promise((r) => setTimeout(r, 5500))
+        if (!mounted) break
+        setStage(3)
+        await new Promise((r) => setTimeout(r, 4500))
+      }
+    }
+    run()
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   return (
-    <svg viewBox="0 0 240 150" className="w-full h-full" aria-hidden="true">
-      <rect x="15" y="10" width="210" height="130" rx="10" fill="white" stroke="#e2e8f0" />
-      <Globe x="27" y="22" width="13" height="13" color="#7c3aed" />
-      <text x="46" y="32" fontSize="10" fontWeight="600" fill="#334155">Seu projeto no ar</text>
-      <circle cx="207" cy="28" r="3" fill="#10b981" />
-      <path d="M27 44 H213" stroke="#f1f5f9" />
-      {['Preparação concluída', 'Verificações aprovadas', 'Publicação realizada'].map((step, i) => (
-        <g key={step}>
-          <circle cx="33" cy={58 + i * 21} r="7" fill="#ecfdf5" />
-          <Check x="28" y={53 + i * 21} width="10" height="10" color="#059669" strokeWidth="2" />
-          <text x="47" y={61 + i * 21} fontSize="9" fill="#475569">{step}</text>
-        </g>
-      ))}
-      <rect x="27" y="117" width="186" height="16" rx="5" fill="#f5f3ff" />
-      <text x="120" y="128" textAnchor="middle" fontSize="8" fontWeight="600" fill="#7c3aed">Pronto para receber seus visitantes</text>
-    </svg>
+    <div className="relative w-full h-full overflow-hidden bg-white border border-slate-200 rounded-[12px] flex items-center justify-center p-2.5">
+      <AnimatePresence mode="wait">
+        {stage === 0 && <DeployStageLogs key="logs" />}
+        {(stage === 1 || stage === 2) && <DeployStageTopology key="topo" stage={stage} />}
+        {stage === 3 && <DeployStageSuccess key="success" />}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+function DeployStageLogs() {
+  const logs = [
+    { text: '> makeploy build --production', color: 'text-indigo-400' },
+    { text: '✓ Dependencies installed', color: 'text-slate-400' },
+    { text: '✓ Bundling application...', color: 'text-slate-400' },
+    { text: '✓ Compiling edge functions', color: 'text-emerald-400' },
+    { text: '✓ Provisioning containers', color: 'text-emerald-400' },
+    { text: '✓ Environment ready', color: 'text-indigo-400' }
+  ]
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="w-full h-full bg-slate-900 rounded-lg p-3 flex flex-col justify-end overflow-hidden relative shadow-inner"
+    >
+      <div className="absolute top-2.5 left-2.5 flex gap-1.5">
+         <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+         <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+         <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+      </div>
+      <div className="flex flex-col gap-1.5 mt-4">
+        {logs.map((log, i) => (
+          <motion.div 
+            key={i} 
+            initial={{ opacity: 0, y: 5 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: i * 0.6 }}
+            className={`font-mono text-[8px] sm:text-[9px] ${log.color}`}
+          >
+            {log.text}
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  )
+}
+
+function DeployStageTopology({ stage }: { stage: number }) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }}
+      className="w-full h-full relative flex items-center justify-center bg-slate-50 rounded-lg overflow-hidden border border-slate-100"
+    >
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+        <motion.line 
+           x1="35%" y1="50%" x2="80%" y2="50%"
+           stroke="#94a3b8" strokeWidth="1.5" strokeDasharray="3 3"
+           initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 1, duration: 1 }}
+        />
+        {stage === 2 && (
+          <>
+            <motion.line x1="15%" y1="25%" x2="35%" y2="50%" stroke="#cbd5e1" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 2.5 }} />
+            <motion.line x1="15%" y1="75%" x2="35%" y2="50%" stroke="#cbd5e1" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 2.7 }} />
+          </>
+        )}
+      </svg>
+      
+      <motion.div 
+        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}
+        className="absolute left-[80%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center border border-emerald-300 shadow-sm z-10"
+      >
+        <Database size={14} className="text-emerald-600" />
+      </motion.div>
+      
+      <motion.div 
+        animate={
+          stage === 2 ? { 
+            backgroundColor: ['#e0e7ff', '#fee2e2', '#e0e7ff', '#e0e7ff'],
+            borderColor: ['#818cf8', '#f87171', '#818cf8', '#818cf8'],
+            scale: [1, 1.1, 1, 1]
+          } : {
+             backgroundColor: '#e0e7ff', borderColor: '#818cf8', scale: 1
+          }
+        }
+        transition={stage === 2 ? { repeat: 1, duration: 1.5 } : {}}
+        className="absolute left-[35%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-xl flex items-center justify-center border shadow-md z-10"
+      >
+        <Server size={18} className={stage === 2 ? "text-red-500" : "text-indigo-600"} />
+      </motion.div>
+      
+      <AnimatePresence>
+        {stage === 2 && (
+           <>
+             <motion.div 
+               initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 2.5 }}
+               className="absolute left-[15%] top-[25%] -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center shadow-sm z-10"
+             >
+               <Server size={12} className="text-indigo-400" />
+             </motion.div>
+             <motion.div 
+               initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 2.7 }}
+               className="absolute left-[15%] top-[75%] -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center shadow-sm z-10"
+             >
+               <Server size={12} className="text-indigo-400" />
+             </motion.div>
+           </>
+        )}
+      </AnimatePresence>
+
+      {stage === 2 && (
+         <motion.div 
+           initial={{ left: "0%", opacity: 0 }} animate={{ left: "35%", opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 0.6 }}
+           className="absolute top-[50%] -translate-y-1/2 w-2 h-2 rounded-full bg-red-400 z-20"
+         />
+      )}
+
+      <motion.div className="absolute top-2 right-2 flex items-center gap-1 bg-white/80 px-1.5 py-0.5 rounded border border-slate-200 shadow-sm z-20">
+        <Activity size={10} className={stage === 2 ? "text-red-500" : "text-emerald-500"} />
+        <span className={`text-[8px] font-semibold ${stage === 2 ? "text-red-600" : "text-emerald-600"}`}>
+          {stage === 2 ? 'HIGH LOAD' : 'STABLE'}
+        </span>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+function DeployStageSuccess() {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+      className="w-full h-full bg-white flex flex-col relative"
+    >
+       <svg viewBox="0 0 210 130" className="w-full h-full" aria-hidden="true">
+          <Globe x="5" y="12" width="14" height="14" color="#7c3aed" />
+          <text x="28" y="24" fontSize="11" fontWeight="600" fill="#334155">Seu projeto no ar</text>
+          <circle cx="200" cy="18" r="4" fill="#10b981" />
+          <path d="M 5 36 H 205" stroke="#f1f5f9" strokeWidth="2" />
+          
+          {['Preparação concluída', 'Verificações aprovadas', 'Publicação realizada'].map((step, i) => (
+            <g key={step}>
+              <motion.circle initial={{scale:0}} animate={{scale:1}} transition={{delay: i*0.4}} cx="15" cy={52 + i * 21} r="7" fill="#ecfdf5" />
+              <motion.g initial={{opacity:0}} animate={{opacity:1}} transition={{delay: i*0.4 + 0.2}}>
+                 <Check x="10" y={47 + i * 21} width="10" height="10" color="#059669" strokeWidth="2" />
+                 <text x="32" y={55 + i * 21} fontSize="9" fill="#475569">{step}</text>
+              </motion.g>
+            </g>
+          ))}
+          <motion.rect initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} transition={{delay: 1.5}} x="12" y="110" width="186" height="18" rx="6" fill="#f5f3ff" />
+          <motion.text initial={{opacity:0}} animate={{opacity:1}} transition={{delay: 1.7}} x="105" y="122" textAnchor="middle" fontSize="8" fontWeight="600" fill="#7c3aed">
+            Pronto para receber seus visitantes
+          </motion.text>
+       </svg>
+    </motion.div>
   )
 }
 
