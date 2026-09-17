@@ -301,10 +301,22 @@ function FeaturedToolCard({
           ) : tool.id === 'documentos' ? (
             <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#0ea5e9] shrink-0`} strokeWidth={2.5} />
           ) : tool.id === 'assistente-ia' ? (
-            <TerminalSquare 
-              className={`${isMobileOrTablet ? 'w-[22px] h-[22px]' : 'w-7 h-7'} text-[#d946ef] shrink-0`} 
-              strokeWidth={2.5} 
-            />
+            <div className="relative shrink-0 flex items-center justify-center">
+              <svg width="0" height="0" className="absolute">
+                <linearGradient id="vibe-coding-brand-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop stopColor="#ff2d55" offset="0%" />
+                  <stop stopColor="#ff7a00" offset="25%" />
+                  <stop stopColor="#facc15" offset="45%" />
+                  <stop stopColor="#22c55e" offset="67%" />
+                  <stop stopColor="#168cff" offset="100%" />
+                </linearGradient>
+              </svg>
+              <TerminalSquare 
+                className={`${isMobileOrTablet ? 'w-[22px] h-[22px]' : 'w-7 h-7'} shrink-0`} 
+                strokeWidth={2.5} 
+                style={{ stroke: 'url(#vibe-coding-brand-gradient)' }}
+              />
+            </div>
           ) : tool.id === 'conversas' ? (
             <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#7c3aed] shrink-0`} strokeWidth={2.5} />
           ) : (
