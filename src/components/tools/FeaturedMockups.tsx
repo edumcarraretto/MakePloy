@@ -500,7 +500,7 @@ export function DeployMockup() {
   }, [])
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-white border border-slate-200 rounded-[12px] flex items-center justify-center p-2.5">
+    <div className="relative w-[85%] h-[85%] overflow-hidden flex items-center justify-center">
       <AnimatePresence mode="wait">
         {stage === 0 && <DeployStageLogs key="logs" />}
         {(stage === 1 || stage === 2) && <DeployStageTopology key="topo" stage={stage} />}
@@ -512,31 +512,26 @@ export function DeployMockup() {
 
 function DeployStageLogs() {
   const logs = [
-    { text: '> makeploy build --production', color: 'text-indigo-400' },
-    { text: '✓ Dependencies installed', color: 'text-slate-400' },
-    { text: '✓ Bundling application...', color: 'text-slate-400' },
-    { text: '✓ Compiling edge functions', color: 'text-emerald-400' },
-    { text: '✓ Provisioning containers', color: 'text-emerald-400' },
-    { text: '✓ Environment ready', color: 'text-indigo-400' }
+    { text: '> makeploy build --production', color: 'text-indigo-600 font-bold' },
+    { text: '✓ Dependencies installed', color: 'text-slate-500' },
+    { text: '✓ Bundling application...', color: 'text-slate-500' },
+    { text: '✓ Compiling edge functions', color: 'text-emerald-600' },
+    { text: '✓ Provisioning containers', color: 'text-emerald-600' },
+    { text: '✓ Environment ready', color: 'text-indigo-600' }
   ]
   return (
     <motion.div 
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="w-full h-full bg-slate-900 rounded-lg p-3 flex flex-col justify-end overflow-hidden relative shadow-inner"
+      className="w-full h-full flex flex-col justify-end overflow-hidden relative pb-4"
     >
-      <div className="absolute top-2.5 left-2.5 flex gap-1.5">
-         <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
-         <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
-         <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-      </div>
-      <div className="flex flex-col gap-1.5 mt-4">
+      <div className="flex flex-col gap-1.5 px-4">
         {logs.map((log, i) => (
           <motion.div 
             key={i} 
             initial={{ opacity: 0, y: 5 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ delay: i * 0.6 }}
-            className={`font-mono text-[8px] sm:text-[9px] ${log.color}`}
+            className={`font-mono text-[9px] sm:text-[10px] ${log.color}`}
           >
             {log.text}
           </motion.div>
@@ -550,7 +545,7 @@ function DeployStageTopology({ stage }: { stage: number }) {
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }}
-      className="w-full h-full relative flex items-center justify-center bg-slate-50 rounded-lg overflow-hidden border border-slate-100"
+      className="w-full h-full relative flex items-center justify-center"
     >
       <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
         <motion.line 
@@ -629,13 +624,13 @@ function DeployStageSuccess() {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-      className="w-full h-full bg-white flex flex-col relative"
+      className="w-full h-full flex flex-col relative items-center justify-center"
     >
-       <svg viewBox="0 0 210 130" className="w-full h-full" aria-hidden="true">
+       <svg viewBox="0 0 210 130" className="w-[90%] h-[90%]" aria-hidden="true">
           <Globe x="5" y="12" width="14" height="14" color="#7c3aed" />
           <text x="28" y="24" fontSize="11" fontWeight="600" fill="#334155">Seu projeto no ar</text>
           <circle cx="200" cy="18" r="4" fill="#10b981" />
-          <path d="M 5 36 H 205" stroke="#f1f5f9" strokeWidth="2" />
+          <path d="M 5 36 H 205" stroke="#e2e8f0" strokeWidth="2" />
           
           {['Preparação concluída', 'Verificações aprovadas', 'Publicação realizada'].map((step, i) => (
             <g key={step}>
