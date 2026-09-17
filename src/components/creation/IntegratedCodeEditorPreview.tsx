@@ -178,6 +178,7 @@ function FileIcon({ name, isDir }: { name: string; isDir: boolean }) {
 
 export function IntegratedCodeEditorPreview() {
   const [activeFile, setActiveFile] = useState(NAVIGABLE_FILES[0])
+  const [openTabs, setOpenTabs] = useState<string[]>([NAVIGABLE_FILES[0]])
   const [typedChars, setTypedChars] = useState(0)
 
   useEffect(() => {
@@ -200,7 +201,16 @@ export function IntegratedCodeEditorPreview() {
         setActiveFile((prev) => {
           const currentIndex = NAVIGABLE_FILES.indexOf(prev)
           const nextIndex = (currentIndex + 1) % NAVIGABLE_FILES.length
-          return NAVIGABLE_FILES[nextIndex]
+          const nextFile = NAVIGABLE_FILES[nextIndex]
+          
+          setOpenTabs((prevTabs) => {
+            if (prevTabs.includes(nextFile)) return prevTabs
+            const newTabs = [...prevTabs, nextFile]
+            if (newTabs.length > 3) return newTabs.slice(newTabs.length - 3)
+            return newTabs
+          })
+
+          return nextFile
         })
         setTypedChars(0)
       }, 2000)
@@ -220,6 +230,12 @@ export function IntegratedCodeEditorPreview() {
       setActiveFile(fileName)
       setTypedChars(0)
     }
+    setOpenTabs((prev) => {
+      if (prev.includes(fileName)) return prev
+      const newTabs = [...prev, fileName]
+      if (newTabs.length > 3) return newTabs.slice(newTabs.length - 3)
+      return newTabs
+    })
   }
 
   const content = FILE_CONTENTS[activeFile]
@@ -273,7 +289,7 @@ export function IntegratedCodeEditorPreview() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Tabs */}
         <div className="flex border-b border-white/[0.06] shrink-0 overflow-x-auto no-scrollbar">
-          {[activeFile].map((tab) => (
+          {openTabs.map((tab) => (
             <div
               key={tab}
               className={[
@@ -287,8 +303,9 @@ export function IntegratedCodeEditorPreview() {
                 id={getTabId(tab)}
                 type="button"
                 aria-pressed={tab === activeFile}
-                tabIndex={0}
-                className="cursor-default rounded-sm px-1.5 py-0.5 focus-visible:outline-offset-0 flex items-center gap-1.5"
+                tabIndex={tab === activeFile ? 0 : -1}
+                onClick={() => handleFileClick(tab)}
+                className="cursor-pointer rounded-sm px-1.5 py-0.5 focus-visible:outline-offset-0 flex items-center gap-1.5"
               >
                 <span className="w-2.5 h-2.5 flex items-center justify-center">
                   <FileIcon name={tab} isDir={false} />
