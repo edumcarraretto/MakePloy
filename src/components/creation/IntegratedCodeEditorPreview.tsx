@@ -178,7 +178,6 @@ function FileIcon({ name, isDir }: { name: string; isDir: boolean }) {
 
 export function IntegratedCodeEditorPreview() {
   const [activeFile, setActiveFile] = useState(NAVIGABLE_FILES[0])
-  const [openTabs, setOpenTabs] = useState<string[]>(['App.tsx', 'index.css', 'Home.tsx'])
   const [typedChars, setTypedChars] = useState(0)
 
   useEffect(() => {
@@ -221,39 +220,6 @@ export function IntegratedCodeEditorPreview() {
       setActiveFile(fileName)
       setTypedChars(0)
     }
-    if (!openTabs.includes(fileName)) {
-      setOpenTabs((prev) => [...prev, fileName])
-    }
-  }
-
-  const handleTabClose = (fileName: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    const newTabs = openTabs.filter((t) => t !== fileName)
-    if (newTabs.length === 0) return // Keep at least one tab
-    setOpenTabs(newTabs)
-    if (activeFile === fileName) {
-      setActiveFile(newTabs[newTabs.length - 1])
-      setTypedChars(0)
-    }
-  }
-
-  const handleTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, tab: string) => {
-    const currentIndex = openTabs.indexOf(tab)
-    let nextIndex = currentIndex
-
-    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % openTabs.length
-    else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + openTabs.length) % openTabs.length
-    else if (event.key === 'Home') nextIndex = 0
-    else if (event.key === 'End') nextIndex = openTabs.length - 1
-    else return
-
-    event.preventDefault()
-    const nextTab = openTabs[nextIndex]
-    if (activeFile !== nextTab) {
-      setActiveFile(nextTab)
-      setTypedChars(0)
-    }
-    document.getElementById(getTabId(nextTab))?.focus()
   }
 
   const content = FILE_CONTENTS[activeFile]
@@ -307,7 +273,7 @@ export function IntegratedCodeEditorPreview() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Tabs */}
         <div className="flex border-b border-white/[0.06] shrink-0 overflow-x-auto no-scrollbar">
-          {openTabs.map((tab) => (
+          {[activeFile].map((tab) => (
             <div
               key={tab}
               className={[
@@ -321,23 +287,14 @@ export function IntegratedCodeEditorPreview() {
                 id={getTabId(tab)}
                 type="button"
                 aria-pressed={tab === activeFile}
-                tabIndex={tab === activeFile ? 0 : -1}
-                onClick={() => setActiveFile(tab)}
-                onKeyDown={(event) => handleTabKeyDown(event, tab)}
-                className="cursor-pointer rounded-sm px-1.5 py-0.5 focus-visible:outline-offset-0"
+                tabIndex={0}
+                className="cursor-default rounded-sm px-1.5 py-0.5 focus-visible:outline-offset-0 flex items-center gap-1.5"
               >
+                <span className="w-2.5 h-2.5 flex items-center justify-center">
+                  <FileIcon name={tab} isDir={false} />
+                </span>
                 {tab}
               </button>
-              {openTabs.length > 1 && (
-                <button
-                  type="button"
-                  className="ml-0.5 w-2.5 h-2.5 flex items-center justify-center rounded-sm opacity-0 group-hover/tab:opacity-100 hover:bg-white/[0.1] transition-opacity duration-150 text-[6px] text-neutral-500 hover:text-white"
-                  onClick={(e) => handleTabClose(tab, e)}
-                  aria-label={`Fechar ${tab}`}
-                >
-                  ✕
-                </button>
-              )}
             </div>
           ))}
         </div>
