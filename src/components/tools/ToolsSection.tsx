@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import { openEarlyAccess } from '@/lib/earlyAccess'
 import { HighlightText } from '@/components/text/HighlightText'
 import { tools, type Tool } from '@/components/tools/toolsData'
@@ -301,9 +301,20 @@ function FeaturedToolCard({
           ) : tool.id === 'documentos' ? (
             <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#0ea5e9] shrink-0`} strokeWidth={2.5} />
           ) : tool.id === 'assistente-ia' ? (
-            <span className={`${isMobileOrTablet ? 'text-xl' : 'text-[28px]'} font-bold bg-gradient-to-r from-fuchsia-500 via-purple-500 to-blue-500 bg-clip-text text-transparent shrink-0 tracking-tighter`}>
-              &lt;/&gt;
-            </span>
+            <div className="relative shrink-0 flex items-center justify-center">
+              <svg width="0" height="0" className="absolute">
+                <linearGradient id="vibe-coding-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop stopColor="#d946ef" offset="0%" />
+                  <stop stopColor="#a855f7" offset="50%" />
+                  <stop stopColor="#3b82f6" offset="100%" />
+                </linearGradient>
+              </svg>
+              <Sparkles 
+                className={`${isMobileOrTablet ? 'w-[22px] h-[22px]' : 'w-7 h-7'} shrink-0`} 
+                strokeWidth={2.5} 
+                style={{ stroke: 'url(#vibe-coding-gradient)' }}
+              />
+            </div>
           ) : tool.id === 'conversas' ? (
             <Icon className={`${isMobileOrTablet ? 'w-6 h-6' : 'w-8 h-8'} text-[#7c3aed] shrink-0`} strokeWidth={2.5} />
           ) : (
