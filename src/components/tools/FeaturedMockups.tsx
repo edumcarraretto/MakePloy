@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from 'react'
 import { motion } from 'motion/react'
 
-import { Rocket, Palette, TerminalSquare, MousePointer2, Check, Loader2 } from 'lucide-react'
+import { MousePointer2, Check, Loader2 } from 'lucide-react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
 const BRAIN_PHRASES = [
