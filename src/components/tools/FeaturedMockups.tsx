@@ -473,94 +473,57 @@ export function CodingMockup() {
   )
 }
 
-const EdgeMockupBox = ({ children, position, delay, scale = 0.45 }: { children: React.ReactNode, position: 'top-left' | 'top-right' | 'bottom-center', delay: number, scale?: number }) => {
-  let positionClasses = ''
-  let origin = ''
-  
-  if (position === 'top-left') {
-    // Break out of the p-6 padding to touch the real card border
-    positionClasses = 'top-[-24px] left-[-24px]'
-    origin = 'origin-top-left'
-  } else if (position === 'top-right') {
-    // Break out of the p-6 padding to touch the real card border
-    positionClasses = 'top-[-24px] right-[-24px]'
-    origin = 'origin-top-right'
-  } else if (position === 'bottom-center') {
-    // Centered, pushed down slightly above the badge
-    positionClasses = 'top-1/2 left-1/2 -ml-[120px] -mt-[20px]' 
-    origin = 'origin-center'
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale, y: 20 }}
-      animate={{ opacity: 1, scale, y: 0 }}
-      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`absolute w-[240px] h-[184px] bg-white rounded-[16px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)] border border-slate-200 overflow-hidden pointer-events-none ${positionClasses} ${origin}`}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
 export function DeployMockup() {
   return (
-    <div className="relative w-full h-full overflow-visible">
-       {/* Background Connecting Lines */}
-       <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[240px] pointer-events-none z-0" viewBox="0 0 280 240">
-          <motion.path 
-             initial={{ pathLength: 0, opacity: 0 }}
-             animate={{ pathLength: 1, opacity: 1 }}
-             transition={{ duration: 1.2, delay: 0.8, ease: "easeInOut" }}
-             d="M 50 40 L 140 40 L 230 40 M 140 40 L 140 140"
-             fill="none"
-             stroke="url(#gradient-line)"
-             strokeWidth="1.5"
-             strokeDasharray="4 4"
-          />
-          <defs>
-            <linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="100%">
-               <stop offset="0%" stopColor="#c084fc" />
-               <stop offset="50%" stopColor="#38bdf8" />
-               <stop offset="100%" stopColor="#10b981" />
-            </linearGradient>
-          </defs>
-       </svg>
-
-       {/* The 3 Mockups */}
-       <div className="z-10 relative w-full h-full">
-         <EdgeMockupBox position="top-left" delay={0.2} scale={0.46}>
-           <BrainMockup />
-         </EdgeMockupBox>
-         
-         <EdgeMockupBox position="top-right" delay={0.4} scale={0.46}>
-           <VisualMockup />
-         </EdgeMockupBox>
-
-         <EdgeMockupBox position="bottom-center" delay={0.6} scale={0.48}>
-           <CodingMockup />
-         </EdgeMockupBox>
+    <div className="absolute -top-6 -left-6 -right-6 bottom-0 flex flex-col bg-white/5 rounded-t-3xl overflow-hidden">
+       {/* Top Half: 2 Columns */}
+       <div className="flex w-full h-[55%] border-b border-slate-100">
+          {/* Top Left: Brain */}
+          <div className="w-1/2 h-full border-r border-slate-100 relative flex items-center justify-center overflow-hidden bg-white">
+             <div className="absolute inset-0 flex items-center justify-center transform scale-[0.6] sm:scale-[0.7]">
+               <BrainMockup />
+             </div>
+          </div>
+          
+          {/* Top Right: Visual */}
+          <div className="w-1/2 h-full relative flex items-center justify-center overflow-hidden bg-white">
+             <div className="absolute inset-0 flex items-center justify-center transform scale-[0.6] sm:scale-[0.7]">
+               <VisualMockup />
+             </div>
+          </div>
        </div>
 
-       {/* Published Project Effect */}
-       <motion.div
-         initial={{ opacity: 0, y: 15, x: "-50%" }}
-         animate={{ opacity: 1, y: 0, x: "-50%" }}
-         transition={{ delay: 1.0, duration: 0.6, ease: "easeOut" }}
-         className="absolute bottom-1 left-1/2 flex flex-col items-center gap-2 w-full z-20"
-       >
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm border border-slate-200 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] rounded-lg">
-             <Globe className="w-3.5 h-3.5 text-emerald-500" />
-             <span className="text-[10px] font-mono font-semibold text-slate-700">seuprojeto.makeploy.app</span>
+       {/* Bottom Half: Code + Deploy Badge */}
+       <div className="w-full h-[45%] relative flex items-center justify-center overflow-hidden bg-white">
+          <div className="absolute inset-0 flex items-center justify-center transform scale-[0.65] sm:scale-[0.75] -mt-4">
+             <CodingMockup />
           </div>
-          <div className="flex items-center gap-1.5 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 shadow-sm">
-             <span className="relative flex h-1.5 w-1.5">
-               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-             </span>
-             <span className="text-[8.5px] font-bold text-emerald-600 tracking-wider">ONLINE</span>
-          </div>
-       </motion.div>
+          
+          {/* Published Project Effect overlay */}
+          <motion.div
+             initial={{ opacity: 0, y: 10, x: "-50%" }}
+             animate={{ opacity: 1, y: 0, x: "-50%" }}
+             transition={{ delay: 1.0, duration: 0.6, ease: "easeOut" }}
+             className="absolute bottom-4 left-1/2 flex flex-col items-center gap-1.5 w-full z-20"
+          >
+             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.1)] rounded-lg">
+                <Globe className="w-3.5 h-3.5 text-emerald-500" />
+                <span className="text-[10px] font-mono font-semibold text-slate-700">seuprojeto.makeploy.app</span>
+             </div>
+             <div className="flex items-center gap-1.5 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 shadow-sm">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                </span>
+                <span className="text-[8px] font-bold text-emerald-600 tracking-wider">ONLINE</span>
+             </div>
+          </motion.div>
+       </div>
+       
+       {/* Gradient overlay at the very bottom to blend with the CardBase title area if needed, 
+           but since we span -bottom-6, we are covering the title! 
+           Wait, if we cover the title, we should render our own Deploy title on top, 
+           OR we only span down to the title area. Let's adjust to leave space for the title! */}
     </div>
   )
 }
