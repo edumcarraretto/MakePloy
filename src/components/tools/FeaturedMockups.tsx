@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from 'react'
 
-import { Rocket } from 'lucide-react'
+import { Rocket, Brain, Palette, Code2 } from 'lucide-react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
 const BRAIN_PHRASES = [
@@ -475,13 +475,153 @@ export function CodingMockup() {
 
 export function DeployMockup() {
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      {/* Soft Purple Glow Behind */}
-      <div className="absolute w-32 h-32 bg-purple-400/30 rounded-full blur-[32px]"></div>
-      
-      {/* Solid Blue Logo Container */}
-      <div className="relative w-[72px] h-[72px] rounded-[22px] bg-[#0066FF] flex items-center justify-center shadow-md">
-         <Rocket className="w-8 h-8 text-white stroke-[1.5]" />
+    <div className="deploy__stage">
+      <style>{`
+        .deploy__stage {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .deploy__canvas {
+          position: relative;
+          width: 100%;
+          max-width: 340px;
+          aspect-ratio: 340 / 240;
+        }
+
+        .deploy__traces {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .deploy__pulse {
+          stroke-dasharray: 22 460;
+          stroke-dashoffset: 482;
+          animation: deploy-travel 5s linear infinite;
+        }
+
+        @keyframes deploy-travel {
+          to { stroke-dashoffset: 0; }
+        }
+
+        .deploy__chip {
+          position: absolute;
+          width: 36px;
+          height: 36px;
+          margin: -18px 0 0 -18px;
+          display: grid;
+          place-items: center;
+          z-index: 10;
+        }
+
+        .deploy__core {
+          position: absolute;
+          left: 50%;
+          top: 46%;
+          transform: translate(-50%, -50%);
+          display: grid;
+          place-items: center;
+          z-index: 10;
+        }
+
+        .deploy__rocket {
+          animation: deploy-breathe 5s ease-in-out infinite;
+        }
+
+        @keyframes deploy-breathe {
+          0%, 100% { transform: scale(1); }
+          50%      { transform: scale(1.08); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .deploy__pulse, .deploy__rocket {
+            animation: none;
+          }
+        }
+      `}</style>
+
+      <div className="deploy__canvas">
+        {/* SVG Traces */}
+        <svg
+          className="deploy__traces"
+          viewBox="0 0 340 240"
+          fill="none"
+          aria-hidden="true"
+          style={{ overflow: "visible" }}
+        >
+          <defs>
+            <linearGradient id="deploy-grad-blue" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#3b5bd6" stopOpacity="0" />
+              <stop offset="50%" stopColor="#3b5bd6" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#3b5bd6" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="deploy-grad-cyan" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0" />
+              <stop offset="50%" stopColor="#0ea5e9" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="deploy-grad-pink" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#ec4899" stopOpacity="0" />
+              <stop offset="50%" stopColor="#ec4899" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#ec4899" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          {/* Brain trace (top-left to center) */}
+          <path d="M 55 50 C 100 50, 120 90, 145 105" stroke="rgba(0,0,0,0.06)" strokeWidth="1.3" strokeLinecap="round" />
+          <path className="deploy__pulse" d="M 55 50 C 100 50, 120 90, 145 105" stroke="url(#deploy-grad-blue)" strokeWidth="1.4" strokeLinecap="round" style={{ animationDelay: "0s" }} />
+
+          {/* Palette trace (top-right to center) */}
+          <path d="M 285 50 C 240 50, 220 90, 195 105" stroke="rgba(0,0,0,0.06)" strokeWidth="1.3" strokeLinecap="round" />
+          <path className="deploy__pulse" d="M 285 50 C 240 50, 220 90, 195 105" stroke="url(#deploy-grad-cyan)" strokeWidth="1.4" strokeLinecap="round" style={{ animationDelay: "0.85s" }} />
+
+          {/* Code trace (bottom to center) */}
+          <path d="M 170 210 C 170 180, 170 150, 170 130" stroke="rgba(0,0,0,0.06)" strokeWidth="1.3" strokeLinecap="round" />
+          <path className="deploy__pulse" d="M 170 210 C 170 180, 170 150, 170 130" stroke="url(#deploy-grad-pink)" strokeWidth="1.4" strokeLinecap="round" style={{ animationDelay: "1.7s" }} />
+
+          {/* Connection dots */}
+          <circle cx="145" cy="105" r="2" fill="#3b5bd6" opacity="0.5" />
+          <circle cx="195" cy="105" r="2" fill="#0ea5e9" opacity="0.5" />
+          <circle cx="170" cy="130" r="2" fill="#ec4899" opacity="0.5" />
+
+          {/* Brackets around rocket */}
+          <g transform="translate(140, 80)">
+            <path
+              d="M 12 4 L 6 4 C 2.686 4 0 6.686 0 10 L 0 46 C 0 49.314 2.686 52 6 52 L 12 52"
+              stroke="#7c3aed" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"
+            />
+            <path
+              d="M 48 4 L 54 4 C 57.314 4 60 6.686 60 10 L 60 46 C 60 49.314 57.314 52 54 52 L 48 52"
+              stroke="#7c3aed" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"
+            />
+          </g>
+        </svg>
+
+        {/* Satellite: Brain (top-left) */}
+        <div className="deploy__chip" style={{ left: "16.2%", top: "20.8%" }}>
+          <Brain className="w-6 h-6 text-[#3b5bd6]" strokeWidth={2.2} />
+        </div>
+
+        {/* Satellite: Palette (top-right) */}
+        <div className="deploy__chip" style={{ left: "83.8%", top: "20.8%" }}>
+          <Palette className="w-6 h-6 text-[#0ea5e9]" strokeWidth={2.2} />
+        </div>
+
+        {/* Satellite: Code (bottom) */}
+        <div className="deploy__chip" style={{ left: "50%", top: "87.5%" }}>
+          <Code2 className="w-6 h-6 text-[#ec4899]" strokeWidth={2.2} />
+        </div>
+
+        {/* Central Core: Rocket */}
+        <div className="deploy__core">
+          <Rocket className="deploy__rocket w-10 h-10 text-[#7c3aed]" strokeWidth={2.5} />
+        </div>
       </div>
     </div>
   )
