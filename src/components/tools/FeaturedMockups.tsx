@@ -473,12 +473,13 @@ export function CodingMockup() {
   )
 }
 
-const MiniMockup = ({ children, x, scale, opacity }: { children: React.ReactNode, x: number, scale: number, opacity: number }) => (
+const MiniMockupBox = ({ children }: { children: React.ReactNode }) => (
   <motion.div
-    initial={false}
-    animate={{ x, scale, opacity }}
-    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-    className="absolute top-1/2 left-1/2 -ml-[120px] -mt-[92px] w-[240px] h-[184px] bg-white rounded-[12px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-slate-200 overflow-hidden flex items-center justify-center pointer-events-none"
+    initial={{ opacity: 0, scale: 0.4 }}
+    animate={{ opacity: 1, scale: 0.55 }}
+    exit={{ opacity: 0, scale: 0.4 }}
+    transition={{ duration: 0.5, ease: "easeInOut" }}
+    className="absolute top-1/2 left-1/2 -ml-[120px] -mt-[92px] w-[240px] h-[184px] bg-white rounded-[12px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-slate-200 overflow-hidden pointer-events-none"
   >
     {children}
   </motion.div>
@@ -491,24 +492,20 @@ export function DeployMockup() {
     let mounted = true
     const run = async () => {
       while (mounted) {
-        setStage(0)
-        await new Promise(r => setTimeout(r, 2200)) // Brain does its thing
+        setStage(0) // Brain
+        await new Promise(r => setTimeout(r, 12000))
         if (!mounted) break
         
-        setStage(1) // Visual enters
-        await new Promise(r => setTimeout(r, 2200))
+        setStage(1) // Visual
+        await new Promise(r => setTimeout(r, 9000))
         if (!mounted) break
         
-        setStage(2) // Code enters
-        await new Promise(r => setTimeout(r, 2200))
+        setStage(2) // Code
+        await new Promise(r => setTimeout(r, 9000))
         if (!mounted) break
         
-        setStage(3) // Converge
-        await new Promise(r => setTimeout(r, 800))
-        if (!mounted) break
-        
-        setStage(4) // Deploy Online
-        await new Promise(r => setTimeout(r, 4500))
+        setStage(3) // Deploy
+        await new Promise(r => setTimeout(r, 5000))
       }
     }
     run()
@@ -517,38 +514,17 @@ export function DeployMockup() {
 
   return (
     <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
-       {/* Stage 0,1,2 Elements */}
-       <MiniMockup 
-         x={stage === 0 ? 0 : stage === 1 ? -70 : stage === 2 ? -90 : 0} 
-         scale={stage === 0 ? 0.5 : stage === 1 || stage === 2 ? 0.3 : 0}
-         opacity={stage < 3 ? 1 : 0}
-       >
-         <BrainMockup />
-       </MiniMockup>
-       
-       <MiniMockup 
-         x={stage <= 0 ? 120 : stage === 1 ? 0 : stage === 2 ? 0 : 0} 
-         scale={stage <= 0 ? 0.3 : stage === 1 ? 0.5 : stage === 2 ? 0.3 : 0}
-         opacity={stage === 1 || stage === 2 ? 1 : 0}
-       >
-         <VisualMockup />
-       </MiniMockup>
+       <AnimatePresence mode="wait">
+         {stage === 0 && <MiniMockupBox key="brain"><BrainMockup /></MiniMockupBox>}
+         {stage === 1 && <MiniMockupBox key="visual"><VisualMockup /></MiniMockupBox>}
+         {stage === 2 && <MiniMockupBox key="code"><CodingMockup /></MiniMockupBox>}
 
-       <MiniMockup 
-         x={stage <= 1 ? 120 : stage === 2 ? 90 : 0} 
-         scale={stage <= 1 ? 0.3 : stage === 2 ? 0.45 : 0}
-         opacity={stage === 2 ? 1 : 0}
-       >
-         <CodingMockup />
-       </MiniMockup>
-
-       {/* Stage 4: Deploy & Online */}
-       <AnimatePresence>
-         {stage >= 3 && (
+         {stage === 3 && (
             <motion.div
+               key="deploy"
                initial={{ opacity: 0, scale: 0.5 }}
-               animate={{ opacity: stage === 4 ? 1 : 0, scale: stage === 4 ? 1 : 0.5 }}
-               exit={{ opacity: 0, scale: 0 }}
+               animate={{ opacity: 1, scale: 1 }}
+               exit={{ opacity: 0, scale: 0.5 }}
                transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
                className="absolute flex flex-col items-center justify-center w-full h-full z-10"
             >
