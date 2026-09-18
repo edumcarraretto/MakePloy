@@ -1,6 +1,7 @@
 import { useEffect, useId, useState } from 'react'
+import { motion } from 'motion/react'
 
-import { Rocket, Palette, TerminalSquare } from 'lucide-react'
+import { Rocket, Palette, TerminalSquare, MousePointer2, Check, Loader2 } from 'lucide-react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
 const BRAIN_PHRASES = [
@@ -473,176 +474,183 @@ export function CodingMockup() {
   )
 }
 
+// Decoupled animation loops to ensure buttery smooth easeInOut interpolation without intermediate stuttering.
+const D = 12
+const LOOP_CAMERA = { duration: D, repeat: Infinity, ease: "easeInOut" as const, times: [0, 0.15, 0.35, 0.85, 0.95, 1.0] }
+const LOOP_MOUSE  = { duration: D, repeat: Infinity, ease: "easeInOut" as const, times: [0, 0.10, 0.35, 0.40, 0.42, 0.45, 0.85, 0.95, 1.0] }
+const LOOP_RIPPLE = { duration: D, repeat: Infinity, ease: "easeOut"   as const, times: [0, 0.40, 0.42, 0.45, 0.50, 1.0] }
+const LOOP_BUTTON = { duration: D, repeat: Infinity, ease: "easeInOut" as const, times: [0, 0.40, 0.42, 0.45, 0.60, 0.63, 0.80, 0.95, 1.0] }
+const LOOP_AURA   = { duration: D, repeat: Infinity, ease: "easeOut"   as const, times: [0, 0.60, 0.63, 0.80, 1.0] }
+const LOOP_SKELETON = { duration: D, repeat: Infinity, ease: "easeInOut" as const, times: [0, 0.40, 0.45, 0.60, 0.63, 1.0] }
+
 export function DeployMockup() {
   return (
-    <div className="deploy__stage">
-      <style>{`
-        .deploy__stage {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+    <div className="w-full h-full relative overflow-hidden">
+      {/* ── Camera wrapper — zooms into the top-right (Publicar button) ── */}
+      <motion.div
+        className="w-full h-full flex flex-col origin-top-right"
+        animate={{
+          scale: [1, 1, 2.4, 2.4, 1, 1],
+        }}
+        transition={LOOP_CAMERA}
+      >
+        {/* ── Top Bar ── */}
+        <div className="h-7 sm:h-8 shrink-0 border-b border-gray-200/50 dark:border-white/10 flex items-center px-2.5 sm:px-3 bg-gray-50/40 dark:bg-white/[0.02] gap-2">
+          {/* MakePloy Logo instead of traffic lights */}
+          <div className="flex items-center shrink-0">
+            <img src="/nova-logo-128.webp" alt="MakePloy" className="w-[22px] h-[22px] sm:w-[24px] sm:h-[24px] object-contain rounded-[6px]" />
+          </div>
 
-        .deploy__canvas {
-          position: relative;
-          width: 100%;
-          max-width: 340px;
-          aspect-ratio: 340 / 240;
-        }
+          {/* URL bar */}
+          <div className="flex-1 flex justify-center min-w-0">
+            <div className="bg-gray-200/40 dark:bg-white/5 h-[18px] rounded px-2 flex items-center justify-center max-w-[150px] w-full">
+              <span className="text-[7px] sm:text-[8px] text-gray-400 dark:text-gray-500 font-mono truncate select-none">
+                meu-app.makeploy.dev
+              </span>
+            </div>
+          </div>
 
-        .deploy__traces {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-        }
+          {/* Publish Button Wrapper (for Aura) */}
+          <div className="relative shrink-0" style={{ width: 58, height: 18 }}>
+            {/* Success Aura Ring */}
+            <motion.div
+              className="absolute inset-0 rounded-[4px] border border-green-500"
+              animate={{
+                scale:   [1, 1, 1,   1.3, 1],
+                opacity: [0, 0, 0.8, 0,   0]
+              }}
+              transition={LOOP_AURA}
+            />
 
-        .deploy__pulse {
-          stroke-dasharray: 22 460;
-          stroke-dashoffset: 482;
-          animation: deploy-travel 5s linear infinite;
-        }
+            {/* Publish Button */}
+            <motion.div
+              className="absolute inset-0 text-white font-semibold rounded-[4px] flex items-start justify-center overflow-hidden select-none"
+              style={{ fontSize: 7 }}
+              animate={{
+                scale:           [1,         1,         0.92,      1,         1,         1,         1,         1,         1],
+                backgroundColor: ["#2563eb", "#2563eb", "#2563eb", "#000000", "#000000", "#16a34a", "#16a34a", "#2563eb", "#2563eb"],
+                boxShadow: [
+                  "0px 0px 0px rgba(22,163,74,0)",
+                  "0px 0px 0px rgba(22,163,74,0)",
+                  "0px 0px 0px rgba(22,163,74,0)",
+                  "0px 0px 0px rgba(22,163,74,0)",
+                  "0px 0px 0px rgba(22,163,74,0)",
+                  "0px 4px 12px rgba(22,163,74,0.5)",
+                  "0px 4px 12px rgba(22,163,74,0.5)",
+                  "0px 0px 0px rgba(22,163,74,0)",
+                  "0px 0px 0px rgba(22,163,74,0)"
+                ]
+              }}
+              transition={LOOP_BUTTON}
+            >
+              {/* Inner carousel column */}
+              <motion.div
+                className="flex flex-col w-full"
+                animate={{
+                  y: [0, 0, 0, -18, -18, -36, -36, 0, 0]
+                }}
+                transition={LOOP_BUTTON}
+              >
+                {/* 0px: "Publicar" */}
+                <div className="h-[18px] w-full flex items-center justify-center shrink-0">
+                  Publicar
+                </div>
+                
+                {/* -18px: "Deploying to Vercel" */}
+                <div className="h-[18px] w-full flex items-center justify-center gap-[3px] shrink-0">
+                  <Loader2 className="w-[6px] h-[6px] animate-spin" />
+                  Vercel
+                </div>
+                
+                {/* -36px: "✓ Publicado" */}
+                <div className="h-[18px] w-full flex items-center justify-center gap-[3px] shrink-0">
+                  <Check className="w-[8px] h-[8px]" strokeWidth={3} />
+                  Publicado
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
 
-        @keyframes deploy-travel {
-          to { stroke-dashoffset: 0; }
-        }
+        {/* ── Content (Project Skeleton) ── */}
+        <div className="flex-1 min-h-0 p-2.5 sm:p-3 flex flex-col gap-1.5 sm:gap-2">
+          {/* Nav skeleton */}
+          <div className="flex items-center justify-between">
+            <div className="w-14 h-3 bg-gradient-to-r from-violet-200/60 to-violet-100/40 dark:from-violet-800/30 dark:to-violet-700/15 rounded-sm" />
+            <div className="flex gap-1.5">
+              <div className="w-8 h-2 bg-gray-200/60 dark:bg-white/5 rounded-sm" />
+              <div className="w-8 h-2 bg-gray-200/60 dark:bg-white/5 rounded-sm" />
+              <div className="w-8 h-2 bg-gray-200/60 dark:bg-white/5 rounded-sm" />
+            </div>
+          </div>
 
-        .deploy__chip {
-          position: absolute;
-          width: 36px;
-          height: 36px;
-          margin: -18px 0 0 -18px;
-          display: grid;
-          place-items: center;
-          z-index: 10;
-        }
+          {/* Hero area */}
+          <div className="flex-1 min-h-0 rounded-md bg-gradient-to-br from-indigo-100/40 via-violet-50/25 to-fuchsia-100/30 dark:from-indigo-900/15 dark:via-violet-900/8 dark:to-fuchsia-900/10 border border-indigo-200/20 dark:border-indigo-700/10 p-3 flex flex-col items-center justify-center gap-1.5">
+            <motion.div 
+              className="w-[70%] h-3.5 bg-gradient-to-r from-gray-300/70 to-gray-200/50 dark:from-white/12 dark:to-white/6 rounded-sm"
+              animate={{ opacity: [1, 1, 0.4, 0.4, 1, 1] }}
+              transition={LOOP_SKELETON}
+            />
+            <motion.div 
+              className="w-[45%] h-2 bg-gray-200/60 dark:bg-white/6 rounded-sm"
+              animate={{ opacity: [1, 1, 0.4, 0.4, 1, 1] }}
+              transition={LOOP_SKELETON}
+            />
+            <div className="w-12 h-4 bg-indigo-500/10 dark:bg-indigo-400/10 rounded-full mt-0.5" />
+          </div>
 
-        .deploy__core {
-          position: absolute;
-          left: 50%;
-          top: 46%;
-          transform: translate(-50%, -50%);
-          display: grid;
-          place-items: center;
-          z-index: 10;
-        }
+          {/* Cards row */}
+          <div className="grid grid-cols-3 gap-1.5">
+            {[
+              { from: "from-blue-100/30", to: "to-blue-50/15", dark: "dark:from-blue-900/10 dark:to-blue-800/5" },
+              { from: "from-emerald-100/30", to: "to-emerald-50/15", dark: "dark:from-emerald-900/10 dark:to-emerald-800/5" },
+              { from: "from-amber-100/30", to: "to-amber-50/15", dark: "dark:from-amber-900/10 dark:to-amber-800/5" },
+            ].map((c, i) => (
+              <motion.div
+                key={i}
+                className={`h-10 sm:h-12 bg-gradient-to-b ${c.from} ${c.to} ${c.dark} border border-gray-100/40 dark:border-white/5 rounded p-1.5 flex flex-col gap-1`}
+                animate={{ opacity: [1, 1, 0.4, 0.4, 1, 1] }}
+                transition={LOOP_SKELETON}
+              >
+                <div className="w-4 h-4 rounded-full bg-white/50 dark:bg-white/6 shrink-0" />
+                <div className="w-full h-1 bg-white/40 dark:bg-white/4 rounded-sm" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
 
-        .deploy__rocket {
-          animation: deploy-breathe 5s ease-in-out infinite;
-        }
+        {/* ── Mouse Click Ripple ── */}
+        <motion.div
+          className="absolute z-40 rounded-full border border-gray-400/50 dark:border-white/50 pointer-events-none"
+          style={{ left: "86%", top: "18px", width: 24, height: 24, marginLeft: -12, marginTop: -12 }}
+          animate={{
+            scale:   [0, 0, 0.2, 1.5, 0, 0],
+            opacity: [0, 0, 0.8, 0,   0, 0],
+          }}
+          transition={LOOP_RIPPLE}
+        />
 
-        @keyframes deploy-breathe {
-          0%, 100% { transform: scale(1); }
-          50%      { transform: scale(1.08); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .deploy__pulse, .deploy__rocket {
-            animation: none;
-          }
-        }
-      `}</style>
-
-      <div className="deploy__canvas">
-        {/* SVG Traces */}
-        <svg
-          className="deploy__traces"
-          viewBox="0 0 340 240"
-          fill="none"
-          aria-hidden="true"
-          style={{ overflow: "visible" }}
+        {/* ── Mouse Cursor ── */}
+        <motion.div
+          className="absolute z-50 pointer-events-none"
+          style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.25))" }}
+          animate={{
+            left:  ["55%",  "55%",   "86%",  "86%",  "86%",  "86%",  "86%",  "55%",  "55%"],
+            top:   ["110%", "110%",  "18px", "18px", "18px", "18px", "18px", "110%", "110%"],
+            scale: [1,      1,       1,      1,      0.7,    1,      1,      1,      1]
+          }}
+          transition={LOOP_MOUSE}
         >
-          <defs>
-            <linearGradient id="deploy-grad-blue" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#3b5bd6" stopOpacity="0" />
-              <stop offset="50%" stopColor="#3b5bd6" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#3b5bd6" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="deploy-grad-cyan" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0" />
-              <stop offset="50%" stopColor="#0ea5e9" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="deploy-grad-pink" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#ec4899" stopOpacity="0" />
-              <stop offset="50%" stopColor="#ec4899" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#ec4899" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-
-          {/* Brain trace (top-left to center) */}
-          <path d="M 55 50 C 100 50, 120 90, 145 105" stroke="rgba(0,0,0,0.06)" strokeWidth="1.3" strokeLinecap="round" />
-          <path className="deploy__pulse" d="M 55 50 C 100 50, 120 90, 145 105" stroke="url(#deploy-grad-blue)" strokeWidth="1.4" strokeLinecap="round" style={{ animationDelay: "0s" }} />
-
-          {/* Palette trace (top-right to center) */}
-          <path d="M 285 50 C 240 50, 220 90, 195 105" stroke="rgba(0,0,0,0.06)" strokeWidth="1.3" strokeLinecap="round" />
-          <path className="deploy__pulse" d="M 285 50 C 240 50, 220 90, 195 105" stroke="url(#deploy-grad-cyan)" strokeWidth="1.4" strokeLinecap="round" style={{ animationDelay: "0.85s" }} />
-
-          {/* Code trace (bottom to center) */}
-          <path d="M 170 210 C 170 180, 170 150, 170 130" stroke="rgba(0,0,0,0.06)" strokeWidth="1.3" strokeLinecap="round" />
-          <path className="deploy__pulse" d="M 170 210 C 170 180, 170 150, 170 130" stroke="url(#deploy-grad-pink)" strokeWidth="1.4" strokeLinecap="round" style={{ animationDelay: "1.7s" }} />
-
-          {/* Connection dots */}
-          <circle cx="145" cy="105" r="2" fill="#3b5bd6" opacity="0.5" />
-          <circle cx="195" cy="105" r="2" fill="#0ea5e9" opacity="0.5" />
-          <circle cx="170" cy="130" r="2" fill="#ec4899" opacity="0.5" />
-
-          {/* Brackets around rocket */}
-          <g transform="translate(140, 80)">
-            <path
-              d="M 12 4 L 6 4 C 2.686 4 0 6.686 0 10 L 0 46 C 0 49.314 2.686 52 6 52 L 12 52"
-              stroke="#7c3aed" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"
-            />
-            <path
-              d="M 48 4 L 54 4 C 57.314 4 60 6.686 60 10 L 60 46 C 60 49.314 57.314 52 54 52 L 48 52"
-              stroke="#7c3aed" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"
-            />
-          </g>
-        </svg>
-
-        {/* Satellite: Cérebro (top-left) — logo oficial MakePloy */}
-        <div className="deploy__chip" style={{ left: "16.2%", top: "20.8%" }}>
-          <img
-            src="/nova-logo-128.webp"
-            alt="Cérebro"
-            className="w-7 h-7 rounded-[5px] object-contain"
+          <MousePointer2
+            className="w-4 h-4 sm:w-5 sm:h-5 fill-gray-900 text-white dark:fill-white dark:text-gray-900"
+            strokeWidth={1.5}
           />
-        </div>
-
-        {/* Satellite: Criação Visual (top-right) — Palette oficial */}
-        <div className="deploy__chip" style={{ left: "83.8%", top: "20.8%" }}>
-          <Palette className="w-6 h-6 text-[#0ea5e9]" strokeWidth={2.2} />
-        </div>
-
-        {/* Satellite: Vibe Coding (bottom) — TerminalSquare com gradiente rainbow */}
-        <div className="deploy__chip" style={{ left: "50%", top: "87.5%" }}>
-          <svg width="0" height="0" className="absolute">
-            <linearGradient id="deploy-vibe-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop stopColor="#ff2d55" stopOpacity="0.75" offset="0%" />
-              <stop stopColor="#ff7a00" stopOpacity="0.75" offset="25%" />
-              <stop stopColor="#facc15" stopOpacity="0.75" offset="45%" />
-              <stop stopColor="#22c55e" stopOpacity="0.75" offset="67%" />
-              <stop stopColor="#168cff" stopOpacity="0.75" offset="100%" />
-            </linearGradient>
-          </svg>
-          <TerminalSquare
-            className="w-6 h-6"
-            strokeWidth={1.75}
-            style={{ stroke: 'url(#deploy-vibe-grad)' }}
-          />
-        </div>
-
-        {/* Central Core: Rocket */}
-        <div className="deploy__core">
-          <Rocket className="deploy__rocket w-10 h-10 text-[#7c3aed]" strokeWidth={2.5} />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   )
 }
+
 
 export { BrainMockup as ProjectsMockup }
 export { VisualMockup as DocumentsMockup }
