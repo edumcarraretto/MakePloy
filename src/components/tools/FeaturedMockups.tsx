@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from 'react'
-import { Check, Globe, Server, Database, Activity } from 'lucide-react'
+import { Check, Globe, Brain, Palette, TerminalSquare, Rocket, Loader2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
@@ -473,180 +473,113 @@ export function CodingMockup() {
   )
 }
 
+const PIPELINE_STEPS = [
+  { id: 'brain', title: 'Contextualizando IA...', icon: Brain, color: 'text-purple-500', border: 'border-purple-200' },
+  { id: 'visual', title: 'Renderizando Visual...', icon: Palette, color: 'text-sky-500', border: 'border-sky-200' },
+  { id: 'code', title: 'Compilando Código...', icon: TerminalSquare, color: 'text-pink-500', border: 'border-pink-200' },
+  { id: 'deploy', title: 'Publicando no ar...', icon: Rocket, color: 'text-emerald-500', border: 'border-emerald-200' }
+]
+
 export function DeployMockup() {
-  const [stage, setStage] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0)
 
   useEffect(() => {
     let mounted = true
     const run = async () => {
       while (mounted) {
-        setStage(0)
-        await new Promise((r) => setTimeout(r, 4500))
+        setCurrentStep(0)
+        await new Promise(r => setTimeout(r, 1000))
         if (!mounted) break
-        setStage(1)
-        await new Promise((r) => setTimeout(r, 4000))
+        
+        for (let i = 0; i < 4; i++) {
+           setCurrentStep(i)
+           await new Promise(r => setTimeout(r, 1800))
+           if (!mounted) break
+        }
         if (!mounted) break
-        setStage(2)
-        await new Promise((r) => setTimeout(r, 5500))
-        if (!mounted) break
-        setStage(3)
-        await new Promise((r) => setTimeout(r, 4500))
+        
+        setCurrentStep(4)
+        await new Promise(r => setTimeout(r, 3500))
       }
     }
     run()
-    return () => {
-      mounted = false
-    }
+    return () => { mounted = false }
   }, [])
 
   return (
-    <div className="relative w-[85%] h-[85%] overflow-hidden flex items-center justify-center">
-      <AnimatePresence mode="wait">
-        {stage === 0 && <DeployStageLogs key="logs" />}
-        {(stage === 1 || stage === 2) && <DeployStageTopology key="topo" stage={stage} />}
-        {stage === 3 && <DeployStageSuccess key="success" />}
-      </AnimatePresence>
-    </div>
-  )
-}
+    <div className="relative w-full h-full max-w-[200px] flex flex-col justify-center gap-2">
+       {/* Steps */}
+       <div className="flex flex-col gap-2 relative z-10 w-full pl-2">
+         {PIPELINE_STEPS.map((step, index) => {
+            const isCompleted = currentStep > index
+            const isCurrent = currentStep === index
+            const isPending = currentStep < index
 
-function DeployStageLogs() {
-  const logs = [
-    { text: '> makeploy build --production', color: 'text-indigo-600 font-bold' },
-    { text: '✓ Dependencies installed', color: 'text-slate-500' },
-    { text: '✓ Bundling application...', color: 'text-slate-500' },
-    { text: '✓ Compiling edge functions', color: 'text-emerald-600' },
-    { text: '✓ Provisioning containers', color: 'text-emerald-600' },
-    { text: '✓ Environment ready', color: 'text-indigo-600' }
-  ]
-  return (
-    <motion.div 
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="w-full h-full flex flex-col justify-end overflow-hidden relative pb-4"
-    >
-      <div className="flex flex-col gap-1.5 px-4">
-        {logs.map((log, i) => (
+            return (
+              <div key={step.id} className={`flex items-center gap-2.5 transition-opacity duration-300 ${isPending ? 'opacity-40' : 'opacity-100'}`}>
+                 <div className={`relative w-7 h-7 shrink-0 rounded-full flex items-center justify-center border-2 bg-white transition-colors duration-300 ${isCompleted || isCurrent ? step.border : 'border-slate-200'}`}>
+                    <step.icon size={12} className={isCompleted || isCurrent ? step.color : 'text-slate-400'} />
+                    {/* Status badge */}
+                    <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border border-slate-200 flex items-center justify-center">
+                       {isCompleted ? (
+                         <Check size={8} className="text-emerald-500" strokeWidth={3} />
+                       ) : isCurrent ? (
+                         <Loader2 size={8} className="text-slate-500 animate-spin" />
+                       ) : (
+                         <div className="w-1 h-1 rounded-full bg-slate-300" />
+                       )}
+                    </div>
+                 </div>
+                 
+                 <div className="flex-1 flex flex-col">
+                    <span className={`text-[9px] font-semibold transition-colors duration-300 ${isCompleted || isCurrent ? 'text-slate-700' : 'text-slate-400'}`}>
+                       {step.title}
+                    </span>
+                    {isCompleted && (
+                       <span className="text-[7.5px] text-emerald-600 font-medium">Concluído</span>
+                    )}
+                 </div>
+              </div>
+            )
+         })}
+       </div>
+
+       {/* Connecting Line behind */}
+       <div className="absolute left-[21px] top-4 bottom-4 w-[2px] bg-slate-100 z-0">
           <motion.div 
-            key={i} 
-            initial={{ opacity: 0, y: 5 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: i * 0.6 }}
-            className={`font-mono text-[9px] sm:text-[10px] ${log.color}`}
-          >
-            {log.text}
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
-  )
-}
+             className="w-full bg-emerald-400 origin-top"
+             animate={{ scaleY: currentStep === 4 ? 1 : (currentStep / 3) }}
+             initial={{ scaleY: 0 }}
+             transition={{ duration: 0.5, ease: "easeInOut" }}
+             style={{ height: '100%' }}
+          />
+       </div>
 
-function DeployStageTopology({ stage }: { stage: number }) {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }}
-      className="w-full h-full relative flex items-center justify-center"
-    >
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-        <motion.line 
-           x1="35%" y1="50%" x2="80%" y2="50%"
-           stroke="#94a3b8" strokeWidth="1.5" strokeDasharray="3 3"
-           initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 1, duration: 1 }}
-        />
-        {stage === 2 && (
-          <>
-            <motion.line x1="15%" y1="25%" x2="35%" y2="50%" stroke="#cbd5e1" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 2.5 }} />
-            <motion.line x1="15%" y1="75%" x2="35%" y2="50%" stroke="#cbd5e1" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 2.7 }} />
-          </>
-        )}
-      </svg>
-      
-      <motion.div 
-        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}
-        className="absolute left-[80%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center border border-emerald-300 shadow-sm z-10"
-      >
-        <Database size={14} className="text-emerald-600" />
-      </motion.div>
-      
-      <motion.div 
-        animate={
-          stage === 2 ? { 
-            backgroundColor: ['#e0e7ff', '#fee2e2', '#e0e7ff', '#e0e7ff'],
-            borderColor: ['#818cf8', '#f87171', '#818cf8', '#818cf8'],
-            scale: [1, 1.1, 1, 1]
-          } : {
-             backgroundColor: '#e0e7ff', borderColor: '#818cf8', scale: 1
-          }
-        }
-        transition={stage === 2 ? { repeat: 1, duration: 1.5 } : {}}
-        className="absolute left-[35%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-xl flex items-center justify-center border shadow-md z-10"
-      >
-        <Server size={18} className={stage === 2 ? "text-red-500" : "text-indigo-600"} />
-      </motion.div>
-      
-      <AnimatePresence>
-        {stage === 2 && (
-           <>
+       {/* Final Success Overlay */}
+       <AnimatePresence>
+          {currentStep === 4 && (
              <motion.div 
-               initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 2.5 }}
-               className="absolute left-[15%] top-[25%] -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center shadow-sm z-10"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-[-10px] bg-white/95 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center rounded-xl"
              >
-               <Server size={12} className="text-indigo-400" />
+                <motion.div 
+                  initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.1 }}
+                  className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center mb-2 shadow-sm"
+                >
+                   <Globe size={20} className="text-emerald-600" />
+                </motion.div>
+                <motion.span initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-[11px] font-bold text-slate-800">
+                  Seu projeto no ar
+                </motion.span>
+                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-[8.5px] text-emerald-600 font-medium mt-0.5">
+                  Pronto para receber visitantes
+                </motion.span>
              </motion.div>
-             <motion.div 
-               initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 2.7 }}
-               className="absolute left-[15%] top-[75%] -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center shadow-sm z-10"
-             >
-               <Server size={12} className="text-indigo-400" />
-             </motion.div>
-           </>
-        )}
-      </AnimatePresence>
-
-      {stage === 2 && (
-         <motion.div 
-           initial={{ left: "0%", opacity: 0 }} animate={{ left: "35%", opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 0.6 }}
-           className="absolute top-[50%] -translate-y-1/2 w-2 h-2 rounded-full bg-red-400 z-20"
-         />
-      )}
-
-      <motion.div className="absolute top-2 right-2 flex items-center gap-1 bg-white/80 px-1.5 py-0.5 rounded border border-slate-200 shadow-sm z-20">
-        <Activity size={10} className={stage === 2 ? "text-red-500" : "text-emerald-500"} />
-        <span className={`text-[8px] font-semibold ${stage === 2 ? "text-red-600" : "text-emerald-600"}`}>
-          {stage === 2 ? 'HIGH LOAD' : 'STABLE'}
-        </span>
-      </motion.div>
-    </motion.div>
-  )
-}
-
-function DeployStageSuccess() {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-      className="w-full h-full flex flex-col relative items-center justify-center"
-    >
-       <svg viewBox="0 0 210 130" className="w-[90%] h-[90%]" aria-hidden="true">
-          <Globe x="5" y="12" width="14" height="14" color="#7c3aed" />
-          <text x="28" y="24" fontSize="11" fontWeight="600" fill="#334155">Seu projeto no ar</text>
-          <circle cx="200" cy="18" r="4" fill="#10b981" />
-          <path d="M 5 36 H 205" stroke="#e2e8f0" strokeWidth="2" />
-          
-          {['Preparação concluída', 'Verificações aprovadas', 'Publicação realizada'].map((step, i) => (
-            <g key={step}>
-              <motion.circle initial={{scale:0}} animate={{scale:1}} transition={{delay: i*0.4}} cx="15" cy={52 + i * 21} r="7" fill="#ecfdf5" />
-              <motion.g initial={{opacity:0}} animate={{opacity:1}} transition={{delay: i*0.4 + 0.2}}>
-                 <Check x="10" y={47 + i * 21} width="10" height="10" color="#059669" strokeWidth="2" />
-                 <text x="32" y={55 + i * 21} fontSize="9" fill="#475569">{step}</text>
-              </motion.g>
-            </g>
-          ))}
-          <motion.rect initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} transition={{delay: 1.5}} x="12" y="110" width="186" height="18" rx="6" fill="#f5f3ff" />
-          <motion.text initial={{opacity:0}} animate={{opacity:1}} transition={{delay: 1.7}} x="105" y="122" textAnchor="middle" fontSize="8" fontWeight="600" fill="#7c3aed">
-            Pronto para receber seus visitantes
-          </motion.text>
-       </svg>
-    </motion.div>
+          )}
+       </AnimatePresence>
+    </div>
   )
 }
 
