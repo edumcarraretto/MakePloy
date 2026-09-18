@@ -1,6 +1,5 @@
 import { useEffect, useId, useState } from 'react'
-import { Brain, Palette, Terminal, Rocket } from 'lucide-react'
-import { motion } from 'motion/react'
+
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
 const BRAIN_PHRASES = [
@@ -473,127 +472,10 @@ export function CodingMockup() {
   )
 }
 
-const TRACES = [
-  "M 90 70 C 130 70, 130 120, 155 120",
-  "M 310 70 C 270 70, 270 120, 245 120",
-  "M 90 200 C 130 200, 130 160, 155 160"
-];
-
-const CHIPS = [
-  { id: 'brain', icon: Brain, x: "22.5%", y: "25%", color: "text-purple-400" },
-  { id: 'visual', icon: Palette, x: "77.5%", y: "25%", color: "text-blue-400" },
-  { id: 'code', icon: Terminal, x: "22.5%", y: "71.4%", color: "text-emerald-400" },
-];
-
 export function DeployMockup() {
   return (
-    <div className="absolute inset-0 w-full h-full font-sans">
-      <style>{`
-        .deploy-pulse {
-          stroke-dasharray: 22 460;
-          stroke-dashoffset: 482;
-          animation: mcp-travel 4s linear infinite;
-        }
-        @keyframes mcp-travel {
-          to { stroke-dashoffset: 0; }
-        }
-        .deploy-chip {
-          position: absolute;
-          width: 40px;
-          height: 40px;
-          margin: -20px 0 0 -20px;
-          display: grid;
-          place-items: center;
-          border-radius: 9999px;
-          background: #0B0B0F;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-          z-index: 20;
-        }
-        .deploy-core {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 72px;
-          height: 72px;
-          display: grid;
-          place-items: center;
-          border-radius: 20px;
-          background: linear-gradient(135deg, rgba(168,85,247,0.2) 0%, rgba(59,130,246,0.2) 100%);
-          border: 1px solid rgba(255,255,255,0.15);
-          box-shadow: 0 0 30px rgba(168,85,247,0.2);
-          z-index: 20;
-        }
-      `}</style>
-      
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 400 280" fill="none">
-         <defs>
-            <linearGradient id="trace-grad" x1="0" y1="0" x2="1" y2="0">
-               <stop offset="0%" stopColor="var(--color-brand-purple, #a855f7)" stopOpacity="0" />
-               <stop offset="50%" stopColor="var(--color-brand-blue, #3b82f6)" stopOpacity="0.8" />
-               <stop offset="100%" stopColor="var(--color-brand-emerald, #10b981)" stopOpacity="0" />
-            </linearGradient>
-         </defs>
-
-         {TRACES.map((d, i) => (
-           <g key={i}>
-             <path d={d} stroke="rgba(255,255,255,0.06)" strokeWidth="1.5" strokeLinecap="round" />
-             <path
-               className="deploy-pulse"
-               d={d}
-               stroke="url(#trace-grad)"
-               strokeWidth="1.6"
-               strokeLinecap="round"
-               style={{ animationDelay: `${i * 1.2}s` }}
-             />
-           </g>
-         ))}
-
-         {/* Brackets around Core */}
-         <g transform="translate(142, 90)">
-           <path
-             d="M 12 10 L 6 10 C 2.686 10 0 12.686 0 16 L 0 84 C 0 87.314 2.686 90 6 90 L 12 90"
-             stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.8"
-           />
-           <path
-             d="M 104 10 L 110 10 C 113.314 10 116 12.686 116 16 L 116 84 C 116 87.314 113.314 90 110 90 L 104 90"
-             stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.8"
-           />
-         </g>
-      </svg>
-
-      {/* Chips */}
-      {CHIPS.map((chip) => {
-         const Icon = chip.icon
-         return (
-           <div key={chip.id} className="deploy-chip" style={{ left: chip.x, top: chip.y }}>
-             <Icon className={`${"w-5 h-5"} ${chip.color}`} />
-           </div>
-         )
-      })}
-
-      {/* Central Core */}
-      <div className="deploy-core">
-         <Rocket className="w-8 h-8 text-white" />
-      </div>
-
-      {/* Published Project Effect */}
-      <motion.div
-         initial={{ opacity: 0, y: 10, x: "-50%" }}
-         animate={{ opacity: 1, y: 0, x: "-50%" }}
-         transition={{ delay: 1.0, duration: 0.6, ease: "easeOut" }}
-         className="absolute bottom-5 left-1/2 flex items-center gap-2 px-3 py-1.5 bg-neutral-900/90 backdrop-blur-md border border-white/10 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.5)] rounded-full z-30"
-      >
-         <div className="flex items-center gap-1.5 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-            </span>
-            <span className="text-[9px] font-bold text-emerald-400 tracking-wider">ONLINE</span>
-         </div>
-         <span className="text-[11px] font-mono font-medium text-slate-300">seuprojeto.makeploy.app</span>
-      </motion.div>
+    <div className="relative w-full h-full flex items-center justify-center">
+      {/* Starting from scratch */}
     </div>
   )
 }
