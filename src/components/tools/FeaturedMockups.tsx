@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from 'react'
 
-import { Rocket, Brain, Palette, Code2 } from 'lucide-react'
+import { Rocket, Palette, TerminalSquare } from 'lucide-react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
 const BRAIN_PHRASES = [
@@ -603,19 +603,36 @@ export function DeployMockup() {
           </g>
         </svg>
 
-        {/* Satellite: Brain (top-left) */}
+        {/* Satellite: Cérebro (top-left) — logo oficial MakePloy */}
         <div className="deploy__chip" style={{ left: "16.2%", top: "20.8%" }}>
-          <Brain className="w-6 h-6 text-[#3b5bd6]" strokeWidth={2.2} />
+          <img
+            src="/nova-logo-128.webp"
+            alt="Cérebro"
+            className="w-7 h-7 rounded-[5px] object-contain"
+          />
         </div>
 
-        {/* Satellite: Palette (top-right) */}
+        {/* Satellite: Criação Visual (top-right) — Palette oficial */}
         <div className="deploy__chip" style={{ left: "83.8%", top: "20.8%" }}>
           <Palette className="w-6 h-6 text-[#0ea5e9]" strokeWidth={2.2} />
         </div>
 
-        {/* Satellite: Code (bottom) */}
+        {/* Satellite: Vibe Coding (bottom) — TerminalSquare com gradiente rainbow */}
         <div className="deploy__chip" style={{ left: "50%", top: "87.5%" }}>
-          <Code2 className="w-6 h-6 text-[#ec4899]" strokeWidth={2.2} />
+          <svg width="0" height="0" className="absolute">
+            <linearGradient id="deploy-vibe-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop stopColor="#ff2d55" stopOpacity="0.75" offset="0%" />
+              <stop stopColor="#ff7a00" stopOpacity="0.75" offset="25%" />
+              <stop stopColor="#facc15" stopOpacity="0.75" offset="45%" />
+              <stop stopColor="#22c55e" stopOpacity="0.75" offset="67%" />
+              <stop stopColor="#168cff" stopOpacity="0.75" offset="100%" />
+            </linearGradient>
+          </svg>
+          <TerminalSquare
+            className="w-6 h-6"
+            strokeWidth={1.75}
+            style={{ stroke: 'url(#deploy-vibe-grad)' }}
+          />
         </div>
 
         {/* Central Core: Rocket */}
