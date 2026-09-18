@@ -473,27 +473,46 @@ export function CodingMockup() {
   )
 }
 
-const StaticMockupBox = ({ children, x, y, delay, scale = 0.45 }: { children: React.ReactNode, x: number, y: number, delay: number, scale?: number }) => (
-  <motion.div
-    initial={{ opacity: 0, x, y: y + 20, scale }}
-    animate={{ opacity: 1, x, y, scale }}
-    transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-    className="absolute top-1/2 left-1/2 -ml-[120px] -mt-[92px] w-[240px] h-[184px] bg-white rounded-[16px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)] border border-slate-200 overflow-hidden pointer-events-none"
-  >
-    {children}
-  </motion.div>
-)
+const EdgeMockupBox = ({ children, position, delay, scale = 0.45 }: { children: React.ReactNode, position: 'top-left' | 'top-right' | 'bottom-center', delay: number, scale?: number }) => {
+  let positionClasses = ''
+  let origin = ''
+  
+  if (position === 'top-left') {
+    // Break out of the p-6 padding to touch the real card border
+    positionClasses = 'top-[-24px] left-[-24px]'
+    origin = 'origin-top-left'
+  } else if (position === 'top-right') {
+    // Break out of the p-6 padding to touch the real card border
+    positionClasses = 'top-[-24px] right-[-24px]'
+    origin = 'origin-top-right'
+  } else if (position === 'bottom-center') {
+    // Centered, pushed down slightly above the badge
+    positionClasses = 'top-1/2 left-1/2 -ml-[120px] -mt-[20px]' 
+    origin = 'origin-center'
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale, y: 20 }}
+      animate={{ opacity: 1, scale, y: 0 }}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={`absolute w-[240px] h-[184px] bg-white rounded-[16px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)] border border-slate-200 overflow-hidden pointer-events-none ${positionClasses} ${origin}`}
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 export function DeployMockup() {
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full h-full overflow-visible">
        {/* Background Connecting Lines */}
-       <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] pointer-events-none z-0" viewBox="0 0 240 240">
+       <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[240px] pointer-events-none z-0" viewBox="0 0 280 240">
           <motion.path 
              initial={{ pathLength: 0, opacity: 0 }}
              animate={{ pathLength: 1, opacity: 1 }}
              transition={{ duration: 1.2, delay: 0.8, ease: "easeInOut" }}
-             d="M 56 65 L 120 65 L 184 65 M 120 65 L 120 155"
+             d="M 50 40 L 140 40 L 230 40 M 140 40 L 140 140"
              fill="none"
              stroke="url(#gradient-line)"
              strokeWidth="1.5"
@@ -508,19 +527,19 @@ export function DeployMockup() {
           </defs>
        </svg>
 
-       {/* The 3 Mockups (Triangular Layout) */}
+       {/* The 3 Mockups */}
        <div className="z-10 relative w-full h-full">
-         <StaticMockupBox x={-66} y={-55} delay={0.2} scale={0.43}>
+         <EdgeMockupBox position="top-left" delay={0.2} scale={0.46}>
            <BrainMockup />
-         </StaticMockupBox>
+         </EdgeMockupBox>
          
-         <StaticMockupBox x={66} y={-55} delay={0.4} scale={0.43}>
+         <EdgeMockupBox position="top-right" delay={0.4} scale={0.46}>
            <VisualMockup />
-         </StaticMockupBox>
+         </EdgeMockupBox>
 
-         <StaticMockupBox x={0} y={35} delay={0.6} scale={0.46}>
+         <EdgeMockupBox position="bottom-center" delay={0.6} scale={0.48}>
            <CodingMockup />
-         </StaticMockupBox>
+         </EdgeMockupBox>
        </div>
 
        {/* Published Project Effect */}
@@ -528,7 +547,7 @@ export function DeployMockup() {
          initial={{ opacity: 0, y: 15, x: "-50%" }}
          animate={{ opacity: 1, y: 0, x: "-50%" }}
          transition={{ delay: 1.0, duration: 0.6, ease: "easeOut" }}
-         className="absolute bottom-5 left-1/2 flex flex-col items-center gap-2 w-full z-20"
+         className="absolute bottom-1 left-1/2 flex flex-col items-center gap-2 w-full z-20"
        >
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm border border-slate-200 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] rounded-lg">
              <Globe className="w-3.5 h-3.5 text-emerald-500" />
