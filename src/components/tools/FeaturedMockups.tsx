@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from 'react'
 import { Globe } from 'lucide-react'
-import { motion } from 'motion/react'
+import { motion, AnimatePresence } from 'motion/react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
 const BRAIN_PHRASES = [
@@ -473,60 +473,94 @@ export function CodingMockup() {
   )
 }
 
-const MiniMockupBox = ({ children, x, y, delay }: { children: React.ReactNode, x: number, y: number, delay: number }) => (
+const MiniMockupBox = ({ children }: { children: React.ReactNode }) => (
   <motion.div
-    initial={{ opacity: 0, x, y: y + 20, scale: 0.33 }}
-    animate={{ opacity: 1, x, y, scale: 0.33 }}
-    transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-    className="absolute top-1/2 left-1/2 -ml-[120px] -mt-[92px] w-[240px] h-[184px] bg-white rounded-[12px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)] border border-slate-200 overflow-hidden pointer-events-none"
+    initial={{ opacity: 0, scale: 0.4 }}
+    animate={{ opacity: 1, scale: 0.55 }}
+    exit={{ opacity: 0, scale: 0.4 }}
+    transition={{ duration: 0.5, ease: "easeInOut" }}
+    className="absolute top-1/2 left-1/2 -ml-[120px] -mt-[92px] w-[240px] h-[184px] bg-white rounded-[12px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-slate-200 overflow-hidden pointer-events-none"
   >
     {children}
   </motion.div>
 )
 
 export function DeployMockup() {
+  const [stage, setStage] = useState(0)
+
+  useEffect(() => {
+    let mounted = true
+    const run = async () => {
+      while (mounted) {
+        setStage(0) // Brain
+        await new Promise(r => setTimeout(r, 24000))
+        if (!mounted) break
+        
+        setStage(1) // Visual
+        await new Promise(r => setTimeout(r, 16000))
+        if (!mounted) break
+        
+        setStage(2) // Code
+        await new Promise(r => setTimeout(r, 16000))
+        if (!mounted) break
+        
+        setStage(3) // Deploy
+        await new Promise(r => setTimeout(r, 8000))
+      }
+    }
+    run()
+    return () => { mounted = false }
+  }, [])
+
   return (
-    <div className="relative w-full h-full overflow-hidden">
-       {/* Background Connecting Line */}
-       <motion.div
-         initial={{ scaleX: 0 }}
-         animate={{ scaleX: 1 }}
-         transition={{ duration: 1.2, delay: 0.8, ease: "easeInOut" }}
-         className="absolute top-1/2 left-1/2 -ml-[84px] -mt-[25px] w-[168px] h-[2px] bg-gradient-to-r from-purple-200 via-sky-200 to-emerald-200 z-0 origin-left"
-       />
+    <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
+       <AnimatePresence mode="wait">
+         {stage === 0 && <MiniMockupBox key="brain"><BrainMockup /></MiniMockupBox>}
+         {stage === 1 && <MiniMockupBox key="visual"><VisualMockup /></MiniMockupBox>}
+         {stage === 2 && <MiniMockupBox key="code"><CodingMockup /></MiniMockupBox>}
 
-       {/* The 3 Mockups */}
-       <div className="z-10 relative w-full h-full">
-         <MiniMockupBox x={-84} y={-25} delay={0.2}>
-           <BrainMockup />
-         </MiniMockupBox>
-         <MiniMockupBox x={0} y={-25} delay={0.4}>
-           <VisualMockup />
-         </MiniMockupBox>
-         <MiniMockupBox x={84} y={-25} delay={0.6}>
-           <CodingMockup />
-         </MiniMockupBox>
-       </div>
-
-       {/* Published Project Effect */}
-       <motion.div
-         initial={{ opacity: 0, y: 15, x: "-50%" }}
-         animate={{ opacity: 1, y: 0, x: "-50%" }}
-         transition={{ delay: 1.2, duration: 0.6, ease: "easeOut" }}
-         className="absolute bottom-5 left-1/2 flex flex-col items-center gap-2 w-full"
-       >
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] rounded-lg">
-             <Globe className="w-3.5 h-3.5 text-emerald-500" />
-             <span className="text-[10px] font-mono font-semibold text-slate-600">seuprojeto.makeploy.app</span>
-          </div>
-          <div className="flex items-center gap-1.5 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 shadow-sm">
-             <span className="relative flex h-1.5 w-1.5">
-               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-             </span>
-             <span className="text-[8.5px] font-bold text-emerald-600 tracking-wider">ONLINE</span>
-          </div>
-       </motion.div>
+         {stage === 3 && (
+            <motion.div
+               key="deploy"
+               initial={{ opacity: 0, scale: 0.5 }}
+               animate={{ opacity: 1, scale: 1 }}
+               exit={{ opacity: 0, scale: 0.5 }}
+               transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+               className="absolute flex flex-col items-center justify-center w-full h-full z-10"
+            >
+               {/* Globe Rocket Icon */}
+               <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-3 shadow-sm border border-emerald-200">
+                  <Globe className="text-emerald-500 w-6 h-6" />
+               </div>
+               
+               {/* Typewriter Domain */}
+               <motion.div 
+                 initial={{ width: 0, opacity: 0 }} 
+                 animate={{ width: "auto", opacity: 1 }} 
+                 transition={{ delay: 0.4, duration: 0.8 }}
+                 className="overflow-hidden whitespace-nowrap"
+               >
+                 <span className="text-[11px] sm:text-[12px] font-mono font-semibold text-slate-700 bg-white px-2.5 py-1.5 rounded-md border border-slate-200 shadow-sm inline-block">
+                   seuprojeto.makeploy.app
+                 </span>
+               </motion.div>
+               
+               {/* Online Badge */}
+               <motion.div
+                 initial={{ opacity: 0, y: 10 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 transition={{ delay: 1.2 }}
+                 className="flex items-center gap-1.5 mt-3 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100"
+               >
+                 <span className="relative flex h-2 w-2">
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                 </span>
+                 <span className="text-[9px] font-bold text-emerald-600 tracking-wider">ONLINE</span>
+               </motion.div>
+            </motion.div>
+         )}
+       </AnimatePresence>
     </div>
   )
 }
