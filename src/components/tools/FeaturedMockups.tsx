@@ -1,5 +1,6 @@
 import { useEffect, useId, useState } from 'react'
 
+import { Rocket } from 'lucide-react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
 const BRAIN_PHRASES = [
@@ -475,7 +476,9 @@ export function CodingMockup() {
 export function DeployMockup() {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
-      {/* Starting from scratch */}
+      <div className="w-[72px] h-[72px] rounded-[20px] bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-[0_0_40px_rgba(168,85,247,0.3)]">
+         <Rocket className="w-8 h-8 text-white" />
+      </div>
     </div>
   )
 }
