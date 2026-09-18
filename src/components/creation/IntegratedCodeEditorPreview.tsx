@@ -213,13 +213,13 @@ export function IntegratedCodeEditorPreview() {
           return nextFile
         })
         setTypedChars(0)
-      }, 2000)
+      }, 4000)
       return () => clearTimeout(timer)
     }
 
     const timer = setTimeout(() => {
-      setTypedChars(prev => prev + Math.floor(Math.random() * 4) + 1)
-    }, Math.random() * 30 + 10)
+      setTypedChars(prev => prev + Math.floor(Math.random() * 2) + 1)
+    }, Math.random() * 60 + 20)
 
     return () => clearTimeout(timer)
   }, [activeFile, typedChars])

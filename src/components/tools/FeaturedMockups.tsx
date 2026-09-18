@@ -22,14 +22,14 @@ export function BrainMockup() {
     return () => clearInterval(timer)
   }, [])
 
-  const phraseIdx = Math.floor(tick / 12) % BRAIN_PHRASES.length
+  const phraseIdx = Math.floor(tick / 24) % BRAIN_PHRASES.length
   const currentPhrase = BRAIN_PHRASES[phraseIdx]
   
-  // The animation cycle is 12s, but the "Pesquisando" row fades out around 10s
-  // and the checkmark finishes around 9s. To make the countdown hit 0 right 
+  // The animation cycle is 24s, but the "Pesquisando" row fades out around 20s
+  // and the checkmark finishes around 18s. To make the countdown hit 0 right 
   // when the checkmark appears, we accelerate it slightly.
-  const tickInCycle = tick % 12
-  const timeLeft = Math.max(0, Math.ceil(12 - (tickInCycle * (12 / 9))))
+  const tickInCycle = tick % 24
+  const timeLeft = Math.max(0, Math.ceil(24 - (tickInCycle * (24 / 9))))
 
   // ── 12s TIMELINE (all percentages) ──
   // 0-12%   → typing text
@@ -64,7 +64,7 @@ export function BrainMockup() {
               83%    { width:150px }
               90%,100% { width:0 }
             }
-            .a-type-${safeId} { animation: aType-${safeId} 12s infinite cubic-bezier(.2,0,.2,1); }
+            .a-type-${safeId} { animation: aType-${safeId} 24s infinite cubic-bezier(.2,0,.2,1); }
 
             /* ── 2. CURSOR ── */
             @keyframes aCur-${safeId} {
@@ -74,7 +74,7 @@ export function BrainMockup() {
               90%,100%{ opacity:0; transform:translateX(0) }
             }
             @keyframes aBlink-${safeId} { 0%,100%{opacity:.9} 50%{opacity:0} }
-            .a-cur-${safeId} { animation: aCur-${safeId} 12s infinite ease-out, aBlink-${safeId} .65s infinite; }
+            .a-cur-${safeId} { animation: aCur-${safeId} 24s infinite ease-out, aBlink-${safeId} .65s infinite; }
 
             /* ── 3. SEND BUTTON ── */
             @keyframes aBtn-${safeId} {
@@ -85,7 +85,7 @@ export function BrainMockup() {
               18%,83%{ opacity:0; transform:scale(.95) }
               90%,100%{ opacity:0 }
             }
-            .a-btn-${safeId} { transform-origin:199px 24px; animation: aBtn-${safeId} 12s infinite cubic-bezier(.2,0,.2,1); }
+            .a-btn-${safeId} { transform-origin:199px 24px; animation: aBtn-${safeId} 24s infinite cubic-bezier(.2,0,.2,1); }
 
             /* ── 4. MOUSE POINTER ── */
             @keyframes aMouse-${safeId} {
@@ -96,7 +96,7 @@ export function BrainMockup() {
               16.5%  { opacity:1; transform:translate(199px,24px) scale(1) }
               19%,100%{ opacity:0; transform:translate(199px,18px) }
             }
-            .a-mouse-${safeId} { transform-origin:0 0; animation: aMouse-${safeId} 12s infinite cubic-bezier(.25,1,.5,1); }
+            .a-mouse-${safeId} { transform-origin:0 0; animation: aMouse-${safeId} 24s infinite cubic-bezier(.25,1,.5,1); }
 
             /* ── 5. CLICK RIPPLE ── */
             @keyframes aRipple-${safeId} {
@@ -105,7 +105,7 @@ export function BrainMockup() {
               18%      { r:16px; opacity:0 }
               19%,100% { r:0; opacity:0 }
             }
-            .a-ripple-${safeId} { animation: aRipple-${safeId} 12s infinite ease-out; }
+            .a-ripple-${safeId} { animation: aRipple-${safeId} 24s infinite ease-out; }
 
             /* ── 6. BUBBLE BOX (visible 1-83%) ── */
             @keyframes aBubble-${safeId} {
@@ -113,7 +113,7 @@ export function BrainMockup() {
               1%,83% { opacity:1; transform:translateY(0) }
               90%,100%{ opacity:0; transform:translateY(-4px) }
             }
-            .a-bubble-${safeId} { animation: aBubble-${safeId} 12s infinite ease-out; }
+            .a-bubble-${safeId} { animation: aBubble-${safeId} 24s infinite ease-out; }
 
             /* ── 7. ROW 2 (visible 21-83%) ── */
             @keyframes aR2-${safeId} {
@@ -121,7 +121,7 @@ export function BrainMockup() {
               21%,83%{ opacity:1; transform:translateY(0) }
               90%,100%{ opacity:0; transform:translateY(-4px) }
             }
-            .a-r2-${safeId} { animation: aR2-${safeId} 12s infinite cubic-bezier(.16,1,.3,1); }
+            .a-r2-${safeId} { animation: aR2-${safeId} 24s infinite cubic-bezier(.16,1,.3,1); }
 
             /* ── 8. ROW 3 (visible 26-83%) ── */
             @keyframes aR3-${safeId} {
@@ -129,7 +129,7 @@ export function BrainMockup() {
               26%,83%{ opacity:1; transform:translateY(0) }
               90%,100%{ opacity:0; transform:translateY(-4px) }
             }
-            .a-r3-${safeId} { animation: aR3-${safeId} 12s infinite cubic-bezier(.16,1,.3,1); }
+            .a-r3-${safeId} { animation: aR3-${safeId} 24s infinite cubic-bezier(.16,1,.3,1); }
 
             /* ── 9. ROW 4 / STATUS (visible 31-88%) ── */
             @keyframes aR4-${safeId} {
@@ -137,7 +137,7 @@ export function BrainMockup() {
               31%,85%{ opacity:1; transform:translateY(0) }
               92%,100%{ opacity:0; transform:translateY(-4px) }
             }
-            .a-r4-${safeId} { animation: aR4-${safeId} 12s infinite cubic-bezier(.16,1,.3,1); }
+            .a-r4-${safeId} { animation: aR4-${safeId} 24s infinite cubic-bezier(.16,1,.3,1); }
 
             /* ── 10. CYCLING WORDS (synced with ring) ── */
             @keyframes aW1-${safeId} {
@@ -168,10 +168,10 @@ export function BrainMockup() {
               77%    { opacity:0; transform:translateY(-2px) }
               100%   { opacity:0 }
             }
-            .a-w1-${safeId} { animation: aW1-${safeId} 12s infinite ease-in-out; }
-            .a-w2-${safeId} { animation: aW2-${safeId} 12s infinite ease-in-out; }
-            .a-w3-${safeId} { animation: aW3-${safeId} 12s infinite ease-in-out; }
-            .a-w4-${safeId} { animation: aW4-${safeId} 12s infinite ease-in-out; }
+            .a-w1-${safeId} { animation: aW1-${safeId} 24s infinite ease-in-out; }
+            .a-w2-${safeId} { animation: aW2-${safeId} 24s infinite ease-in-out; }
+            .a-w3-${safeId} { animation: aW3-${safeId} 24s infinite ease-in-out; }
+            .a-w4-${safeId} { animation: aW4-${safeId} 24s infinite ease-in-out; }
 
             /* ── 11. PROGRESS RING (circ ≈ 50.3, synced with words) ── */
             @keyframes aRing-${safeId} {
@@ -182,7 +182,7 @@ export function BrainMockup() {
               76%    { stroke-dashoffset:0 }
               100%   { stroke-dashoffset:0 }
             }
-            .a-ring-${safeId} { animation: aRing-${safeId} 12s infinite ease-in-out; }
+            .a-ring-${safeId} { animation: aRing-${safeId} 24s infinite ease-in-out; }
 
             /* Ring group fades when checkmark appears */
             @keyframes aRingFade-${safeId} {
@@ -190,7 +190,7 @@ export function BrainMockup() {
               79%    { opacity:0 }
               100%   { opacity:0 }
             }
-            .a-ring-fade-${safeId} { animation: aRingFade-${safeId} 12s infinite ease-in-out; }
+            .a-ring-fade-${safeId} { animation: aRingFade-${safeId} 24s infinite ease-in-out; }
 
             /* ── 12. CHECKMARK POP (76-85%) ── */
             @keyframes aCheck-${safeId} {
@@ -200,7 +200,7 @@ export function BrainMockup() {
               89%    { opacity:0; transform:translate(17px,164px) scale(.85) }
               100%   { opacity:0; transform:translate(17px,164px) scale(0) }
             }
-            .a-check-${safeId} { animation: aCheck-${safeId} 12s infinite cubic-bezier(.34,1.56,.64,1); }
+            .a-check-${safeId} { animation: aCheck-${safeId} 24s infinite cubic-bezier(.34,1.56,.64,1); }
 
             /* ── 13. LABEL SWAP: "Analisando" → "Concluído!" ── */
             @keyframes aLabelA-${safeId} {
@@ -208,7 +208,7 @@ export function BrainMockup() {
               79%    { opacity:0 }
               100%   { opacity:0 }
             }
-            .a-labelA-${safeId} { animation: aLabelA-${safeId} 12s infinite ease-in-out; }
+            .a-labelA-${safeId} { animation: aLabelA-${safeId} 24s infinite ease-in-out; }
 
             @keyframes aLabelB-${safeId} {
               0%,76% { opacity:0; transform:translateY(3px) }
@@ -217,7 +217,7 @@ export function BrainMockup() {
               89%    { opacity:0; transform:translateY(-2px) }
               100%   { opacity:0 }
             }
-            .a-labelB-${safeId} { animation: aLabelB-${safeId} 12s infinite ease-in-out; }
+            .a-labelB-${safeId} { animation: aLabelB-${safeId} 24s infinite ease-in-out; }
 
             /* ── PULSING DOTS ── */
             @keyframes aPulse-${safeId} { 0%,100%{opacity:.3} 50%{opacity:1} }
@@ -328,9 +328,9 @@ export function VisualMockup() {
     let css = ''
     pieces.forEach(p => {
       css += `
-        .a-${p.id}O1-${safeId} { animation: ${p.id}O1-${safeId} 20s infinite cubic-bezier(0.2,0.8,0.2,1); }
-        .a-${p.id}O2-${safeId} { animation: ${p.id}O2-${safeId} 20s infinite cubic-bezier(0.2,0.8,0.2,1); }
-        .a-${p.id}F-${safeId}  { animation: ${p.id}F-${safeId} 20s infinite cubic-bezier(.34,1.56,.64,1); }
+        .a-${p.id}O1-${safeId} { animation: ${p.id}O1-${safeId} 40s infinite cubic-bezier(0.2,0.8,0.2,1); }
+        .a-${p.id}O2-${safeId} { animation: ${p.id}O2-${safeId} 40s infinite cubic-bezier(0.2,0.8,0.2,1); }
+        .a-${p.id}F-${safeId}  { animation: ${p.id}F-${safeId} 40s infinite cubic-bezier(.34,1.56,.64,1); }
         
         @keyframes ${p.id}O1-${safeId} {
           ${p.t === 0 ? '' : `0%,${p.t - 0.1}% {opacity:0; transform:translate(160px,115px) scale(0.6) rotate(0deg)}`}
@@ -493,19 +493,19 @@ export function DeployMockup() {
     const run = async () => {
       while (mounted) {
         setStage(0) // Brain
-        await new Promise(r => setTimeout(r, 12000))
+        await new Promise(r => setTimeout(r, 24000))
         if (!mounted) break
         
         setStage(1) // Visual
-        await new Promise(r => setTimeout(r, 9000))
+        await new Promise(r => setTimeout(r, 16000))
         if (!mounted) break
         
         setStage(2) // Code
-        await new Promise(r => setTimeout(r, 9000))
+        await new Promise(r => setTimeout(r, 16000))
         if (!mounted) break
         
         setStage(3) // Deploy
-        await new Promise(r => setTimeout(r, 5000))
+        await new Promise(r => setTimeout(r, 8000))
       }
     }
     run()
