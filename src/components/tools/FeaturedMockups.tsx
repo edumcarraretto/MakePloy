@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from 'react'
-import { Check, Globe, Brain, Palette, TerminalSquare, Rocket, Loader2 } from 'lucide-react'
+import { Globe } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 
@@ -473,33 +473,42 @@ export function CodingMockup() {
   )
 }
 
-const PIPELINE_STEPS = [
-  { id: 'brain', title: 'Contextualizando IA...', icon: Brain, color: 'text-purple-500', border: 'border-purple-200' },
-  { id: 'visual', title: 'Renderizando Visual...', icon: Palette, color: 'text-sky-500', border: 'border-sky-200' },
-  { id: 'code', title: 'Compilando Código...', icon: TerminalSquare, color: 'text-pink-500', border: 'border-pink-200' },
-  { id: 'deploy', title: 'Publicando no ar...', icon: Rocket, color: 'text-emerald-500', border: 'border-emerald-200' }
-]
+const MiniMockup = ({ children, x, scale, opacity }: { children: React.ReactNode, x: number, scale: number, opacity: number }) => (
+  <motion.div
+    initial={false}
+    animate={{ x, scale, opacity }}
+    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    className="absolute top-1/2 left-1/2 -ml-[120px] -mt-[92px] w-[240px] h-[184px] bg-white rounded-[12px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-slate-200 overflow-hidden flex items-center justify-center pointer-events-none"
+  >
+    {children}
+  </motion.div>
+)
 
 export function DeployMockup() {
-  const [currentStep, setCurrentStep] = useState(0)
+  const [stage, setStage] = useState(0)
 
   useEffect(() => {
     let mounted = true
     const run = async () => {
       while (mounted) {
-        setCurrentStep(0)
-        await new Promise(r => setTimeout(r, 1000))
+        setStage(0)
+        await new Promise(r => setTimeout(r, 2200)) // Brain does its thing
         if (!mounted) break
         
-        for (let i = 0; i < 4; i++) {
-           setCurrentStep(i)
-           await new Promise(r => setTimeout(r, 1800))
-           if (!mounted) break
-        }
+        setStage(1) // Visual enters
+        await new Promise(r => setTimeout(r, 2200))
         if (!mounted) break
         
-        setCurrentStep(4)
-        await new Promise(r => setTimeout(r, 3500))
+        setStage(2) // Code enters
+        await new Promise(r => setTimeout(r, 2200))
+        if (!mounted) break
+        
+        setStage(3) // Converge
+        await new Promise(r => setTimeout(r, 800))
+        if (!mounted) break
+        
+        setStage(4) // Deploy Online
+        await new Promise(r => setTimeout(r, 4500))
       }
     }
     run()
@@ -507,77 +516,74 @@ export function DeployMockup() {
   }, [])
 
   return (
-    <div className="relative w-full h-full max-w-[200px] flex flex-col justify-center gap-2">
-       {/* Steps */}
-       <div className="flex flex-col gap-2 relative z-10 w-full pl-2">
-         {PIPELINE_STEPS.map((step, index) => {
-            const isCompleted = currentStep > index
-            const isCurrent = currentStep === index
-            const isPending = currentStep < index
+    <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
+       {/* Stage 0,1,2 Elements */}
+       <MiniMockup 
+         x={stage === 0 ? 0 : stage === 1 ? -70 : stage === 2 ? -90 : 0} 
+         scale={stage === 0 ? 0.5 : stage === 1 || stage === 2 ? 0.3 : 0}
+         opacity={stage < 3 ? 1 : 0}
+       >
+         <BrainMockup />
+       </MiniMockup>
+       
+       <MiniMockup 
+         x={stage <= 0 ? 120 : stage === 1 ? 0 : stage === 2 ? 0 : 0} 
+         scale={stage <= 0 ? 0.3 : stage === 1 ? 0.5 : stage === 2 ? 0.3 : 0}
+         opacity={stage === 1 || stage === 2 ? 1 : 0}
+       >
+         <VisualMockup />
+       </MiniMockup>
 
-            return (
-              <div key={step.id} className={`flex items-center gap-2.5 transition-opacity duration-300 ${isPending ? 'opacity-40' : 'opacity-100'}`}>
-                 <div className={`relative w-7 h-7 shrink-0 rounded-full flex items-center justify-center border-2 bg-white transition-colors duration-300 ${isCompleted || isCurrent ? step.border : 'border-slate-200'}`}>
-                    <step.icon size={12} className={isCompleted || isCurrent ? step.color : 'text-slate-400'} />
-                    {/* Status badge */}
-                    <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border border-slate-200 flex items-center justify-center">
-                       {isCompleted ? (
-                         <Check size={8} className="text-emerald-500" strokeWidth={3} />
-                       ) : isCurrent ? (
-                         <Loader2 size={8} className="text-slate-500 animate-spin" />
-                       ) : (
-                         <div className="w-1 h-1 rounded-full bg-slate-300" />
-                       )}
-                    </div>
-                 </div>
-                 
-                 <div className="flex-1 flex flex-col">
-                    <span className={`text-[9px] font-semibold transition-colors duration-300 ${isCompleted || isCurrent ? 'text-slate-700' : 'text-slate-400'}`}>
-                       {step.title}
-                    </span>
-                    {isCompleted && (
-                       <span className="text-[7.5px] text-emerald-600 font-medium">Concluído</span>
-                    )}
-                 </div>
-              </div>
-            )
-         })}
-       </div>
+       <MiniMockup 
+         x={stage <= 1 ? 120 : stage === 2 ? 90 : 0} 
+         scale={stage <= 1 ? 0.3 : stage === 2 ? 0.45 : 0}
+         opacity={stage === 2 ? 1 : 0}
+       >
+         <CodingMockup />
+       </MiniMockup>
 
-       {/* Connecting Line behind */}
-       <div className="absolute left-[21px] top-4 bottom-4 w-[2px] bg-slate-100 z-0">
-          <motion.div 
-             className="w-full bg-emerald-400 origin-top"
-             animate={{ scaleY: currentStep === 4 ? 1 : (currentStep / 3) }}
-             initial={{ scaleY: 0 }}
-             transition={{ duration: 0.5, ease: "easeInOut" }}
-             style={{ height: '100%' }}
-          />
-       </div>
-
-       {/* Final Success Overlay */}
+       {/* Stage 4: Deploy & Online */}
        <AnimatePresence>
-          {currentStep === 4 && (
-             <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-[-10px] bg-white/95 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center rounded-xl"
-             >
-                <motion.div 
-                  initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.1 }}
-                  className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center mb-2 shadow-sm"
-                >
-                   <Globe size={20} className="text-emerald-600" />
-                </motion.div>
-                <motion.span initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-[11px] font-bold text-slate-800">
-                  Seu projeto no ar
-                </motion.span>
-                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-[8.5px] text-emerald-600 font-medium mt-0.5">
-                  Pronto para receber visitantes
-                </motion.span>
-             </motion.div>
-          )}
+         {stage >= 3 && (
+            <motion.div
+               initial={{ opacity: 0, scale: 0.5 }}
+               animate={{ opacity: stage === 4 ? 1 : 0, scale: stage === 4 ? 1 : 0.5 }}
+               exit={{ opacity: 0, scale: 0 }}
+               transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+               className="absolute flex flex-col items-center justify-center w-full h-full z-10"
+            >
+               {/* Globe Rocket Icon */}
+               <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-3 shadow-sm border border-emerald-200">
+                  <Globe className="text-emerald-500 w-6 h-6" />
+               </div>
+               
+               {/* Typewriter Domain */}
+               <motion.div 
+                 initial={{ width: 0, opacity: 0 }} 
+                 animate={{ width: "auto", opacity: 1 }} 
+                 transition={{ delay: 0.4, duration: 0.8 }}
+                 className="overflow-hidden whitespace-nowrap"
+               >
+                 <span className="text-[11px] sm:text-[12px] font-mono font-semibold text-slate-700 bg-white px-2.5 py-1.5 rounded-md border border-slate-200 shadow-sm inline-block">
+                   seuprojeto.makeploy.app
+                 </span>
+               </motion.div>
+               
+               {/* Online Badge */}
+               <motion.div
+                 initial={{ opacity: 0, y: 10 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 transition={{ delay: 1.2 }}
+                 className="flex items-center gap-1.5 mt-3 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100"
+               >
+                 <span className="relative flex h-2 w-2">
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                 </span>
+                 <span className="text-[9px] font-bold text-emerald-600 tracking-wider">ONLINE</span>
+               </motion.div>
+            </motion.div>
+         )}
        </AnimatePresence>
     </div>
   )
