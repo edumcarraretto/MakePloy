@@ -476,8 +476,12 @@ export function CodingMockup() {
 export function DeployMockup() {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
-      <div className="w-[72px] h-[72px] rounded-[20px] bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-[0_0_40px_rgba(168,85,247,0.3)]">
-         <Rocket className="w-8 h-8 text-white" />
+      {/* Soft Purple Glow Behind */}
+      <div className="absolute w-32 h-32 bg-purple-400/30 rounded-full blur-[32px]"></div>
+      
+      {/* Solid Blue Logo Container */}
+      <div className="relative w-[72px] h-[72px] rounded-[22px] bg-[#0066FF] flex items-center justify-center shadow-md">
+         <Rocket className="w-8 h-8 text-white stroke-[1.5]" />
       </div>
     </div>
   )
