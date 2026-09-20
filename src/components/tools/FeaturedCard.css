@@ -1,0 +1,50 @@
+@property --featured-border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.featured-card-border {
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  pointer-events: none;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--featured-border-angle),
+    transparent 0deg,
+    transparent 200deg,
+    rgba(139, 92, 246, 0.25) 240deg,
+    #8b5cf6 280deg,
+    #38bdf8 320deg,
+    #a855f7 350deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 350ms ease;
+  animation: featured-border-orbit 3.5s linear infinite;
+  animation-play-state: paused;
+}
+
+[data-featured-focus='true'] .featured-card-border,
+.group:hover .featured-card-border {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes featured-border-orbit {
+  to {
+    --featured-border-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured-card-border {
+    animation: none;
+    transition: none;
+  }
+}

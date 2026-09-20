@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { ArrowRight, TerminalSquare } from 'lucide-react'
 import { openEarlyAccess } from '@/lib/earlyAccess'
 import { HighlightText } from '@/components/text/HighlightText'
 import { tools, type Tool } from '@/components/tools/toolsData'
 import { ProjectsMockup, DocumentsMockup, AIMockup, ChatMockup } from '@/components/tools/FeaturedMockups'
+import './FeaturedCard.css'
 
 // ────────────────────────────────────────────────────────────
 // Grid placement types & algorithms
@@ -214,6 +215,7 @@ interface FeaturedToolCardProps {
   row: number
   isSelected: boolean
   onSelect: (id: string) => void
+  isFocused?: boolean
   isMobileOrTablet?: boolean
 }
 
@@ -223,6 +225,7 @@ function FeaturedToolCard({
   row,
   isSelected,
   onSelect,
+  isFocused = false,
   isMobileOrTablet = false,
 }: FeaturedToolCardProps) {
   const Icon = tool.icon
@@ -242,6 +245,7 @@ function FeaturedToolCard({
 
   return (
     <motion.button
+      data-featured-focus={isFocused}
       type="button"
       aria-pressed={isSelected}
       aria-label={tool.title}
@@ -276,6 +280,8 @@ function FeaturedToolCard({
           'transition-all duration-200 ease-out',
         ].join(' ')}
       >
+        <div aria-hidden="true" className={"featured-card-border " + centerCornerRounding} style={{ borderRadius: "inherit" }} />
+        
         <div
           className={[
             'absolute inset-0 opacity-80 pointer-events-none',
@@ -343,11 +349,33 @@ function FeaturedToolCard({
 // ────────────────────────────────────────────────────────────
 // Main section export with responsive device configurations
 // ────────────────────────────────────────────────────────────
+const FEATURED_CYCLE: { id: string; duration: number }[] = [
+  { id: 'projetos', duration: 12000 },
+  { id: 'documentos', duration: 20000 },
+  { id: 'assistente-ia', duration: 12000 },
+  { id: 'conversas', duration: 12000 },
+]
+
 export function ToolsSection() {
+  const [activeStepIndex, setActiveStepIndex] = useState(0)
   const [selectedToolId, setSelectedToolId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const currentStep = FEATURED_CYCLE[activeStepIndex]
+    const timer = setTimeout(() => {
+      setActiveStepIndex((prev) => (prev + 1) % FEATURED_CYCLE.length)
+    }, currentStep.duration)
+    return () => clearTimeout(timer)
+  }, [activeStepIndex])
+
+  const focusedId = FEATURED_CYCLE[activeStepIndex].id
 
   const handleSelect = (id: string) => {
     setSelectedToolId((prev) => (prev === id ? null : id))
+    const index = FEATURED_CYCLE.findIndex((item) => item.id === id)
+    if (index !== -1) {
+      setActiveStepIndex(index)
+    }
   }
 
   return (
@@ -410,6 +438,7 @@ export function ToolsSection() {
                   tool={tool}
                   col={col}
                   row={row}
+                  isFocused={focusedId === tool.id}
                   isSelected={selectedToolId === tool.id}
                   onSelect={handleSelect}
                 />
@@ -465,6 +494,7 @@ export function ToolsSection() {
                   tool={tool}
                   col={col}
                   row={row}
+                  isFocused={focusedId === tool.id}
                   isSelected={selectedToolId === tool.id}
                   onSelect={handleSelect}
                   isMobileOrTablet
@@ -525,6 +555,7 @@ export function ToolsSection() {
                   tool={tool}
                   col={col}
                   row={row}
+                  isFocused={focusedId === tool.id}
                   isSelected={selectedToolId === tool.id}
                   onSelect={handleSelect}
                   isMobileOrTablet
