@@ -4,35 +4,58 @@
   initial-value: 0deg;
 }
 
+.featured-tool-card {
+  isolation: isolate;
+  box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;
+  transition: box-shadow 350ms ease;
+}
+
+.featured-tool-card[aria-pressed='true'],
+.featured-tool-card:focus-visible {
+  z-index: 20;
+  box-shadow: 0 12px 28px -10px rgb(15 23 42 / 22%), 0 3px 8px -3px rgb(15 23 42 / 12%);
+}
+
+.featured-tool-card:focus-visible {
+  outline: 2px solid #168cff;
+  outline-offset: -3px;
+}
+
 .featured-card-border {
   position: absolute;
   inset: 0;
   z-index: 35;
   pointer-events: none;
-  padding: 2px;
+  border-radius: inherit;
+  padding: 1.5px;
   background: conic-gradient(
     from var(--featured-border-angle),
-    transparent 0deg,
-    transparent 200deg,
-    rgba(139, 92, 246, 0.25) 240deg,
-    #8b5cf6 280deg,
-    #38bdf8 320deg,
-    #a855f7 350deg,
-    transparent 360deg
+    rgb(22 140 255 / 12%) 0deg 190deg,
+    #ff2d55 225deg,
+    #ff7a00 250deg,
+    #facc15 275deg,
+    #22c55e 300deg,
+    #168cff 325deg,
+    #ec4899 345deg,
+    rgb(22 140 255 / 12%) 360deg
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
-  transition: opacity 350ms ease;
-  animation: featured-border-orbit 3.5s linear infinite;
+  transition: opacity 600ms ease;
+  animation: featured-border-orbit 5s linear infinite;
   animation-play-state: paused;
 }
 
-[data-featured-focus='true'] .featured-card-border,
-.group:hover .featured-card-border {
+.featured-tool-card[data-featured-focus='true'] .featured-card-border,
+.featured-tool-card[aria-pressed='true'] .featured-card-border,
+.featured-tool-card:focus-visible .featured-card-border {
   opacity: 1;
+}
+
+.featured-tool-card[data-featured-focus='true'][data-featured-motion='true'] .featured-card-border {
   animation-play-state: running;
 }
 
@@ -42,7 +65,35 @@
   }
 }
 
+.featured-demo {
+  pointer-events: none;
+}
+
+/* Settle into the completed preview without fading it into a disabled state. */
+.featured-demo-content[data-playing='false'] {
+  animation: featured-result-reveal 450ms ease-out both;
+}
+
+@keyframes featured-result-reveal {
+  from { opacity: 0.85; }
+  to { opacity: 1; }
+}
+
+[data-demo-static='true'] * {
+  animation-play-state: paused !important;
+  animation-delay: var(--demo-snapshot) !important;
+}
+
+/* The typing cursor also has a separate blink animation. */
+[data-demo-static='true'] [class*='a-cur-'],
+[data-demo-static='true'] [class*='a-mouse-'] {
+  visibility: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .featured-tool-card,
+  .featured-demo,
+  .featured-demo-content[data-playing='false'],
   .featured-card-border {
     animation: none;
     transition: none;

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'motion/react'
+import { useState, useEffect, useRef, useCallback, type ComponentType } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import { ArrowRight, TerminalSquare } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
 import { openEarlyAccess } from '@/lib/earlyAccess'
@@ -107,11 +107,18 @@ const eightColPlacements = buildEightColumnPlacements(tools)
 // ────────────────────────────────────────────────────────────
 // Mockup registry
 // ────────────────────────────────────────────────────────────
-const featuredMockups: Record<string, React.ReactNode> = {
-  projetos: <ProjectsMockup />,
-  documentos: <DocumentsMockup />,
-  'assistente-ia': <AIMockup />,
-  conversas: <ChatMockup />,
+const featuredMockups: Record<string, ComponentType<{ isPlaying?: boolean; onComplete?: () => void }>> = {
+  projetos: ProjectsMockup,
+  documentos: DocumentsMockup,
+  'assistente-ia': AIMockup,
+  conversas: ChatMockup,
+}
+
+// Finish on a useful result before the original loops clear their content.
+const DEMO_DURATION: Record<string, number> = {
+  projetos: 9700,
+  documentos: 12000,
+  conversas: 10800,
 }
 
 // ────────────────────────────────────────────────────────────
@@ -173,7 +180,7 @@ function SmallToolCell({
     >
       <div
         className={[
-          'flex flex-col items-center justify-center gap-1.5 h-full w-full select-none p-1',
+          'flex flex-col items-center justify-center gap-1 h-full w-full select-none p-1',
           'border-r border-b border-gray-200/60',
           'transition-all duration-200 ease-out cursor-pointer',
           // ── Selected state ──
@@ -184,40 +191,32 @@ function SmallToolCell({
           !isSelected ? 'hover:bg-gray-50 hover:scale-[1.02] hover:z-10 hover:ring-1 hover:ring-black/50' : '',
         ].join(' ')}
       >
-        <div
-          className={[
-            isMobileOrTablet ? 'w-7 h-7 rounded-[9px]' : 'w-8 h-8 rounded-[10px]',
-            'flex items-center justify-center shrink-0 border border-black/[0.035]',
-            'shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-all duration-200',
-            tool.bgColor ?? 'bg-gray-50',
-            isSelected ? 'scale-105' : 'scale-100 group-hover:scale-105',
-          ].join(' ')}
-          aria-hidden="true"
-        >
-          {isGitHub ? (
-            <SiGithub
-              className={[
-                isMobileOrTablet ? 'w-[15px] h-[15px]' : 'w-[18px] h-[18px]',
-                'shrink-0 text-[#181717]',
-              ].join(' ')}
-            />
-          ) : (
-            <Icon
-              className={[
-                isMobileOrTablet ? 'w-[15px] h-[15px]' : 'w-[18px] h-[18px]',
-                'shrink-0 transition-colors duration-200',
-                tool.accentColor ?? 'text-gray-600',
-              ].join(' ')}
-              strokeWidth={2}
-            />
-          )}
-        </div>
+        {isGitHub ? (
+          <SiGithub
+            className={[
+              isMobileOrTablet ? 'w-4 h-4' : 'w-5 h-5',
+              'transition-colors duration-200 shrink-0',
+              isSelected ? 'text-gray-800' : 'text-gray-500',
+              !isSelected ? 'group-hover:text-gray-700' : '',
+            ].join(' ')}
+          />
+        ) : (
+          <Icon
+            className={[
+              isMobileOrTablet ? 'w-4 h-4' : 'w-5 h-5',
+              'transition-colors duration-200 shrink-0',
+              isSelected ? 'text-gray-800' : 'text-gray-500',
+              !isSelected ? 'group-hover:text-gray-700' : '',
+            ].join(' ')}
+            strokeWidth={2.25}
+          />
+        )}
         <span
           className={[
             isMobileOrTablet ? 'text-[9px] leading-tight' : 'text-[11px] leading-tight',
             'text-center px-0.5 max-w-full truncate transition-colors duration-200',
-            isSelected ? 'text-gray-900 font-medium' : 'text-gray-500 font-normal',
-            !isSelected ? 'group-hover:text-gray-700' : '',
+            isSelected ? 'text-gray-800 font-medium' : 'text-gray-400 font-normal',
+            !isSelected ? 'group-hover:text-gray-500' : '',
           ].join(' ')}
         >
           {tool.title}
@@ -238,19 +237,43 @@ interface FeaturedToolCardProps {
   onSelect: (id: string) => void
   isFocused?: boolean
   isMobileOrTablet?: boolean
+  playbackEnabled: boolean
+  onDemoComplete: (id: string) => void
+  onInteract: (id: string, source: 'pointer' | 'keyboard', active: boolean) => void
 }
 
 function FeaturedToolCard({
   tool,
   col,
   row,
-  isSelected,
   onSelect,
   isFocused = false,
   isMobileOrTablet = false,
+  playbackEnabled,
+  onDemoComplete,
+  onInteract,
 }: FeaturedToolCardProps) {
   const Icon = tool.icon
-  const mockup = featuredMockups[tool.id]
+  const Mockup = featuredMockups[tool.id]
+  const reduceMotion = useReducedMotion()
+  const cardRef = useRef<HTMLButtonElement>(null)
+  const isVisible = useInView(cardRef, { amount: 0.5 })
+  const canPlay = isFocused && isVisible && playbackEnabled && !reduceMotion
+  const [demoComplete, setDemoComplete] = useState(false)
+  const finishDemo = useCallback(() => {
+    if (!canPlay) return
+    setDemoComplete(true)
+    onDemoComplete(tool.id)
+  }, [canPlay, onDemoComplete, tool.id])
+
+  useEffect(() => {
+    setDemoComplete(false)
+    if (!canPlay || tool.id === 'assistente-ia') return
+    const timer = setTimeout(finishDemo, DEMO_DURATION[tool.id])
+    return () => clearTimeout(timer)
+  }, [canPlay, tool.id, finishDemo])
+
+  const isPlaying = canPlay && !demoComplete
   
   // Rounded corner ONLY on the inner vertex facing the center (creates the 4-point star cutout in the center)
   const centerCornerRounding =
@@ -266,31 +289,29 @@ function FeaturedToolCard({
 
   return (
     <motion.button
+      ref={cardRef}
       data-featured-focus={isFocused}
+      data-featured-motion={isVisible && playbackEnabled && !reduceMotion}
       type="button"
-      aria-pressed={isSelected}
+      aria-pressed={isFocused}
       aria-label={tool.title}
-      initial={{ opacity: 0, y: 12, borderRadius: 0 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, scale: 1 }}
+      whileInView={{ opacity: 1, scale: isFocused && !reduceMotion ? 1.02 : 1 }}
       viewport={{ once: true, margin: '-40px' }}
-      animate={isSelected
-        ? { boxShadow: '0 12px 40px -8px rgba(0,0,0,0.22), 0 4px 16px -4px rgba(0,0,0,0.12)', zIndex: 20, borderRadius: 16 }
-        : { boxShadow: '0 0px 0px 0px rgba(0,0,0,0)', zIndex: 0, borderRadius: 0 }
-      }
-      whileHover={!isSelected ? {
-        boxShadow: '0 8px 28px -6px rgba(0,0,0,0.18), 0 2px 10px -3px rgba(0,0,0,0.10)',
-        zIndex: 10,
-        borderRadius: 16,
-        transition: { duration: 0.2 },
-      } : {}}
-      whileTap={{ boxShadow: '0 2px 10px -2px rgba(0,0,0,0.14)', zIndex: 20, borderRadius: 16 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: reduceMotion ? 0 : 0.35, ease: 'easeOut' }}
       style={{
         gridColumn: `${col} / span ${tool.colSpan}`,
         gridRow: `${row} / span ${tool.rowSpan}`,
+        transformOrigin: 'center',
       }}
-      className="relative group cursor-pointer overflow-hidden"
+      className={`featured-tool-card relative group cursor-pointer overflow-hidden ${centerCornerRounding}`}
       onClick={() => onSelect(tool.id)}
+      onHoverStart={() => onInteract(tool.id, 'pointer', true)}
+      onHoverEnd={() => onInteract(tool.id, 'pointer', false)}
+      onFocus={(event) => {
+        if (event.currentTarget.matches(':focus-visible')) onInteract(tool.id, 'keyboard', true)
+      }}
+      onBlur={() => onInteract(tool.id, 'keyboard', false)}
     >
       <div
         className={[
@@ -301,7 +322,7 @@ function FeaturedToolCard({
           'transition-all duration-200 ease-out',
         ].join(' ')}
       >
-        <div aria-hidden="true" className={"featured-card-border " + centerCornerRounding} style={{ borderRadius: "inherit" }} />
+        <div aria-hidden="true" className="featured-card-border" />
         
         <div
           className={[
@@ -313,8 +334,10 @@ function FeaturedToolCard({
           ].join(' ')}
         />
         {/* Mockup preview area */}
-        <div className={`relative flex-1 min-h-0 overflow-visible flex items-center justify-center pb-0 z-20 ${tool.id === 'assistente-ia' ? 'pt-0 px-0' : 'p-2 md:p-3'}`}>
-          {mockup}
+        <div aria-hidden="true" className={`featured-demo relative flex-1 min-h-0 overflow-visible flex items-center justify-center pb-0 z-20 ${tool.id === 'assistente-ia' ? 'pt-0 px-0' : 'p-2 md:p-3'}`}>
+          <div className="featured-demo-content w-full h-full" data-playing={isPlaying}>
+            <Mockup isPlaying={isPlaying} onComplete={finishDemo} />
+          </div>
         </div>
 
         {/* Card label */}
@@ -370,31 +393,63 @@ function FeaturedToolCard({
 // ────────────────────────────────────────────────────────────
 // Main section export with responsive device configurations
 // ────────────────────────────────────────────────────────────
-const FEATURED_CYCLE: { id: string; duration: number }[] = [
-  { id: 'projetos', duration: 12000 },
-  { id: 'documentos', duration: 20000 },
-  { id: 'assistente-ia', duration: 12000 },
-  { id: 'conversas', duration: 12000 },
+const FEATURED_CYCLE: { id: string }[] = [
+  { id: 'projetos' },
+  { id: 'documentos' },
+  { id: 'assistente-ia' },
+  { id: 'conversas' },
 ]
+const RESULT_HOLD_MS = 1000
 
 export function ToolsSection() {
   const [activeStepIndex, setActiveStepIndex] = useState(0)
   const [selectedToolId, setSelectedToolId] = useState<string | null>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
+  const isVisible = useInView(gridRef, { amount: 0.5 })
+  const reduceMotion = useReducedMotion()
+  const [pageVisible, setPageVisible] = useState(!document.hidden)
+  const [pointerId, setPointerId] = useState<string | null>(null)
+  const [keyboardId, setKeyboardId] = useState<string | null>(null)
+  const playbackEnabled = isVisible && pageVisible
+  const [completedId, setCompletedId] = useState<string | null>(null)
+  const handleDemoComplete = useCallback((id: string) => setCompletedId(id), [])
 
   useEffect(() => {
-    const currentStep = FEATURED_CYCLE[activeStepIndex]
+    if (!playbackEnabled) setCompletedId(null)
+  }, [playbackEnabled])
+
+  useEffect(() => {
+    const updateVisibility = () => setPageVisible(!document.hidden)
+    document.addEventListener('visibilitychange', updateVisibility)
+    return () => document.removeEventListener('visibilitychange', updateVisibility)
+  }, [])
+
+  useEffect(() => {
+    if (!playbackEnabled || reduceMotion || pointerId || keyboardId) return
+    if (completedId !== FEATURED_CYCLE[activeStepIndex].id) return
     const timer = setTimeout(() => {
+      setCompletedId(null)
       setActiveStepIndex((prev) => (prev + 1) % FEATURED_CYCLE.length)
-    }, currentStep.duration)
+    }, RESULT_HOLD_MS)
     return () => clearTimeout(timer)
-  }, [activeStepIndex])
+  }, [activeStepIndex, completedId, playbackEnabled, reduceMotion, pointerId, keyboardId])
 
   const focusedId = FEATURED_CYCLE[activeStepIndex].id
+
+  const handleInteract = (id: string, source: 'pointer' | 'keyboard', active: boolean) => {
+    const setInteraction = source === 'pointer' ? setPointerId : setKeyboardId
+    setInteraction((previous) => active ? id : previous === id ? null : previous)
+    if (active && id !== focusedId) {
+      setCompletedId(null)
+      setActiveStepIndex(FEATURED_CYCLE.findIndex((item) => item.id === id))
+    }
+  }
 
   const handleSelect = (id: string) => {
     setSelectedToolId((prev) => (prev === id ? null : id))
     const index = FEATURED_CYCLE.findIndex((item) => item.id === id)
     if (index !== -1) {
+      if (id !== focusedId) setCompletedId(null)
       setActiveStepIndex(index)
     }
   }
@@ -422,6 +477,7 @@ export function ToolsSection() {
         </p>
       </motion.div>
 
+      <div ref={gridRef} className="w-full">
       {/* ── 1. Desktop grid (>= 1024px: 10 columns, full width) ──── */}
       <div className="hidden lg:block w-full max-w-7xl mx-auto px-4 xl:px-8">
         <div className="overflow-visible pb-6" style={GRID_MASK_STYLE}>
@@ -460,6 +516,9 @@ export function ToolsSection() {
                   col={col}
                   row={row}
                   isFocused={focusedId === tool.id}
+                  playbackEnabled={playbackEnabled}
+                  onInteract={handleInteract}
+                  onDemoComplete={handleDemoComplete}
                   isSelected={selectedToolId === tool.id}
                   onSelect={handleSelect}
                 />
@@ -516,6 +575,9 @@ export function ToolsSection() {
                   col={col}
                   row={row}
                   isFocused={focusedId === tool.id}
+                  playbackEnabled={playbackEnabled}
+                  onInteract={handleInteract}
+                  onDemoComplete={handleDemoComplete}
                   isSelected={selectedToolId === tool.id}
                   onSelect={handleSelect}
                   isMobileOrTablet
@@ -577,6 +639,9 @@ export function ToolsSection() {
                   col={col}
                   row={row}
                   isFocused={focusedId === tool.id}
+                  playbackEnabled={playbackEnabled}
+                  onInteract={handleInteract}
+                  onDemoComplete={handleDemoComplete}
                   isSelected={selectedToolId === tool.id}
                   onSelect={handleSelect}
                   isMobileOrTablet
@@ -595,6 +660,8 @@ export function ToolsSection() {
             )}
           </div>
         </div>
+      </div>
+
       </div>
 
       {/* ── Call to action below grid ──── */}

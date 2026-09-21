@@ -176,12 +176,14 @@ function FileIcon({ name, isDir }: { name: string; isDir: boolean }) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function IntegratedCodeEditorPreview() {
+export function IntegratedCodeEditorPreview({ animated = true, interactive = true, onComplete }: { animated?: boolean; interactive?: boolean; onComplete?: () => void }) {
+  const Item = interactive ? 'button' : 'span'
   const [activeFile, setActiveFile] = useState(NAVIGABLE_FILES[0])
   const [openTabs, setOpenTabs] = useState<string[]>([NAVIGABLE_FILES[0]])
-  const [typedChars, setTypedChars] = useState(0)
+  const [typedChars, setTypedChars] = useState(animated ? 0 : 99999)
 
   useEffect(() => {
+    if (!animated) return
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (mediaQuery.matches) {
       setTypedChars(99999)
@@ -197,6 +199,10 @@ export function IntegratedCodeEditorPreview() {
     }, 0)
 
     if (typedChars >= totalChars) {
+      if (onComplete) {
+        onComplete()
+        return
+      }
       const timer = setTimeout(() => {
         setActiveFile((prev) => {
           const currentIndex = NAVIGABLE_FILES.indexOf(prev)
@@ -222,7 +228,7 @@ export function IntegratedCodeEditorPreview() {
     }, Math.random() * 30 + 10)
 
     return () => clearTimeout(timer)
-  }, [activeFile, typedChars])
+  }, [activeFile, typedChars, animated, onComplete])
 
   const handleFileClick = (fileName: string) => {
     if (!FILE_CONTENTS[fileName]) return
@@ -260,8 +266,8 @@ export function IntegratedCodeEditorPreview() {
           const isActive = activeFile === file.name
 
           return (
-            <button
-              type="button"
+            <Item
+              type={interactive ? 'button' : undefined}
               key={`${file.indent}-${file.name}`}
               className={[
                 'flex w-full items-center gap-1 px-2 py-[3px] text-left text-[7px] transition-colors duration-150',
@@ -273,14 +279,14 @@ export function IntegratedCodeEditorPreview() {
                   : 'cursor-default',
               ].join(' ')}
               style={{ paddingLeft: `${8 + file.indent * 8}px` }}
-              onClick={() => isNavigable && handleFileClick(file.name)}
-              disabled={!isNavigable}
+              onClick={interactive ? () => isNavigable && handleFileClick(file.name) : undefined}
+              disabled={interactive ? !isNavigable : undefined}
             >
               <span className="w-3 h-3 shrink-0 flex items-center justify-center text-[8px] mr-1">
                 <FileIcon name={file.name} isDir={file.isDir} />
               </span>
               <span className="truncate">{file.name}</span>
-            </button>
+            </Item>
           )
         })}
       </div>
@@ -299,19 +305,19 @@ export function IntegratedCodeEditorPreview() {
                   : 'text-neutral-500 bg-[#080809] hover:text-neutral-300',
               ].join(' ')}
             >
-              <button
+              <Item
                 id={getTabId(tab)}
-                type="button"
-                aria-pressed={tab === activeFile}
-                tabIndex={tab === activeFile ? 0 : -1}
-                onClick={() => handleFileClick(tab)}
+                type={interactive ? 'button' : undefined}
+                aria-pressed={interactive ? tab === activeFile : undefined}
+                tabIndex={interactive ? (tab === activeFile ? 0 : -1) : undefined}
+                onClick={interactive ? () => handleFileClick(tab) : undefined}
                 className="cursor-pointer rounded-sm px-1.5 py-0.5 focus-visible:outline-offset-0 flex items-center gap-1.5"
               >
                 <span className="w-2.5 h-2.5 flex items-center justify-center">
                   <FileIcon name={tab} isDir={false} />
                 </span>
                 {tab}
-              </button>
+              </Item>
             </div>
           ))}
         </div>

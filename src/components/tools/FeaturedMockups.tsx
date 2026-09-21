@@ -11,17 +11,21 @@ const BRAIN_PHRASES = [
   'Gerar um plano de negócio',
 ]
 
-export function BrainMockup() {
+type DemoProps = { isPlaying?: boolean; onComplete?: () => void }
+
+export function BrainMockup({ isPlaying = true }: DemoProps) {
   const id = useId()
   const safeId = id.replace(/:/g, '')
   const [tick, setTick] = useState(0)
 
   useEffect(() => {
+    if (!isPlaying) return
+    setTick(0)
     const timer = setInterval(() => {
       setTick(t => t + 1)
     }, 1000)
     return () => clearInterval(timer)
-  }, [])
+  }, [isPlaying])
 
   const phraseIdx = Math.floor(tick / 12) % BRAIN_PHRASES.length
   const currentPhrase = BRAIN_PHRASES[phraseIdx]
@@ -45,7 +49,7 @@ export function BrainMockup() {
   // 83-90%  → everything fades out
   // 91-100% → blank, then restart
   return (
-    <svg key={phraseIdx} viewBox="0 0 240 184" className="w-full h-full overflow-visible" aria-hidden="true">
+    <svg key={`${phraseIdx}-${isPlaying}`} data-demo-static={!isPlaying} style={{ '--demo-snapshot': '-9.7s' } as React.CSSProperties} viewBox="0 0 240 184" className="w-full h-full overflow-visible" aria-hidden="true">
       <defs>
         <filter id={`${safeId}-shadow`} x="-20%" y="-30%" width="140%" height="180%">
           <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity="0.06" />
@@ -299,7 +303,7 @@ export function BrainMockup() {
   )
 }
 
-export function VisualMockup() {
+export function VisualMockup({ isPlaying = true }: DemoProps) {
   const id = useId()
   const safeId = id.replace(/:/g, '')
 
@@ -365,7 +369,7 @@ export function VisualMockup() {
   )
 
   return (
-    <svg viewBox="0 -15 320 215" className="w-full h-full overflow-visible" aria-hidden="true">
+    <svg key={String(isPlaying)} data-demo-static={!isPlaying} style={{ '--demo-snapshot': '-14s' } as React.CSSProperties} viewBox="0 -15 320 215" className="w-full h-full overflow-visible" aria-hidden="true">
       <defs>
         <filter id={`${safeId}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
           <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#000000" floodOpacity="0.08" />
@@ -466,10 +470,10 @@ export function VisualMockup() {
   )
 }
 
-export function CodingMockup() {
+export function CodingMockup({ isPlaying = true, onComplete }: DemoProps) {
   return (
     <div className="w-full h-full overflow-hidden [&>div]:rounded-none [&>div]:border-none [&>div]:bg-transparent">
-      <IntegratedCodeEditorPreview />
+      <IntegratedCodeEditorPreview key={String(isPlaying)} animated={isPlaying} interactive={false} onComplete={onComplete} />
     </div>
   )
 }
@@ -483,16 +487,17 @@ const LOOP_BUTTON = { duration: D, repeat: Infinity, ease: "easeInOut" as const,
 const LOOP_AURA   = { duration: D, repeat: Infinity, ease: "easeOut"   as const, times: [0, 0.60, 0.63, 0.80, 1.0] }
 const LOOP_SKELETON = { duration: D, repeat: Infinity, ease: "easeInOut" as const, times: [0, 0.40, 0.45, 0.60, 0.63, 1.0] }
 
-export function DeployMockup() {
+export function DeployMockup({ isPlaying = true }: DemoProps) {
   return (
     <div className="w-full h-full relative overflow-hidden">
       {/* ── Camera wrapper — zooms into the top-right (Publicar button) ── */}
       <motion.div
         className="w-full h-full flex flex-col origin-top-right"
-        animate={{
+        initial={false}
+        animate={isPlaying ? {
           scale: [1, 1, 2.4, 2.4, 1, 1],
-        }}
-        transition={LOOP_CAMERA}
+        } : { scale: 1 }}
+        transition={isPlaying ? LOOP_CAMERA : { duration: 0.65, ease: 'easeOut' }}
       >
         {/* ── Top Bar ── */}
         <div className="h-7 sm:h-8 shrink-0 border-b border-gray-200/50 dark:border-white/10 flex items-center px-2.5 sm:px-3 bg-gray-50/40 dark:bg-white/[0.02] gap-2">
@@ -515,18 +520,20 @@ export function DeployMockup() {
             {/* Success Aura Ring */}
             <motion.div
               className="absolute inset-0 rounded-[4px] border border-green-500"
-              animate={{
+              initial={false}
+              animate={isPlaying ? {
                 scale:   [1, 1, 1,   1.3, 1],
                 opacity: [0, 0, 0.8, 0,   0]
-              }}
-              transition={LOOP_AURA}
+              } : { scale: 1, opacity: 0 }}
+              transition={isPlaying ? LOOP_AURA : { duration: 0 }}
             />
 
             {/* Publish Button */}
             <motion.div
               className="absolute inset-0 text-white font-semibold rounded-[4px] flex items-start justify-center overflow-hidden select-none"
               style={{ fontSize: 7 }}
-              animate={{
+              initial={false}
+              animate={isPlaying ? {
                 scale:           [1,         1,         0.92,      1,         1,         1,         1,         1,         1],
                 backgroundColor: ["#2563eb", "#2563eb", "#2563eb", "#000000", "#000000", "#16a34a", "#16a34a", "#2563eb", "#2563eb"],
                 boxShadow: [
@@ -540,16 +547,17 @@ export function DeployMockup() {
                   "0px 0px 0px rgba(22,163,74,0)",
                   "0px 0px 0px rgba(22,163,74,0)"
                 ]
-              }}
-              transition={LOOP_BUTTON}
+              } : { scale: 1, backgroundColor: '#16a34a', boxShadow: '0px 0px 0px rgba(22,163,74,0)' }}
+              transition={isPlaying ? LOOP_BUTTON : { duration: 0 }}
             >
               {/* Inner carousel column */}
               <motion.div
                 className="flex flex-col w-full"
-                animate={{
+                initial={false}
+                animate={isPlaying ? {
                   y: [0, 0, 0, -18, -18, -36, -36, 0, 0]
-                }}
-                transition={LOOP_BUTTON}
+                } : { y: -36 }}
+                transition={isPlaying ? LOOP_BUTTON : { duration: 0 }}
               >
                 {/* 0px: "Publicar" */}
                 <div className="h-[18px] w-full flex items-center justify-center shrink-0">
@@ -558,7 +566,7 @@ export function DeployMockup() {
                 
                 {/* -18px: "Deploying to Vercel" */}
                 <div className="h-[18px] w-full flex items-center justify-center gap-[3px] shrink-0">
-                  <Loader2 className="w-[6px] h-[6px] animate-spin" />
+                  <Loader2 className={`w-[6px] h-[6px] ${isPlaying ? 'animate-spin' : ''}`} />
                   Vercel
                 </div>
                 
@@ -588,13 +596,13 @@ export function DeployMockup() {
           <div className="flex-1 min-h-0 rounded-md bg-gradient-to-br from-indigo-100/40 via-violet-50/25 to-fuchsia-100/30 dark:from-indigo-900/15 dark:via-violet-900/8 dark:to-fuchsia-900/10 border border-indigo-200/20 dark:border-indigo-700/10 p-3 flex flex-col items-center justify-center gap-1.5">
             <motion.div 
               className="w-[70%] h-3.5 bg-gradient-to-r from-gray-300/70 to-gray-200/50 dark:from-white/12 dark:to-white/6 rounded-sm"
-              animate={{ opacity: [1, 1, 0.4, 0.4, 1, 1] }}
-              transition={LOOP_SKELETON}
+              initial={false} animate={{ opacity: isPlaying ? [1, 1, 0.4, 0.4, 1, 1] : 1 }}
+              transition={isPlaying ? LOOP_SKELETON : { duration: 0 }}
             />
             <motion.div 
               className="w-[45%] h-2 bg-gray-200/60 dark:bg-white/6 rounded-sm"
-              animate={{ opacity: [1, 1, 0.4, 0.4, 1, 1] }}
-              transition={LOOP_SKELETON}
+              initial={false} animate={{ opacity: isPlaying ? [1, 1, 0.4, 0.4, 1, 1] : 1 }}
+              transition={isPlaying ? LOOP_SKELETON : { duration: 0 }}
             />
             <div className="w-12 h-4 bg-indigo-500/10 dark:bg-indigo-400/10 rounded-full mt-0.5" />
           </div>
@@ -609,8 +617,8 @@ export function DeployMockup() {
               <motion.div
                 key={i}
                 className={`h-10 sm:h-12 bg-gradient-to-b ${c.from} ${c.to} ${c.dark} border border-gray-100/40 dark:border-white/5 rounded p-1.5 flex flex-col gap-1`}
-                animate={{ opacity: [1, 1, 0.4, 0.4, 1, 1] }}
-                transition={LOOP_SKELETON}
+                initial={false} animate={{ opacity: isPlaying ? [1, 1, 0.4, 0.4, 1, 1] : 1 }}
+                transition={isPlaying ? LOOP_SKELETON : { duration: 0 }}
               >
                 <div className="w-4 h-4 rounded-full bg-white/50 dark:bg-white/6 shrink-0" />
                 <div className="w-full h-1 bg-white/40 dark:bg-white/4 rounded-sm" />
@@ -623,23 +631,25 @@ export function DeployMockup() {
         <motion.div
           className="absolute z-40 rounded-full border border-gray-400/50 dark:border-white/50 pointer-events-none"
           style={{ left: "86%", top: "18px", width: 24, height: 24, marginLeft: -12, marginTop: -12 }}
-          animate={{
+          initial={false}
+          animate={isPlaying ? {
             scale:   [0, 0, 0.2, 1.5, 0, 0],
             opacity: [0, 0, 0.8, 0,   0, 0],
-          }}
-          transition={LOOP_RIPPLE}
+          } : { scale: 0, opacity: 0 }}
+          transition={isPlaying ? LOOP_RIPPLE : { duration: 0 }}
         />
 
         {/* ── Mouse Cursor ── */}
         <motion.div
           className="absolute z-50 pointer-events-none"
           style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.25))" }}
-          animate={{
+          initial={false}
+          animate={isPlaying ? {
             left:  ["55%",  "55%",   "86%",  "86%",  "86%",  "86%",  "86%",  "55%",  "55%"],
             top:   ["110%", "110%",  "18px", "18px", "18px", "18px", "18px", "110%", "110%"],
             scale: [1,      1,       1,      1,      0.7,    1,      1,      1,      1]
-          }}
-          transition={LOOP_MOUSE}
+          } : { left: '55%', top: '110%', scale: 1 }}
+          transition={isPlaying ? LOOP_MOUSE : { duration: 0 }}
         >
           <MousePointer2
             className="w-4 h-4 sm:w-5 sm:h-5 fill-gray-900 text-white dark:fill-white dark:text-gray-900"
