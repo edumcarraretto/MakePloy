@@ -2,7 +2,6 @@ import {
   Link2,
   Search,
   Check,
-  Network,
   Wand2,
   Pencil,
   FolderOpen,
