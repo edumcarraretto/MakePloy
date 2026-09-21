@@ -15,6 +15,7 @@ import {
   Zap,
   FileSignature,
   Clock,
+  Bell,
   ArrowDownUp,
   Calculator,
   MonitorPlay,
