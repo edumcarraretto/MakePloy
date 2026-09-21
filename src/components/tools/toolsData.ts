@@ -93,6 +93,62 @@ const smallTool = (
   accentColor,
 })
 
+const brainTools: Tool[] = [
+  smallTool('pesquisa', 'Pesquisa', Search, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('radar', 'Radar', Radar, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('benchmark', 'Benchmark', BarChart3, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('validador', 'Validador', BadgeCheck, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('personas', 'Personas', Users, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('mercado', 'Mercado', Store, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('concorrentes', 'Concorrentes', GitCompare, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('viabilidade', 'Viabilidade', Scale, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('precificacao', 'Precificação', CircleDollarSign, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('projecoes', 'Projeções', LineChart, BRAIN_BG, BRAIN_ACCENT),
+  smallTool('roadmap', 'Roadmap', Route, BRAIN_BG, BRAIN_ACCENT),
+]
+
+const visualTools: Tool[] = [
+  smallTool('brand-kit', 'Brand Kit', Palette, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('logo-studio', 'Logo Studio', PenTool, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('paletas', 'Paletas', Droplets, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('tipografia', 'Tipografia', Type, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('wireframes', 'Wireframes', LayoutTemplate, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('ui-kit', 'UI Kit', Component, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('design-system', 'Design System', Layers, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('prototipos', 'Protótipos', MousePointerClick, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('image-studio', 'Image Studio', ImageIcon, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('ilustracoes', 'Ilustrações', Brush, VISUAL_BG, VISUAL_ACCENT),
+  smallTool('motion', 'Motion', PlayCircle, VISUAL_BG, VISUAL_ACCENT),
+]
+
+const codingTools: Tool[] = [
+  smallTool('banco', 'Banco', Database, CODING_BG, CODING_ACCENT),
+  smallTool('apis', 'APIs', Braces, CODING_BG, CODING_ACCENT),
+  smallTool('auth', 'Auth', KeyRound, CODING_BG, CODING_ACCENT),
+  smallTool('storage', 'Storage', HardDrive, CODING_BG, CODING_ACCENT),
+  smallTool('pagamentos', 'Pagamentos', CreditCard, CODING_BG, CODING_ACCENT),
+  smallTool('webhooks', 'Webhooks', Webhook, CODING_BG, CODING_ACCENT),
+  smallTool('integracoes', 'Integrações', Blocks, CODING_BG, CODING_ACCENT),
+  smallTool('automacoes', 'Automações', Zap, CODING_BG, CODING_ACCENT),
+  smallTool('testes', 'Testes', FlaskConical, CODING_BG, CODING_ACCENT),
+  smallTool('seguranca', 'Segurança', ShieldCheck, CODING_BG, CODING_ACCENT),
+  smallTool('github', 'GitHub', Github, 'bg-gray-100', 'text-[#181717]'),
+]
+
+const deployTools: Tool[] = [
+  smallTool('dominios', 'Domínios', Globe2, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('ambientes', 'Ambientes', Boxes, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('releases', 'Releases', PackageOpen, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('analytics', 'Analytics', BarChart2, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('logs', 'Logs', ScrollText, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('uptime', 'Uptime', Activity, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('erros', 'Erros', Bug, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('performance', 'Performance', Gauge, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('seo', 'SEO', SearchCheck, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('experimentos', 'Experimentos', TestTube2, DEPLOY_BG, DEPLOY_ACCENT),
+  smallTool('conversoes', 'Conversões', TrendingUp, DEPLOY_BG, DEPLOY_ACCENT),
+]
+
 export const tools: Tool[] = [
   // ── Featured ecosystem pillars ─────────────────────────────
   {
@@ -152,55 +208,18 @@ export const tools: Tool[] = [
     accentColor: 'text-[#7c3aed]',
   },
 
-  // ── Cérebro: pesquisar, validar e decidir ──────────────────
-  smallTool('pesquisa', 'Pesquisa', Search, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('radar', 'Radar', Radar, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('benchmark', 'Benchmark', BarChart3, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('validador', 'Validador', BadgeCheck, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('personas', 'Personas', Users, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('mercado', 'Mercado', Store, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('concorrentes', 'Concorrentes', GitCompare, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('viabilidade', 'Viabilidade', Scale, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('precificacao', 'Precificação', CircleDollarSign, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('projecoes', 'Projeções', LineChart, BRAIN_BG, BRAIN_ACCENT),
-  smallTool('roadmap', 'Roadmap', Route, BRAIN_BG, BRAIN_ACCENT),
-
-  // ── Criação visual: identidade, interface e expressão ─────
-  smallTool('brand-kit', 'Brand Kit', Palette, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('logo-studio', 'Logo Studio', PenTool, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('paletas', 'Paletas', Droplets, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('tipografia', 'Tipografia', Type, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('wireframes', 'Wireframes', LayoutTemplate, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('ui-kit', 'UI Kit', Component, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('design-system', 'Design System', Layers, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('prototipos', 'Protótipos', MousePointerClick, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('image-studio', 'Image Studio', ImageIcon, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('ilustracoes', 'Ilustrações', Brush, VISUAL_BG, VISUAL_ACCENT),
-  smallTool('motion', 'Motion', PlayCircle, VISUAL_BG, VISUAL_ACCENT),
-
-  // ── Vibe Coding: construir e conectar ─────────────────────
-  smallTool('banco', 'Banco', Database, CODING_BG, CODING_ACCENT),
-  smallTool('apis', 'APIs', Braces, CODING_BG, CODING_ACCENT),
-  smallTool('auth', 'Auth', KeyRound, CODING_BG, CODING_ACCENT),
-  smallTool('storage', 'Storage', HardDrive, CODING_BG, CODING_ACCENT),
-  smallTool('pagamentos', 'Pagamentos', CreditCard, CODING_BG, CODING_ACCENT),
-  smallTool('webhooks', 'Webhooks', Webhook, CODING_BG, CODING_ACCENT),
-  smallTool('integracoes', 'Integrações', Blocks, CODING_BG, CODING_ACCENT),
-  smallTool('automacoes', 'Automações', Zap, CODING_BG, CODING_ACCENT),
-  smallTool('testes', 'Testes', FlaskConical, CODING_BG, CODING_ACCENT),
-  smallTool('seguranca', 'Segurança', ShieldCheck, CODING_BG, CODING_ACCENT),
-  smallTool('github', 'GitHub', Github, 'bg-gray-100', 'text-[#181717]'),
-
-  // ── Deploy: publicar, observar e evoluir ──────────────────
-  smallTool('dominios', 'Domínios', Globe2, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('ambientes', 'Ambientes', Boxes, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('releases', 'Releases', PackageOpen, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('analytics', 'Analytics', BarChart2, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('logs', 'Logs', ScrollText, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('uptime', 'Uptime', Activity, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('erros', 'Erros', Bug, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('performance', 'Performance', Gauge, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('seo', 'SEO', SearchCheck, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('experimentos', 'Experimentos', TestTube2, DEPLOY_BG, DEPLOY_ACCENT),
-  smallTool('conversoes', 'Conversões', TrendingUp, DEPLOY_BG, DEPLOY_ACCENT),
+  // Desktop placement order intentionally clusters each family
+  // around its featured pillar instead of scattering tools randomly.
+  ...brainTools.slice(0, 5),
+  ...visualTools.slice(0, 5),
+  ...brainTools.slice(5, 8),
+  ...visualTools.slice(5, 8),
+  ...brainTools.slice(8),
+  ...visualTools.slice(8),
+  ...codingTools.slice(0, 3),
+  ...deployTools.slice(0, 3),
+  ...codingTools.slice(3, 6),
+  ...deployTools.slice(3, 6),
+  ...codingTools.slice(6),
+  ...deployTools.slice(6),
 ]
