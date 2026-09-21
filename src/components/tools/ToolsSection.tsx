@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { ArrowRight, TerminalSquare } from 'lucide-react'
+import { SiGithub } from 'react-icons/si'
 import { openEarlyAccess } from '@/lib/earlyAccess'
 import { HighlightText } from '@/components/text/HighlightText'
 import { tools, type Tool } from '@/components/tools/toolsData'
@@ -151,6 +152,7 @@ function SmallToolCell({
   isMobileOrTablet = false,
 }: SmallToolCellProps) {
   const Icon = tool.icon
+  const isGitHub = tool.id === 'github'
 
   return (
     <motion.button
@@ -171,7 +173,7 @@ function SmallToolCell({
     >
       <div
         className={[
-          'flex flex-col items-center justify-center gap-1 h-full w-full select-none p-1',
+          'flex flex-col items-center justify-center gap-1.5 h-full w-full select-none p-1',
           'border-r border-b border-gray-200/60',
           'transition-all duration-200 ease-out cursor-pointer',
           // ── Selected state ──
@@ -182,21 +184,40 @@ function SmallToolCell({
           !isSelected ? 'hover:bg-gray-50 hover:scale-[1.02] hover:z-10 hover:ring-1 hover:ring-black/50' : '',
         ].join(' ')}
       >
-        <Icon
+        <div
           className={[
-            isMobileOrTablet ? 'w-4 h-4' : 'w-5 h-5',
-            'transition-colors duration-200 shrink-0',
-            isSelected ? 'text-gray-800' : 'text-gray-500',
-            !isSelected ? 'group-hover:text-gray-700' : '',
+            isMobileOrTablet ? 'w-7 h-7 rounded-[9px]' : 'w-8 h-8 rounded-[10px]',
+            'flex items-center justify-center shrink-0 border border-black/[0.035]',
+            'shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-all duration-200',
+            tool.bgColor ?? 'bg-gray-50',
+            isSelected ? 'scale-105' : 'scale-100 group-hover:scale-105',
           ].join(' ')}
-          strokeWidth={2.25}
-        />
+          aria-hidden="true"
+        >
+          {isGitHub ? (
+            <SiGithub
+              className={[
+                isMobileOrTablet ? 'w-[15px] h-[15px]' : 'w-[18px] h-[18px]',
+                'shrink-0 text-[#181717]',
+              ].join(' ')}
+            />
+          ) : (
+            <Icon
+              className={[
+                isMobileOrTablet ? 'w-[15px] h-[15px]' : 'w-[18px] h-[18px]',
+                'shrink-0 transition-colors duration-200',
+                tool.accentColor ?? 'text-gray-600',
+              ].join(' ')}
+              strokeWidth={2}
+            />
+          )}
+        </div>
         <span
           className={[
             isMobileOrTablet ? 'text-[9px] leading-tight' : 'text-[11px] leading-tight',
             'text-center px-0.5 max-w-full truncate transition-colors duration-200',
-            isSelected ? 'text-gray-800 font-medium' : 'text-gray-400 font-normal',
-            !isSelected ? 'group-hover:text-gray-500' : '',
+            isSelected ? 'text-gray-900 font-medium' : 'text-gray-500 font-normal',
+            !isSelected ? 'group-hover:text-gray-700' : '',
           ].join(' ')}
         >
           {tool.title}
