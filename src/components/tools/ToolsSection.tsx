@@ -334,7 +334,7 @@ function FeaturedToolCard({
           ].join(' ')}
         />
         {/* Mockup preview area */}
-        <div aria-hidden="true" className={`featured-demo relative flex-1 min-h-0 overflow-visible flex items-center justify-center pb-0 z-20 ${tool.id === 'assistente-ia' ? 'pt-0 px-0' : 'p-2 md:p-3'}`}>
+        <div aria-hidden="true" className={`featured-demo relative flex-1 min-h-0 overflow-visible flex items-center justify-center pb-0 z-20 ${tool.id === 'assistente-ia' ? 'pt-0 px-0' : 'pt-1 px-1 md:pt-1 md:px-1'}`}>
           <div className="featured-demo-content w-full h-full" data-playing={isPlaying}>
             <Mockup isPlaying={isPlaying} onComplete={finishDemo} />
           </div>
