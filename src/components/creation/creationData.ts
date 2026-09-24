@@ -23,27 +23,27 @@ export interface AIModel {
 export const creationPillars: CreationPillar[] = [
   {
     id: 'no-code',
-    eyebrow: 'CRIAÇÃO VISUAL',
+    eyebrow: 'Do simples ao completo',
     eyebrowColor: 'text-[#EEEEEE]',
-    title: 'Construa visualmente. Preserve a estrutura.',
+    title: 'Do simples ao completo',
     description:
-      'Crie sites, páginas, cursos e aplicações sem fechar o caminho para o código.',
-  },
-  {
-    id: 'ai',
-    eyebrow: 'IA CONTEXTUAL',
-    eyebrowColor: 'text-[#EEEEEE]',
-    title: 'IA que conhece o projeto.',
-    description:
-      'Modelos especializados trabalham com os objetivos, decisões e histórico produzidos durante o projeto.',
+      'De uma única página a uma operação completa, sem limites para a complexidade.',
   },
   {
     id: 'code',
-    eyebrow: 'CÓDIGO SEM BARREIRAS',
+    eyebrow: 'Do visual ao código',
     eyebrowColor: 'text-[#EEEEEE]',
-    title: 'Abra o código. Continue o projeto.',
+    title: 'Do visual ao código',
     description:
-      'Inspecione, edite e desenvolva no IDE integrado sem reconstruir o trabalho em outro ambiente.',
+      'Crie visualmente e aprofunde no código, com acesso total a qualquer momento.',
+  },
+  {
+    id: 'ai',
+    eyebrow: 'As melhores IAs, juntas.',
+    eyebrowColor: 'text-[#EEEEEE]',
+    title: 'As melhores IAs, juntas.',
+    description:
+      'Os melhores modelos atuam juntos, cada um no que faz melhor.',
   },
 ]
 

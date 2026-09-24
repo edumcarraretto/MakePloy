@@ -1,161 +1,121 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
-import { Sparkles, Send, User } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const PROMPTS = [
-  "Crie a primeira versão do site da minha empresa",
-  "Estruture um curso com módulos, vídeos e avaliações",
-  "Continue esta página de vendas a partir do projeto atual",
-  "Construa um SaaS com dashboard administrativo",
-  "Transforme este protótipo em uma aplicação funcional"
+const pills = [
+  {
+    label: 'E-book',
+    colors: ['#FDE047', '#FACC15'],
+    position: 'left-[6%] top-[14%] w-[48%] -rotate-[9deg]',
+  },
+  {
+    label: 'Landing Page',
+    colors: ['#FBBF24', '#F59E0B'],
+    position: 'right-[0%] top-[15%] w-[43%] rotate-[8deg]',
+  },
+  {
+    label: 'Site',
+    colors: ['#F472B6', '#EC4899'],
+    position: 'left-[7%] top-[43%] w-[82%] -rotate-[5deg] z-10',
+    featured: true,
+  },
+  {
+    label: 'Curso',
+    colors: ['#60A5FA', '#3B82F6'],
+    position: 'left-[5%] bottom-[2%] w-[45%] rotate-[8deg]',
+  },
+  {
+    label: 'Comunidade',
+    colors: ['#38BDF8', '#0EA5E9'],
+    position: 'right-[4%] bottom-[6%] w-[43%] -rotate-[7deg]',
+  },
 ]
 
-// ─── Component ────────────────────────────────────────────────────────────────
+const extraLabels = [
+  'Área de membros', 'Loja', 'Marketplace', 'Aplicação',
+  'Portal', 'SaaS', 'Plataforma',
+]
+
+const gradients = [
+  ...pills.map((pill) => pill.colors),
+  ['#FB923C', '#F97316'],
+  ['#A78BFA', '#8B5CF6'],
+  ['#6EE7B7', '#34D399'],
+]
 
 export function NoCodeBuilderPreview() {
-  const [promptIndex, setPromptIndex] = useState(0)
   const prefersReducedMotion = useReducedMotion()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { amount: 0.3 })
+  const [rotation, setRotation] = useState(() => ({
+    visible: pills.map((pill) => pill.label),
+    colors: pills.map((_, index) => index),
+    waiting: extraLabels,
+    slot: 0,
+  }))
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPromptIndex((prev) => (prev + 1) % PROMPTS.length)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [])
+    if (!isInView || prefersReducedMotion) return
+
+    const timer = window.setInterval(() => {
+      setRotation(({ visible, colors, waiting, slot }) => {
+        // Exclude the outgoing color too, since both balloons overlap during the transition.
+        const nextColor = gradients
+          .map((_, offset) => (colors[slot] + offset + 1) % gradients.length)
+          .find((color) => !colors.includes(color)) ?? colors[slot]
+
+        return {
+          visible: visible.map((label, index) => index === slot ? waiting[0] : label),
+          colors: colors.map((color, index) => index === slot ? nextColor : color),
+          waiting: [...waiting.slice(1), visible[slot]],
+          slot: (slot + 1) % pills.length,
+        }
+      })
+    }, 2800)
+
+    return () => window.clearInterval(timer)
+  }, [isInView, prefersReducedMotion])
 
   return (
-    <div className="w-full h-full flex overflow-hidden rounded-[20px] border border-white/[0.08] bg-neutral-950">
-      {/* Left Panel: Lovable-style Chat */}
-      <div className="w-[45%] flex flex-col border-r border-white/[0.08] bg-neutral-950">
-        {/* Chat Area */}
-        <div className="flex-1 p-3 flex flex-col gap-3 overflow-hidden">
-          {/* User Message */}
-          <div className="flex gap-2">
-            <div className="w-4 h-4 rounded-full bg-neutral-800 flex items-center justify-center shrink-0">
-              <User className="w-2.5 h-2.5 text-neutral-400" />
-            </div>
-            <div className="flex-1 grid">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={promptIndex}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  transition={{ duration: 0.3 }}
-                  className="col-start-1 row-start-1 h-fit text-[7px] text-neutral-300 leading-relaxed bg-white/[0.06] border border-white/[0.04] p-2.5 rounded-lg rounded-tl-none"
-                >
-                  {PROMPTS[promptIndex]}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
-          
-          {/* AI Message */}
-          <div className="flex gap-2">
-            <div className="w-4 h-4 rounded-full bg-indigo-500/20 flex items-center justify-center shrink-0">
-              <Sparkles className="w-2.5 h-2.5 text-indigo-400" />
-            </div>
-            <div className="text-[7px] text-neutral-400 leading-relaxed pt-1">
+    <div ref={containerRef} className="relative mx-auto h-full w-full max-w-[380px]">
+      {pills.map((pill, i) => {
+        const [surface, accent] = gradients[rotation.colors[i]]
+
+        return (
+        <div key={pill.label} className={`absolute flex items-center justify-center min-w-0 ${pill.featured ? 'h-12 sm:h-14' : 'h-10 sm:h-11'} ${pill.position}`}>
+            <AnimatePresence initial={false}>
               <motion.div
-                initial={{ opacity: 0.4 }}
-                animate={{ opacity: 1 }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0 }
-                    : { duration: 1, repeat: Infinity, repeatType: 'reverse' }
-                }
+                key={rotation.visible[i]}
+                initial={{
+                  opacity: 0,
+                  y: prefersReducedMotion ? 0 : 30,
+                  rotate: prefersReducedMotion ? 0 : -5,
+                  scale: prefersReducedMotion ? 1 : 0.84,
+                  filter: prefersReducedMotion ? 'blur(0px)' : 'blur(2px)',
+                }}
+                animate={{ opacity: 1, y: 0, rotate: 0, scale: 1, filter: 'blur(0px)' }}
+                exit={{
+                  opacity: 0,
+                  y: prefersReducedMotion ? 0 : -28,
+                  rotate: prefersReducedMotion ? 0 : 5,
+                  scale: prefersReducedMotion ? 1 : 0.88,
+                  filter: prefersReducedMotion ? 'blur(0px)' : 'blur(2px)',
+                  transition: { duration: prefersReducedMotion ? 0 : 0.38, ease: [0.4, 0, 1, 1] },
+                }}
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 0.7,
+                  ease: [0.18, 0.9, 0.25, 1.18],
+                  opacity: { duration: prefersReducedMotion ? 0 : 0.2, ease: 'easeOut' },
+                  filter: { duration: prefersReducedMotion ? 0 : 0.3 },
+                }}
+                style={{ background: `linear-gradient(to right, ${surface}, ${accent})` }}
+                className={`absolute h-full w-max px-6 sm:px-8 whitespace-nowrap flex items-center justify-center rounded-full text-center font-semibold leading-tight text-black shadow-[0_8px_20px_-6px_rgba(0,0,0,0.6)] ${pill.featured ? 'text-lg tracking-wide ring-1 ring-white/20 sm:text-xl md:text-lg lg:text-xl' : rotation.visible[i].length > 10 ? 'text-[11px] md:text-[9px] lg:text-[11px]' : 'text-[13px] md:text-[10px] lg:text-[13px]'}`}
               >
-                Construindo no contexto do projeto...
+                {rotation.visible[i]}
               </motion.div>
-            </div>
-          </div>
+            </AnimatePresence>
         </div>
-        
-        {/* Input Area */}
-        <div className="p-2 border-t border-white/[0.06] bg-black/20">
-          <div className="flex items-center bg-white/[0.04] border border-white/[0.08] rounded-full p-1 pl-2.5">
-            <span className="text-[6px] text-neutral-500 flex-1">Descreva a próxima mudança...</span>
-            <div className="w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center">
-              <Send className="w-2 h-2 text-white ml-0.5" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Panel: Preview/Canvas */}
-      <div className="flex-1 bg-black p-3 flex flex-col gap-2.5 relative">
-        {/* Browser Header */}
-        <div className="flex items-center gap-1.5 mb-1">
-          <div className="flex gap-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
-            <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
-            <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
-          </div>
-          <div className="flex-1 h-3.5 rounded bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
-            <span className="text-[5px] text-neutral-500 tracking-wider">localhost:3000</span>
-          </div>
-        </div>
-
-        {/* Generated Canvas Blocks */}
-        <motion.div
-          className="w-full h-10 border border-indigo-500/30 bg-indigo-500/10 rounded-md flex items-center justify-center relative overflow-hidden"
-          initial={{ opacity: 0.5, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={
-            prefersReducedMotion
-              ? { duration: 0 }
-              : { duration: 1, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }
-          }
-        >
-           <span className="text-[6px] text-indigo-400/80 font-bold tracking-widest uppercase">Preview em construção</span>
-           {/* Scanning line effect */}
-           {!prefersReducedMotion && (
-             <motion.div
-               className="absolute top-0 bottom-0 w-[1px] bg-blue-400/60 shadow-[0_0_12px_2px_rgb(22_140_255/0.5)]"
-               animate={{ left: ['-10%', '110%'] }}
-               transition={{ duration: 1.5, ease: 'linear', repeat: Infinity }}
-             />
-           )}
-        </motion.div>
-
-        <div className="w-4/5 h-4 border border-white/[0.06] bg-white/[0.02] rounded-md flex items-center px-2">
-           <div className="w-1/2 h-1 bg-white/10 rounded-full" />
-        </div>
-
-        <div className="flex gap-2 w-full mt-1">
-          <div className="w-1/2 h-7 border border-white/[0.06] bg-white/[0.02] rounded-md" />
-          <div className="w-1/2 h-7 border border-white/[0.06] bg-white/[0.02] rounded-md" />
-        </div>
-        
-        {/* Animated pointer to simulate user/AI interacting */}
-        {!prefersReducedMotion && (
-          <motion.div
-            className="absolute w-3 h-3 pointer-events-none z-10"
-            initial={{ x: 20, y: 30, opacity: 0 }}
-            animate={{
-              x: [20, 60, 40, 20],
-              y: [30, 40, 70, 30],
-              opacity: [0, 1, 1, 0],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="drop-shadow-lg">
-              <path
-                d="M5 3L19 12L12 13L9 20L5 3Z"
-                fill="white"
-                stroke="rgb(22 140 255 / 0.6)"
-                strokeWidth="1.5"
-              />
-            </svg>
-          </motion.div>
-        )}
-      </div>
+        )
+      })}
     </div>
   )
 }

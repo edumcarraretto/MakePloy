@@ -53,7 +53,11 @@ export function TechnologyPillarCard({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-20px' }}
           transition={{ duration: 0.45, delay: 0.2 + 0.1 * index }}
-          className="mt-auto h-[190px] sm:h-[210px] md:h-[220px] rounded-[16px] overflow-hidden group-hover:-translate-y-0.5 transition-transform duration-300"
+          className={`mt-auto h-[190px] sm:h-[210px] md:h-[220px] ${
+            pillar.id === 'no-code'
+              ? '-mx-5 -mb-5 sm:-mx-6 sm:-mb-6 overflow-visible'
+              : 'rounded-[16px] overflow-hidden group-hover:-translate-y-0.5 transition-transform duration-300'
+          }`}
         >
           {children}
         </motion.div>
