@@ -3,7 +3,7 @@ import { FaApple, FaWindows, FaGooglePlay } from 'react-icons/fa'
 import { creationPillars } from '@/components/creation/creationData'
 import { TechnologyPillarCard } from '@/components/creation/TechnologyPillarCard'
 import { NoCodeBuilderPreview } from '@/components/creation/NoCodeBuilderPreview'
-import { AIModelsPreview } from '@/components/creation/AIModelsPreview'
+import { VisualToCodePreview } from '@/components/creation/VisualToCodePreview'
 import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
 import { CreationShowcase } from '@/components/showcase/CreationShowcase'
 import { GradientText } from '@/components/text/GradientText'
@@ -12,7 +12,7 @@ import { GradientText } from '@/components/text/GradientText'
 
 const PILLAR_PREVIEWS: Record<string, React.ReactNode> = {
   'no-code': <NoCodeBuilderPreview />,
-  ai: <AIModelsPreview />,
+  ai: <VisualToCodePreview />,
   code: <IntegratedCodeEditorPreview />,
 }
 
