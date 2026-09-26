@@ -1,6 +1,6 @@
 import { useId, useEffect, useRef, useState } from 'react'
 import { motion, useInView, useReducedMotion } from 'motion/react'
-import { Code2, File, Folder, ChevronRight, FileCode2, Atom, Eye } from 'lucide-react'
+import { Code2, Eye } from 'lucide-react'
 
 function highlightCode(code: string) {
   let res = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -453,7 +453,7 @@ export function VisualToCodePreview() {
     })
     stepCharEnds.push(charsSoFar)
   })
-  const totalChars = charsSoFar
+  // totalChars removed due to not being used
 
   // Visual animation keeps running even when showCode is active
   useEffect(() => {
