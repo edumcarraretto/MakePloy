@@ -23,11 +23,11 @@ export interface AIModel {
 export const creationPillars: CreationPillar[] = [
   {
     id: 'no-code',
-    eyebrow: 'CRIAÇÃO VISUAL',
+    eyebrow: 'DO SIMPLES AO COMPLETO',
     eyebrowColor: 'text-[#EEEEEE]',
-    title: 'CRIAÇÃO VISUAL',
+    title: 'DO SIMPLES AO COMPLETO',
     description:
-      'Crie sites, páginas, cursos e aplicações sem fechar o caminho para o código.',
+      'De uma única página a uma operação completa, sem limites para a complexidade.',
   },
   {
     id: 'ai',

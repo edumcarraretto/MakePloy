@@ -53,17 +53,20 @@ export function TechnologyPillarCard({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-20px' }}
           transition={{ duration: 0.45, delay: 0.2 + 0.1 * index }}
-          className={`mt-auto h-[190px] shrink-0 sm:h-[210px] md:h-[220px] ${
+          className={`mt-auto h-[190px] shrink-0 sm:h-[205px] md:h-[215px] ${
             pillar.id === 'no-code'
               ? '-mx-5 -mb-5 sm:-mx-6 sm:-mb-6 overflow-visible'
               : pillar.id === 'ai'
-                ? '-mx-5 -mb-5 sm:-mx-6 sm:-mb-6 rounded-b-[22px] sm:rounded-b-[26px] overflow-hidden'
+                ? '-mx-5 -mb-5 sm:-mx-6 sm:-mb-6 rounded-b-[22px] sm:rounded-b-[26px] overflow-visible'
                 : 'rounded-[16px] overflow-hidden group-hover:-translate-y-0.5 transition-transform duration-300'
           }`}
         >
           {children}
         </motion.div>
       </div>
+
+      {/* Bottom lo-fade — content dissolves into card background */}
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 z-20 bg-gradient-to-t from-black via-black/70 to-transparent rounded-b-[22px] sm:rounded-b-[26px]" />
     </motion.article>
   )
 }

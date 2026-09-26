@@ -1,60 +1,132 @@
 import { useId, useEffect, useRef, useState } from 'react'
 import { motion, useInView, useReducedMotion } from 'motion/react'
-import { Code2, File } from 'lucide-react'
+import { Code2, File, Folder, ChevronRight, FileCode2, Atom, Eye } from 'lucide-react'
+
+function highlightCode(code: string) {
+  let res = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  res = res.replace(/"([^"]*)"/g, '___STR_$1___');
+  res = res.replace(/\b(export|default|function|return|import|from)\b/g, '___KW_$1___');
+  res = res.replace(/&lt;([A-Z]\w+)/g, '&lt;___COMP_$1___');
+  res = res.replace(/&lt;\/([A-Z]\w+)&gt;/g, '&lt;/___COMP_$1___&gt;');
+  res = res.replace(/&lt;([a-z]+)/g, '&lt;___TAG_$1___');
+  res = res.replace(/&lt;\/([a-z]+)&gt;/g, '&lt;/___TAG_$1___&gt;');
+  res = res.replace(/ ([a-zA-Z]+)=/g, ' ___PROP_$1___=');
+  res = res.replace(/___KW_function___ ([A-Z]\w+)/g, '___KW_function___ ___COMP_$1___');
+  
+  res = res.replace(/___STR_(.*?)___/g, '<span class="text-green-300">"$1"</span>');
+  res = res.replace(/___KW_([a-z]+)___/g, '<span class="text-pink-400">$1</span>');
+  res = res.replace(/___COMP_([A-Za-z0-9]+)___/g, '<span class="text-amber-200">$1</span>');
+  res = res.replace(/___TAG_([a-z]+)___/g, '<span class="text-blue-300">$1</span>');
+  res = res.replace(/___PROP_([a-zA-Z]+)___/g, '<span class="text-sky-300">$1</span>');
+  
+  return res;
+}
+
+// ─── File Icon Helper ─────────────────────────────────────────────────────────
+
+function FileIcon({ name, isDir, size = 14 }: { name: string; isDir?: boolean; size?: number }) {
+  const wrap = (svg: React.ReactNode) => <span className="shrink-0 inline-flex items-center justify-center" style={{ width: size, height: size }}>{svg}</span>
+
+  if (isDir) {
+    return wrap(
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className="text-blue-500">
+        <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+      </svg>
+    )
+  }
+  
+  if (name.endsWith('.css')) {
+    return wrap(
+      <svg width={size} height={size} viewBox="0 0 128 128">
+        <path fill="#1572B6" d="M14.05 15.65l8.63 96.88L64 124l41.34-11.47 8.61-96.88H14.05z"/>
+        <path fill="#33A9DC" d="M64 114.7l31.25-8.68L101.46 25H64v89.7z"/>
+        <path fill="#FFF" d="M64 48H39l-1.33-14.96H64V48zm0 29.89H41.52l1.63 18.3 20.85 5.79V102l-28.79-8-1.03-11.53H64v-14.58z"/>
+        <path fill="#EBEBEB" d="M64 48h25l1.33-14.96H64V48zm0 29.89V63.31l12.72-.01-1.02-11.43H64V37.91h37.49l-3.32 37.11-20.86 5.78v-11.66z"/>
+      </svg>
+    )
+  }
+
+  // React TSX
+  if (name.endsWith('.tsx') || name.endsWith('.ts')) {
+    return wrap(
+      <svg width={size} height={size} viewBox="-11.5 -10.23174 23 20.46348" className="text-cyan-400">
+        <circle cx="0" cy="0" r="2.05" fill="currentColor"/>
+        <g stroke="currentColor" strokeWidth="2.5" fill="none">
+          <ellipse rx="11" ry="4.2"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+        </g>
+      </svg>
+    )
+  }
+
+  return wrap(
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-500">
+      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>
+    </svg>
+  )
+}
 
 // ─── Code lines shown in sync ─────────────────────────────────────────────────
 
 const codeElements = [
+  // --- App.tsx ---
   // 1. nB
-  { name: 'Page Config', code: 'export default function Page() {\n  return (\n    <main className="flex min-h-screen flex-col">', color: 'text-neutral-300' },
+  { file: 'App.tsx', name: 'Page Config', code: 'export default function App() {\n  return (\n    <main className="flex min-h-screen flex-col">', color: 'text-neutral-300' },
   // 2. nL
-  { name: 'Logo', code: '      <nav className="flex items-center justify-between">\n        <Logo name="studio" />', color: 'text-violet-300' },
+  { file: 'App.tsx', name: 'Logo', code: '      <nav className="flex items-center justify-between">\n        <Logo name="studio" />', color: 'text-violet-300' },
   // 3. nM
-  { name: 'Menu', code: '        <Menu items={["Products", "Pricing"]} />', color: 'text-pink-300' },
+  { file: 'App.tsx', name: 'Menu', code: '        <Menu items={["Products", "Pricing"]} />', color: 'text-pink-300' },
   // 4. nC
-  { name: 'Nav CTA', code: '        <Button variant="outline">Login</Button>\n      </nav>\n', color: 'text-fuchsia-300' },
+  { file: 'App.tsx', name: 'Nav CTA', code: '        <Button variant="outline">Login</Button>\n      </nav>\n      <Hero />\n      <Features />\n      <Footer />\n    </main>\n  )\n}', color: 'text-fuchsia-300' },
+  
+  // --- Hero.tsx ---
   // 5. hT
-  { name: 'Hero Title', code: '      <section className="mt-20 text-center">\n        <h1 className="text-5xl font-bold">\n          Ideias ganham vida.\n        </h1>', color: 'text-amber-300' },
+  { file: 'Hero.tsx', name: 'Hero Title', code: 'export function Hero() {\n  return (\n    <>\n      <section className="mt-20 text-center">\n        <h1 className="text-5xl font-bold">\n          Ideias ganham vida.\n        </h1>', color: 'text-amber-300' },
   // 6. hS
-  { name: 'Hero Subtitle', code: '        <p className="mt-4 text-lg text-neutral-400">\n          Comece agora mesmo.\n        </p>', color: 'text-emerald-300' },
+  { file: 'Hero.tsx', name: 'Hero Subtitle', code: '        <p className="mt-4 text-lg text-neutral-400">\n          Comece agora mesmo.\n        </p>', color: 'text-emerald-300' },
   // 7. hB
-  { name: 'Hero Button', code: '        <Button size="lg" className="mt-8">\n          Começar ↗\n        </Button>\n      </section>\n', color: 'text-violet-400' },
+  { file: 'Hero.tsx', name: 'Hero Button', code: '        <Button size="lg" className="mt-8">\n          Começar ↗\n        </Button>\n      </section>\n', color: 'text-violet-400' },
   // 8. gB
-  { name: 'Graphic BG', code: '      <Section bg="gradient" className="py-24">', color: 'text-sky-300' },
+  { file: 'Hero.tsx', name: 'Graphic BG', code: '      <Section bg="gradient" className="py-24">', color: 'text-sky-300' },
   // 9. gI
-  { name: 'Graphic', code: '        <Image src="/hero-graphic.webp" priority />\n      </Section>\n', color: 'text-sky-200' },
+  { file: 'Hero.tsx', name: 'Graphic', code: '        <Image src="/hero-graphic.webp" priority />\n      </Section>\n    </>\n  )\n}\n', color: 'text-sky-200' },
+
+  // --- Card.tsx ---
   // 10. f1B
-  { name: 'Card 1', code: '      <Grid cols={3} gap={6} className="px-8">\n        <Card variant="green">', color: 'text-emerald-400' },
+  { file: 'Card.tsx', name: 'Card 1', code: 'export function Features() {\n  return (\n      <Grid cols={3} gap={6} className="px-8">\n        <Card variant="green">', color: 'text-emerald-400' },
   // 11. f1C
-  { name: 'Card 1 Content', code: '          <Content icon="zap" title="Rápido" />\n        </Card>', color: 'text-emerald-300' },
+  { file: 'Card.tsx', name: 'Card 1 Content', code: '          <Content icon="zap" title="Rápido" />\n        </Card>', color: 'text-emerald-300' },
   // 12. f2B
-  { name: 'Card 2', code: '        <Card variant="violet">', color: 'text-violet-400' },
+  { file: 'Card.tsx', name: 'Card 2', code: '        <Card variant="violet">', color: 'text-violet-400' },
   // 13. f2C
-  { name: 'Card 2 Content', code: '          <Content icon="shield" title="Seguro" />\n        </Card>', color: 'text-violet-300' },
+  { file: 'Card.tsx', name: 'Card 2 Content', code: '          <Content icon="shield" title="Seguro" />\n        </Card>', color: 'text-violet-300' },
   // 14. f3B
-  { name: 'Card 3', code: '        <Card variant="amber">', color: 'text-amber-400' },
+  { file: 'Card.tsx', name: 'Card 3', code: '        <Card variant="amber">', color: 'text-amber-400' },
   // 15. f3C
-  { name: 'Card 3 Content', code: '          <Content icon="star" title="Premium" />\n        </Card>\n      </Grid>\n', color: 'text-amber-300' },
+  { file: 'Card.tsx', name: 'Card 3 Content', code: '          <Content icon="star" title="Premium" />\n        </Card>\n      </Grid>\n  )\n}\n', color: 'text-amber-300' },
+
+  // --- Footer.tsx ---
   // 16. ctB
-  { name: 'CTA Banner', code: '      <Banner variant="dark" className="mt-32">', color: 'text-indigo-400' },
+  { file: 'Footer.tsx', name: 'CTA Banner', code: 'export function Footer() {\n  return (\n    <>\n      <Banner variant="dark" className="mt-32">', color: 'text-indigo-400' },
   // 17. ctT
-  { name: 'CTA Text', code: '        <h2 className="text-3xl">Pronto para escalar?</h2>', color: 'text-indigo-300' },
+  { file: 'Footer.tsx', name: 'CTA Text', code: '        <h2 className="text-3xl">Pronto para escalar?</h2>', color: 'text-indigo-300' },
   // 18. ctA
-  { name: 'CTA Button', code: '        <Button>Assine já</Button>\n      </Banner>\n', color: 'text-indigo-200' },
+  { file: 'Footer.tsx', name: 'CTA Button', code: '        <Button>Assine já</Button>\n      </Banner>\n', color: 'text-indigo-200' },
   // 19. t1B
-  { name: 'Testimonial 1', code: '      <Testimonials className="py-20">\n        <TestimonialCard author="Maria">', color: 'text-teal-400' },
+  { file: 'Footer.tsx', name: 'Testimonial 1', code: '      <Testimonials className="py-20">\n        <TestimonialCard author="Maria">', color: 'text-teal-400' },
   // 20. t1C
-  { name: 'Testimonial 1 C', code: '          <Rating value={5} />\n        </TestimonialCard>', color: 'text-teal-300' },
+  { file: 'Footer.tsx', name: 'Testimonial 1 C', code: '          <Rating value={5} />\n        </TestimonialCard>', color: 'text-teal-300' },
   // 21. t2B
-  { name: 'Testimonial 2', code: '        <TestimonialCard author="João">', color: 'text-cyan-400' },
+  { file: 'Footer.tsx', name: 'Testimonial 2', code: '        <TestimonialCard author="João">', color: 'text-cyan-400' },
   // 22. t2C
-  { name: 'Testimonial 2 C', code: '          <Rating value={5} />\n        </TestimonialCard>\n      </Testimonials>\n', color: 'text-cyan-300' },
+  { file: 'Footer.tsx', name: 'Testimonial 2 C', code: '          <Rating value={5} />\n        </TestimonialCard>\n      </Testimonials>\n', color: 'text-cyan-300' },
   // 23. ftB
-  { name: 'Footer', code: '      <footer className="border-t border-white/10">\n        <div className="flex justify-between">', color: 'text-neutral-400' },
+  { file: 'Footer.tsx', name: 'Footer', code: '      <footer className="border-t border-white/10">\n        <div className="flex justify-between">', color: 'text-neutral-400' },
   // 24. ftL
-  { name: 'Footer Left', code: '          <FooterLinks />', color: 'text-neutral-500' },
+  { file: 'Footer.tsx', name: 'Footer Left', code: '          <FooterLinks />', color: 'text-neutral-500' },
   // 25. ftR
-  { name: 'Footer Right', code: '          <SocialIcons />\n        </div>\n      </footer>\n    </main>\n  )\n}', color: 'text-neutral-500' },
+  { file: 'Footer.tsx', name: 'Footer Right', code: '          <SocialIcons />\n        </div>\n      </footer>\n    </>\n  )\n}', color: 'text-neutral-500' },
 ] as const
 
 // ─── Flying-Pieces Visual Mockup (dark theme) ─────────────────────────────────
@@ -351,62 +423,220 @@ function DarkAssemblyMockup({ stage, cycle, reducedMotion }: { stage: number; cy
 
 export function VisualToCodePreview() {
   const ref = useRef<HTMLDivElement>(null)
+  const codeScrollRef = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { amount: 0.4 })
   const reducedMotion = useReducedMotion()
   const [{ step, cycle }, setPlayback] = useState({ step: 0, cycle: 0 })
   const [showCode, setShowCode] = useState(false)
+  const [typedChars, setTypedChars] = useState(0)
   const count = codeElements.length
   const stage = reducedMotion ? count : step
 
+  // Flatten all code into individual lines for character-by-character rendering
+  const allFlatLines: { text: string; number: number; file: string; startChar: number; endChar: number }[] = []
+  let charsSoFar = 0
+  let currentFile = ''
+  let fileLineCounter = 1
+
+  // Also track where each codeElement ends (for step → char mapping)
+  const stepCharEnds: number[] = []
+
+  codeElements.forEach((element) => {
+    element.code.split('\n').forEach((line) => {
+      const len = line.length === 0 ? 1 : line.length
+      if (currentFile !== element.file) {
+        currentFile = element.file
+        fileLineCounter = 1
+      }
+      allFlatLines.push({ text: line, number: fileLineCounter++, file: element.file, startChar: charsSoFar, endChar: charsSoFar + len })
+      charsSoFar += len
+    })
+    stepCharEnds.push(charsSoFar)
+  })
+  const totalChars = charsSoFar
+
+  // Visual animation keeps running even when showCode is active
   useEffect(() => {
-    if (!inView || reducedMotion || showCode) return
+    if (!inView || reducedMotion) return
     const timer = window.setTimeout(() => setPlayback((current) => (
       current.step === count
         ? { step: 0, cycle: current.cycle + 1 }
         : { ...current, step: current.step + 1 }
     )), step === count ? 2400 : 950)
     return () => window.clearTimeout(timer)
-  }, [inView, reducedMotion, showCode, step, count])
+  }, [inView, reducedMotion, step, count])
 
-  let lineNumber = 0
-  const visibleCode = codeElements.map((element) => ({
-    ...element,
-    lines: element.code.split('\n').map((line) => ({ text: line, number: ++lineNumber })),
-  }))
+  // Reset typing when loop resets
+  useEffect(() => {
+    if (step === 0) setTypedChars(0)
+  }, [step, cycle])
+
+  // Character-by-character typing — driven by the visual step
+  // The target chars = how many chars should be visible based on current step
+  useEffect(() => {
+    if (!showCode || reducedMotion) return
+    
+    // Target: all chars up to and including the current step's code
+    const targetChars = step > 0 ? (stepCharEnds[step - 1] ?? 0) : 0
+    
+    if (typedChars >= targetChars) return // already caught up
+    
+    const timer = setTimeout(() => {
+      setTypedChars(prev => prev + Math.floor(Math.random() * 3) + 1)
+    }, Math.random() * 25 + 10)
+    return () => clearTimeout(timer)
+  }, [showCode, reducedMotion, typedChars, step, stepCharEnds])
+
+  // Auto-scroll as new lines appear
+  useEffect(() => {
+    if (codeScrollRef.current) {
+      codeScrollRef.current.scrollTo({
+        top: codeScrollRef.current.scrollHeight,
+        behavior: reducedMotion ? 'instant' : 'smooth'
+      })
+    }
+  }, [typedChars, reducedMotion])
 
   const panelPose = (front: boolean) => ({
     x: front ? 0 : 14,
-    y: front ? 32 : 0,
-    rotateY: front ? -2 : -7,
-    rotateX: front ? 0 : 3,
-    rotateZ: front ? -1 : 2,
-    scale: front ? 1 : 0.96,
+    y: front ? 20 : -12,
+    rotateY: front ? 0 : -12,
+    rotateX: front ? 0 : 4,
+    rotateZ: front ? 0 : 5,
+    scale: front ? 1 : 0.94,
   })
 
   return (
-    <div ref={ref} role="group" aria-label="Painéis de criação visual e código em camadas" className="relative h-full overflow-hidden [perspective:900px]">
+    <div ref={ref} role="group" aria-label="Painéis de criação visual e código em camadas" className="relative h-full overflow-visible [perspective:900px]">
       <motion.div
         initial={false}
         animate={panelPose(showCode)}
         transition={{ duration: reducedMotion ? 0 : 0.5, ease: 'easeInOut' }}
         style={{ zIndex: showCode ? 2 : 1, transformOrigin: 'center top' }}
-        className="absolute bottom-11 left-3 right-7 top-2 flex flex-col overflow-hidden rounded-xl border border-violet-300/25 bg-[#101018] shadow-[0_12px_26px_-8px_rgba(0,0,0,0.85)]"
+        className="absolute bottom-6 left-3 right-7 -top-1 flex flex-col overflow-hidden rounded-xl border border-white/[0.12] bg-neutral-950 shadow-[0_12px_26px_-8px_rgba(0,0,0,0.85)]"
       >
-        <button type="button" aria-label="Trazer o código para frente" aria-pressed={showCode} onClick={() => setShowCode(true)} className="flex h-7 w-full shrink-0 items-center gap-2 border-b border-white/10 bg-white/[0.03] px-3 text-left text-[9px] text-neutral-300 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-violet-300">
-          <File size={10} className="text-violet-300" /> Page.tsx
-          <span className="ml-auto h-1 w-1 rounded-full bg-emerald-400" />
-        </button>
-        <div role="region" aria-label="Código de exemplo da página" className={`min-h-0 flex-1 overflow-y-auto p-2 font-mono text-[8px] leading-[12px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${showCode ? '' : 'pointer-events-none'}`}>
-          {visibleCode.map((element) => (
-            <div key={element.name}>
-              {element.lines.map((line) => (
-                <div key={line.number} className="flex gap-2">
-                  <span className="w-4 shrink-0 text-right text-neutral-600">{line.number}</span>
-                  <span className={`min-w-0 whitespace-pre-wrap break-words ${element.color}`}>{line.text}</span>
-                </div>
-              ))}
-            </div>
-          ))}
+        {/* Code Panel Header */}
+        <div className="flex h-8 w-full shrink-0 items-center gap-2 border-b border-white/[0.08] bg-neutral-900 px-2">
+          <button type="button" aria-label="Abrir ambiente de código" aria-pressed={showCode} onClick={() => setShowCode(true)} className="flex min-w-0 flex-1 items-center gap-2 rounded text-left focus-visible:outline-2 focus-visible:outline-blue-400">
+            <img src="/nova-logo-128.webp" alt="" width={20} height={20} className="h-5 w-5 shrink-0 object-contain" />
+            <span className="flex h-[22px] min-w-0 flex-1 items-center justify-center rounded-md border border-white/5 bg-neutral-950 px-2 shadow-inner">
+              <span className="truncate text-[8px] font-medium tracking-[0.01em] text-neutral-400">meu-app.makeploy.dev/code</span>
+            </span>
+          </button>
+          <button type="button" aria-label="Trazer a criação visual para frente" aria-pressed={!showCode} onClick={() => setShowCode(false)} className="flex h-[22px] shrink-0 items-center justify-center gap-1 rounded-md border border-transparent bg-white px-2.5 text-[9px] font-semibold text-black shadow-sm transition-colors hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white">
+            <Eye size={11} strokeWidth={2} /> Visual
+          </button>
+        </div>
+
+        {/* Code Workspace */}
+        <div className="flex flex-1 min-h-0">
+          {/* Sidebar */}
+          <div className="w-[110px] shrink-0 border-r border-white/5 bg-neutral-950 flex flex-col hidden sm:flex" onClick={() => setShowCode(true)}>
+            <div className="px-2 py-1.5 text-[8px] font-semibold text-neutral-500 tracking-wider">ARQUIVOS</div>
+          <div className="flex-1 overflow-y-auto overflow-x-hidden text-[9px] py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {(() => {
+              const activeFile = allFlatLines.find(l => typedChars >= l.startChar && typedChars < l.endChar)?.file || allFlatLines[allFlatLines.length - 1].file
+              return (
+                <>
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 text-neutral-300 whitespace-nowrap">
+                    <FileIcon name="src" isDir size={11} /> src/
+                  </div>
+                  
+                  <div className={`flex items-center gap-1.5 px-2 py-0.5 pl-5 whitespace-nowrap ${activeFile === 'App.tsx' ? 'bg-white/5 text-neutral-100 font-medium' : 'text-neutral-500 hover:text-neutral-300'}`}>
+                    <FileIcon name="App.tsx" size={11} /> App.tsx
+                  </div>
+
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 pl-5 text-neutral-300 whitespace-nowrap">
+                    <FileIcon name="components" isDir size={11} /> components/
+                  </div>
+                  
+                  <div className={`flex items-center gap-1.5 px-2 py-0.5 pl-8 whitespace-nowrap ${activeFile === 'Hero.tsx' ? 'bg-white/5 text-neutral-100 font-medium' : 'text-neutral-500 hover:text-neutral-300'}`}>
+                    <FileIcon name="Hero.tsx" size={11} /> Hero.tsx
+                  </div>
+
+                  <div className={`flex items-center gap-1.5 px-2 py-0.5 pl-8 whitespace-nowrap ${activeFile === 'Card.tsx' ? 'bg-white/5 text-neutral-100 font-medium' : 'text-neutral-500 hover:text-neutral-300'}`}>
+                    <FileIcon name="Card.tsx" size={11} /> Card.tsx
+                  </div>
+                  
+                  <div className={`flex items-center gap-1.5 px-2 py-0.5 pl-8 whitespace-nowrap ${activeFile === 'Footer.tsx' ? 'bg-white/5 text-neutral-100 font-medium' : 'text-neutral-500 hover:text-neutral-300'}`}>
+                    <FileIcon name="Footer.tsx" size={11} /> Footer.tsx
+                  </div>
+
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 pl-5 text-neutral-300 whitespace-nowrap">
+                    <FileIcon name="styles" isDir size={11} /> styles/
+                  </div>
+                  
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 pl-8 text-neutral-500 hover:text-neutral-300 whitespace-nowrap">
+                    <FileIcon name="index.css" size={11} /> index.css
+                  </div>
+
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 pl-5 text-neutral-300 whitespace-nowrap">
+                    <FileIcon name="pages" isDir size={11} /> pages/
+                  </div>
+                  
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 pl-8 text-neutral-500 hover:text-neutral-300 whitespace-nowrap">
+                    <FileIcon name="Home.tsx" size={11} /> Home.tsx
+                  </div>
+                </>
+              )
+            })()}
+          </div>
+        </div>
+
+        {/* Main Editor Area */}
+        <div className="flex-1 flex flex-col min-w-0 bg-black">
+          {/* Tabs */}
+          <div className="flex bg-neutral-950 border-b border-white/5 shrink-0" onClick={() => setShowCode(true)}>
+             {(() => {
+               const activeFile = allFlatLines.find(l => typedChars >= l.startChar && typedChars < l.endChar)?.file || allFlatLines[allFlatLines.length - 1].file
+               const files = ['App.tsx', 'Hero.tsx', 'Card.tsx', 'Footer.tsx']
+               const activeIdx = files.indexOf(activeFile)
+               const prevFile = activeIdx > 0 ? files[activeIdx - 1] : files[files.length - 1]
+               const visibleTabs = activeIdx === 0 ? ['index.css', 'App.tsx'] : [prevFile, activeFile]
+               
+               return visibleTabs.map(file => {
+                 const isActive = activeFile === file
+                 return (
+                   <div key={file} className={`flex items-center gap-2 px-4 py-2 text-[10px] cursor-pointer ${isActive ? 'text-white bg-black border-b-[2px] border-b-blue-500' : 'text-neutral-500 border-r border-white/5 hover:bg-white/5'}`}>
+                      <FileIcon name={file} size={12} /> {file}
+                   </div>
+                 )
+               })
+             })()}
+          </div>
+          
+          {/* Code Area */}
+          <div ref={codeScrollRef} role="region" aria-label="Código de exemplo da página" className={`flex-1 overflow-y-auto py-2 font-mono text-[9px] leading-[16px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${showCode ? '' : 'pointer-events-none'}`}>
+             {(() => {
+               const activeFile = allFlatLines.find(l => typedChars >= l.startChar && typedChars < l.endChar)?.file || allFlatLines[allFlatLines.length - 1].file
+               const activeLines = allFlatLines.filter(l => l.file === activeFile)
+               
+               return activeLines.map((line) => {
+                 // Skip lines not yet reached
+                 if (typedChars <= line.startChar) return null
+                 // How many chars of this line are visible
+                 const visibleCount = Math.min(typedChars - line.startChar, line.text.length)
+                 const visibleText = line.text.length === 0 ? '' : line.text.slice(0, visibleCount)
+                 const isComplete = visibleCount >= line.text.length
+                 return (
+                   <div key={line.number} className="flex gap-2 px-2 hover:bg-white/5">
+                     <span className="w-4 shrink-0 text-right text-neutral-600 select-none">{line.number}</span>
+                     <span className="min-w-0 whitespace-pre-wrap break-words text-neutral-300">
+                       <span dangerouslySetInnerHTML={{ __html: highlightCode(visibleText) }} />
+                       {!isComplete && <span className="inline-block w-[6px] h-[12px] bg-neutral-300 ml-[2px] align-middle animate-pulse" />}
+                     </span>
+                   </div>
+                 )
+               })
+             })()}
+          </div>
+          
+          {/* Status Bar */}
+          <div className="h-5 shrink-0 bg-neutral-950 border-t border-white/5 flex items-center justify-between px-3 text-[8px] text-neutral-500">
+             <div className="flex gap-3"><span>TypeScript React</span> <span>UTF-8</span></div>
+            <div className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Salvo</div>
+          </div>
+        </div>
         </div>
       </motion.div>
       <motion.div
@@ -414,7 +644,7 @@ export function VisualToCodePreview() {
         animate={panelPose(!showCode)}
         transition={{ duration: reducedMotion ? 0 : 0.5, ease: 'easeInOut' }}
         style={{ zIndex: showCode ? 1 : 2, transformOrigin: 'center top' }}
-        className="absolute bottom-11 left-3 right-7 top-2 flex flex-col overflow-hidden rounded-xl border border-white/15 bg-black shadow-[0_14px_28px_-8px_rgba(0,0,0,0.9)]"
+        className="absolute bottom-6 left-3 right-7 -top-1 flex flex-col overflow-hidden rounded-xl border border-white/15 bg-black shadow-[0_14px_28px_-8px_rgba(0,0,0,0.9)]"
       >
         <div className="flex h-8 w-full shrink-0 items-center gap-2 border-b border-neutral-200 bg-white px-2">
           <button type="button" aria-label="Trazer a criação visual para frente" aria-pressed={!showCode} onClick={() => setShowCode(false)} className="flex min-w-0 flex-1 items-center gap-2 rounded text-left focus-visible:outline-2 focus-visible:outline-violet-300">
