@@ -4,7 +4,7 @@ import { creationPillars } from '@/components/creation/creationData'
 import { TechnologyPillarCard } from '@/components/creation/TechnologyPillarCard'
 import { NoCodeBuilderPreview } from '@/components/creation/NoCodeBuilderPreview'
 import { VisualToCodePreview } from '@/components/creation/VisualToCodePreview'
-import { IntegratedCodeEditorPreview } from '@/components/creation/IntegratedCodeEditorPreview'
+import { AIConstellationPreview } from '@/components/creation/AIConstellationPreview'
 import { CreationShowcase } from '@/components/showcase/CreationShowcase'
 import { GradientText } from '@/components/text/GradientText'
 
@@ -13,9 +13,8 @@ import { GradientText } from '@/components/text/GradientText'
 const PILLAR_PREVIEWS: Record<string, React.ReactNode> = {
   'no-code': <NoCodeBuilderPreview />,
   ai: <VisualToCodePreview />,
-  code: <IntegratedCodeEditorPreview />,
+  code: <AIConstellationPreview />,
 }
-
 
 // ─── Section ──────────────────────────────────────────────────────────────────
 
@@ -60,10 +59,10 @@ export function CreationTechnologySection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.12] tracking-tight"
           >
-            Visual por escolha.
+            Um ecossistema completo
             <br className="hidden sm:block" />{' '}
             <GradientText inverse className="font-bold">
-              Código por controle.
+              nas suas mãos
             </GradientText>
           </motion.h2>
 
@@ -75,7 +74,7 @@ export function CreationTechnologySection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-5 text-sm sm:text-base text-neutral-400 max-w-xl mx-auto leading-relaxed"
           >
-            Comece pela interface. Use IA para avançar. Abra o IDE quando precisar de profundidade.
+            O melhor da tecnologia atual, reunido para você criar, evoluir e transformar seu projeto.
           </motion.p>
 
           {/* Tech badges line */}
@@ -108,7 +107,7 @@ export function CreationTechnologySection() {
 
         {/* ── Cards grid ──────────────────────────── */}
         <div className="relative z-20 mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
             {creationPillars.map((pillar, i) => (
               <TechnologyPillarCard
                 key={pillar.id}

@@ -39,11 +39,11 @@ export const creationPillars: CreationPillar[] = [
   },
   {
     id: 'code',
-    eyebrow: 'CÓDIGO SEM BARREIRAS',
+    eyebrow: 'AS MELHORES IAS, JUNTAS.',
     eyebrowColor: 'text-[#EEEEEE]',
-    title: 'CÓDIGO SEM BARREIRAS',
+    title: 'As melhores IAs, juntas.',
     description:
-      'Inspecione, edite e desenvolva no IDE integrado sem reconstruir o trabalho em outro ambiente.',
+      'Os melhores modelos atuam juntos, cada um no que faz melhor.',
   },
 ]
 
