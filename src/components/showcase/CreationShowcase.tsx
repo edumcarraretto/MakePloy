@@ -5,7 +5,7 @@ import { ShowcaseCard } from '@/components/showcase/ShowcaseCard'
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function CreationShowcase() {
-  // A sequência contínua (H, V, H, V, H, V) é definida pela iteração simples.
+  // A sequência contínua (V, H, V, H, V, H, V, H) é definida pela iteração simples.
   // O MarqueeSet contém a sequência inteira. O pr-* final (padding-right) 
   // garante que o espaço até o início do loop repetido seja perfeitamente 
   // igual ao gap entre os cards internos, zerando as quebras de padrão.
@@ -15,7 +15,7 @@ export function CreationShowcase() {
         <ShowcaseCard 
           key={project.id} 
           project={project} 
-          layout={index % 2 === 0 ? 'horizontal' : 'vertical'} 
+          layout={index % 2 === 0 ? 'vertical' : 'horizontal'}
         />
       ))}
     </div>

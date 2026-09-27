@@ -18,17 +18,20 @@ export function ShowcaseCard({ project, layout }: ShowcaseCardProps) {
         showcase-card relative overflow-hidden bg-neutral-950 h-full
         ${isHorizontal 
           ? 'flex-none w-[75vw] sm:w-[45vw] md:w-[38vw] max-w-[700px]' 
-          : 'flex-none w-fit'
+          : 'flex-none w-auto'
         }
       `}
-      style={{ borderRadius: '16px' }}
+      style={{
+        borderRadius: '16px',
+        aspectRatio: isHorizontal ? undefined : `${project.width} / ${project.height}`,
+      }}
     >
       <img
         src={project.image}
         alt={`${project.title} — ${project.category}`}
-        width={941}
-        height={1672}
-        className={isHorizontal ? 'absolute inset-0 w-full h-full object-cover' : 'block h-full w-auto object-cover'}
+        width={project.width}
+        height={project.height}
+        className="absolute inset-0 w-full h-full object-cover"
         style={{
           objectPosition: project.objectPosition ?? 'top center',
         }}

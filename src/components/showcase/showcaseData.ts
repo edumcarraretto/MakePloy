@@ -5,6 +5,8 @@ export interface ShowcaseProject {
   title: string
   category: string
   image: string
+  width: number
+  height: number
   objectPosition?: string
 }
 
@@ -12,39 +14,67 @@ export interface ShowcaseProject {
 
 export const allProjects: ShowcaseProject[] = [
   {
-    id: 'lumen-deep',
-    title: 'Lumen Deep',
+    id: 'luma',
+    title: 'Luma',
+    category: 'Estratégia e tecnologia',
+    image: '/images/novas-imagem/media_1790541783900.jpg',
+    width: 576,
+    height: 1024,
+  },
+  {
+    id: 'nativa',
+    title: 'Nativa',
+    category: 'Natureza e inovação',
+    image: '/images/novas-imagem/media_1790541778549.jpg',
+    width: 1024,
+    height: 768,
+  },
+  {
+    id: 'maestro',
+    title: 'Maestro',
+    category: 'Design e tecnologia',
+    image: '/images/novas-imagem/media_1790541789398.jpg',
+    width: 576,
+    height: 1024,
+  },
+  {
+    id: 'aura',
+    title: 'Aura',
     category: 'Experiência digital',
-    image: '/images/showcase/lumen-deep.webp',
+    image: '/images/novas-imagem/media_1790543712539.jpg',
+    width: 1024,
+    height: 768,
   },
   {
-    id: 'pulse-grid',
-    title: 'Pulse Grid',
-    category: 'SaaS',
-    image: '/images/showcase/pulse-grid.webp',
+    id: 'mana',
+    title: 'Mana',
+    category: 'Bebidas funcionais',
+    image: '/images/novas-imagem/media_1790541999928.jpg',
+    width: 576,
+    height: 1024,
   },
   {
-    id: 'aura-step',
-    title: 'Aura Step',
-    category: 'E-commerce',
-    image: '/images/showcase/aura-step.webp',
+    id: 'lumi',
+    title: 'Lumi',
+    category: 'Design e estratégia',
+    image: '/images/novas-imagem/media_1790542027339.jpg',
+    width: 1024,
+    height: 768,
   },
   {
-    id: 'nexa-vision',
-    title: 'Nexa Vision',
-    category: 'Tecnologia',
-    image: '/images/showcase/nexa-vision.webp',
+    id: 'pata',
+    title: 'Pata',
+    category: 'Cuidado e bem-estar animal',
+    image: '/images/novas-imagem/media_1790542030813.png',
+    width: 576,
+    height: 1024,
   },
   {
-    id: 'cria-checkout-gold',
-    title: 'Cria Checkout',
-    category: 'Fintech',
-    image: '/images/showcase/cria-checkout-gold.webp',
-  },
-  {
-    id: 'cria-checkout-red',
-    title: 'Cria Checkout',
-    category: 'Pagamentos',
-    image: '/images/showcase/cria-checkout-red.webp',
+    id: 'conexa',
+    title: 'Conexa',
+    category: 'Comunidade',
+    image: '/images/novas-imagem/media_1790542034862.jpg',
+    width: 1024,
+    height: 768,
   },
 ]
