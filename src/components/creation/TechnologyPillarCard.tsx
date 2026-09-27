@@ -43,7 +43,7 @@ export function TechnologyPillarCard({
         </h3>
 
         {/* Description */}
-        <p className="text-[13px] sm:text-sm text-neutral-400 leading-relaxed mb-6 font-normal">
+        <p className="text-[13px] sm:text-sm text-neutral-400 leading-relaxed mb-6 font-normal min-h-[60px] md:min-h-[66px]">
           {pillar.description}
         </p>
 
@@ -58,7 +58,7 @@ export function TechnologyPillarCard({
               ? '-mx-5 -mb-5 sm:-mx-6 sm:-mb-6 overflow-visible'
               : pillar.id === 'ai'
                 ? '-mx-5 -mb-5 sm:-mx-6 sm:-mb-6 rounded-b-[22px] sm:rounded-b-[26px] overflow-visible'
-                : 'rounded-[16px] overflow-hidden group-hover:-translate-y-0.5 transition-transform duration-300'
+                : '-mx-5 -mb-5 sm:-mx-6 sm:-mb-6 overflow-visible'
           }`}
         >
           {children}
