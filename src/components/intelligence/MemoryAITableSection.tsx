@@ -29,10 +29,10 @@ export function MemoryAITableSection() {
             className="text-center mb-16 relative z-10"
           >
             <h2 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              IA que <GradientText inverse>conhece o projeto.</GradientText>
+              Uma ideia. <GradientText inverse>A MakePloy entra em ação.</GradientText>
             </h2>
             <p className="text-neutral-400 text-base sm:text-lg max-w-2xl mx-auto">
-              Objetivos, decisões, arquivos e histórico acompanham cada nova tarefa.
+              O que já existe, o que ainda falta descobrir e tudo o que pode ajudar se juntam em uma coisa só.
             </p>
           </motion.div>
 
