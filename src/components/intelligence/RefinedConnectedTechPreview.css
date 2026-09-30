@@ -1,0 +1,118 @@
+.mcp-refined {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Fit the whole composition into the existing preview, without affecting card sizing. */
+.mcp-refined__scene {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mcp-refined__pulse {
+  stroke-dasharray: 16 116;
+  stroke-dashoffset: 16;
+  opacity: 0;
+  animation: mcp-refined-flow 5.8s linear infinite;
+}
+
+.mcp-refined__pulse--outer {
+  animation-name: mcp-refined-send;
+  animation-duration: 16s;
+  stroke-opacity: .5;
+}
+
+.mcp-refined__chip-glow {
+  opacity: .18;
+  animation: mcp-refined-model 16s ease-in-out infinite;
+}
+
+.mcp-refined__signal {
+  stroke-dasharray: 16 116;
+  opacity: 0;
+  animation-duration: 16s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.mcp-refined__signal--send {
+  animation-name: mcp-refined-send;
+}
+
+.mcp-refined__signal--receive {
+  animation-name: mcp-refined-receive;
+}
+
+.mcp-refined__logo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mcp-refined-growth 32s ease-in-out forwards;
+}
+
+.mcp-refined__growth-marker {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mcp-refined-growth-marker .8s ease-out both;
+}
+
+@keyframes mcp-refined-growth-marker {
+  0% { opacity: 0; transform: scale(.92); }
+  25% { opacity: .8; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.18); }
+}
+
+@keyframes mcp-refined-flow {
+  0% { stroke-dashoffset: 16; opacity: 0; }
+  10% { opacity: .85; }
+  80% { opacity: .85; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+/* Grow on each arrival (1.44s + 4s per beat), then retain the final size. */
+@keyframes mcp-refined-growth {
+  0%, 3.875% { transform: scale(1); }
+  4.5%, 16.375% { transform: scale(1.04); }
+  17%, 28.875% { transform: scale(1.08); }
+  29.5%, 41.375% { transform: scale(1.12); }
+  42%, 53.875% { transform: scale(1.16); }
+  54.5%, 66.375% { transform: scale(1.20); }
+  67%, 78.875% { transform: scale(1.24); }
+  79.5%, 91.375% { transform: scale(1.28); }
+  92%, 100% { transform: scale(1.32); }
+}
+
+@keyframes mcp-refined-send {
+  0% { stroke-dashoffset: 16; opacity: 0; }
+  1.5% { opacity: 1; }
+  8% { opacity: 1; }
+  9%, 100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes mcp-refined-receive {
+  0%, 12% { stroke-dashoffset: -100; opacity: 0; }
+  14% { opacity: 1; }
+  21% { opacity: 1; }
+  23%, 100% { stroke-dashoffset: 16; opacity: 0; }
+}
+
+@keyframes mcp-refined-model {
+  0%, 4% { opacity: 1; }
+  10%, 88% { opacity: .18; }
+  97%, 100% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcp-refined__pulse,
+  .mcp-refined__chip-glow,
+  .mcp-refined__signal,
+  .mcp-refined__growth-marker,
+  .mcp-refined__logo {
+    animation: none;
+  }
+}

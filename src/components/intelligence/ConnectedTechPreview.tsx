@@ -3,6 +3,11 @@
    Traços de circuito + chips de integração + logo central MAKEPLOY
    ========================================================= */
 
+import { useId } from 'react';
+import { SiClaude, SiDeepseek, SiGooglegemini } from 'react-icons/si';
+import { ChatGPTLogo } from './AILogos';
+import './RefinedConnectedTechPreview.css';
+
 /* Coordenadas em viewBox 400x250.
    A caixa do núcleo vai de x=142 a x=258, e as linhas verticais
    dos colchetes ficam em x=146 e x=254. Os traços terminam
@@ -156,7 +161,9 @@ const CHIPS = [
 
 /* --------------------------------------------------------- */
 
-export function ConnectedTechPreview() {
+export function ConnectedTechPreview({ variant = 'default' }: { variant?: 'default' | 'refined' }) {
+  if (variant === 'refined') return <RefinedConnectedTechPreview />;
+
   return (
     <div className="mcp__stage flex-1 flex w-full justify-center items-end pb-0 sm:pb-2">
       <style>{`
@@ -315,6 +322,95 @@ export function ConnectedTechPreview() {
           <span>MCP ONLINE</span>
         </div>
       </div>
+    </div>
+  );
+}
+
+const AI_CHIPS = [
+  { id: 'chatgpt', label: 'ChatGPT', color: '#f0f4f3', icon: <ChatGPTLogo size={26} /> },
+  { id: 'claude', label: 'Claude', color: '#d99a7e', icon: <SiClaude size={26} /> },
+  { id: 'gemini', label: 'Gemini', color: '#8aafff', icon: <SiGooglegemini size={26} /> },
+  { id: 'deepseek', label: 'DeepSeek', color: '#6f98ff', icon: <SiDeepseek size={26} /> },
+];
+
+function RefinedConnectedTechPreview() {
+  const id = useId();
+  return (
+    <div className="mcp-refined">
+      <svg viewBox="0 0 400 200" className="mcp-refined__scene" role="img" aria-labelledby={`${id}-title`}>
+        <title id={`${id}-title`}>ChatGPT, Claude, Gemini e DeepSeek colaboram por meio do MAKEPLOY</title>
+        {[TRACES_LEFT, TRACES_RIGHT].map((paths, side) =>
+          paths.filter((_, i) => i % 2 === 0).map((path, i) => (
+            <g key={path} fill="none" stroke="#9ca3af" strokeLinecap="round">
+              <path d={path} strokeWidth=".8" opacity=".2" />
+              <path className="mcp-refined__pulse mcp-refined__pulse--outer" d={path} pathLength="100" strokeWidth="1.2" style={{ animationDelay: `${-16 + ((i + side) % 4) * 4}s` }} />
+            </g>
+          ))
+        )}
+
+        {AI_CHIPS.map((chip, i) => {
+          const left = i < 2;
+          const upper = i % 2 === 0;
+          const x = left ? 72 : 328;
+          const y = upper ? 52 : 140;
+          const endX = left ? CORE_LEFT : CORE_RIGHT;
+          const endY = upper ? 78 : 114;
+          const controlX = left ? 112 : 288;
+          const path = `M ${x} ${y} C ${controlX} ${y}, ${controlX} ${endY}, ${endX} ${endY}`;
+          // Each four-second exchange sends from this model and receives at the next.
+          const sendDelay = `${-16 + i * 4}s`;
+          const receiveDelay = `${-16 + ((i + 3) % 4) * 4}s`;
+          const color = chip.color;
+          return (
+            <g key={chip.id}>
+              <path d={path} fill="none" stroke={color} strokeOpacity=".2" strokeWidth=".8" />
+              <path
+                className="mcp-refined__signal mcp-refined__signal--send"
+                d={path}
+                pathLength="100"
+                fill="none"
+                stroke={color}
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                style={{ animationDelay: sendDelay }}
+              />
+              <path className="mcp-refined__signal mcp-refined__signal--receive" d={path} pathLength="100" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" style={{ animationDelay: receiveDelay }} />
+              <circle cx={endX} cy={endY} r="1.3" fill={color} opacity=".55" />
+              <g transform={`translate(${x} ${y})`}>
+                <title>{chip.label}</title>
+                <circle r="23" fill="#000" fillOpacity=".3" />
+                <circle r="20" fill="#09090d" stroke={chip.color} strokeOpacity=".55" strokeWidth=".8" />
+                <circle r="19.5" fill={chip.color} fillOpacity=".08" />
+                <circle className="mcp-refined__chip-glow" r="20" fill="none" stroke={chip.color} strokeWidth="1.3" style={{ animationDelay: sendDelay }} />
+                <g transform="translate(-13 -13)" color={chip.color}>{chip.icon}</g>
+              </g>
+            </g>
+          );
+        })}
+
+        <g transform="translate(142 38)" fill="none" strokeWidth="2.6" strokeLinecap="round" opacity=".75">
+          <path d="M26 4 H16 A12 12 0 0 0 4 16 V100 A12 12 0 0 0 16 112 H26" stroke="#9ca3af" />
+          <path d="M90 4 H100 A12 12 0 0 1 112 16 V100 A12 12 0 0 1 100 112 H90" stroke="#9ca3af" />
+        </g>
+        <g className="mcp-refined__logo">
+          {Array.from({ length: 8 }, (_, step) => (
+            <rect
+              key={step}
+              className="mcp-refined__growth-marker"
+              x="172"
+              y="68"
+              width="56"
+              height="56"
+              rx="11"
+              fill="none"
+              stroke="#cbd0d8"
+              strokeWidth="1.2"
+              style={{ animationDelay: `${1.24 + step * 4}s` }}
+            />
+          ))}
+          <image href="/nova-logo-384.webp" x="166" y="62" width="68" height="68" />
+        </g>
+      </svg>
     </div>
   );
 }

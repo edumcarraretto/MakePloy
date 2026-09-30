@@ -1,12 +1,12 @@
 # Card 01 — criação visual
 
-**Status:** ideia escolhida; texto e visual ainda em discussão.
+**Status:** título e descrição aprovados e aplicados; demonstração visual em duas cenas implementada.
 
 **Numeração:** ordem em que as ideias foram registradas, não posição final no grid.
 
 ## Papel na seção
 
-Um dos seis cards da seção “Uma ideia. A MakePloy entra em ação.” deve mostrar a criação visual da plataforma. A proposta é usar o terceiro card, que hoje apresenta vários tipos de produto.
+Um dos seis cards da seção “Uma ideia. A MakePloy entra em ação.” deve mostrar a criação visual da plataforma. O texto aprovado e a primeira cena visual estão no terceiro card.
 
 ## Ideia que o card deve passar
 
@@ -14,17 +14,19 @@ A MakePloy ajuda a criar páginas e interfaces com identidade própria. A pessoa
 
 O card deve mostrar essa diferença de forma concreta no texto e na animação. A mensagem deve destacar a qualidade do resultado e a liberdade de edição com palavras simples, sem chamar outras ferramentas de “feias”.
 
-## Rascunho de texto — não aprovado
+## Texto aprovado
 
-**Título:** Um visual feito para sua ideia.
+**Título:** DESIGN ÚNICO
 
-**Descrição:** Crie páginas e interfaces com identidade própria. Ajuste cores, estrutura e detalhes para chegar ao visual que você imaginou.
+**Descrição:** Criamos visuais e conteúdos com identidade própria para seu projeto, sem aparência de modelo pronto.
 
-O texto é apenas um ponto de partida para escolhermos juntos a versão final.
+## Demonstração visual
 
-## Possível demonstração visual
+A primeira cena apresenta uma página de venda genérica para a garrafa térmica fictícia Flow: navegação, apresentação do produto, benefícios, oferta com preço e rodapé. Uma barra discreta de navegador faz a transição entre o fundo preto do card e a página em azul claro e branco. O cursor arrasta a barra de rolagem, clica em “Criar com MakePloy”, segura a mini página e a lança para fora do card.
 
-Mostrar uma interface tomando forma e recebendo ajustes visíveis de layout, cor ou conteúdo. O resultado deve parecer específico da ideia apresentada, não uma sequência de modelos prontos.
+A segunda cena mostra o mesmo produto em uma página com identidade própria: composição editorial, paleta verde, tipografia expressiva, ilustração do produto e movimento sutil. A nova página entra enquanto a primeira sai. O rótulo inferior muda de “Outras plataformas” para “Criado com MakePloy”. A animação respeita a preferência por movimento reduzido.
+
+![Design Único](./assets/card-01-design-unico.png)
 
 ## Relação com o restante da página
 
@@ -32,8 +34,6 @@ Outras seções já apresentam a criação visual e dizem que a MakePloy não us
 
 ## Próximas decisões
 
-- Escolher o título e a descrição do card junto com o usuário.
-- Substituir a animação atual de tipos de produto por uma demonstração da criação visual, coerente com o texto escolhido.
 - Definir a posição final do card na sequência dos seis cards.
 
-Nenhum texto final nem mudança visual do card foi aprovado ainda.
+O título, a descrição e as duas cenas foram aplicados. A posição final do card ainda não foi definida.

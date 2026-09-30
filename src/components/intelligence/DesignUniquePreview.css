@@ -1,0 +1,28 @@
+.design-preview-frame {
+  will-change: transform, opacity;
+  transform-origin: center;
+}
+
+.design-flow-orbit {
+  animation: design-flow-orbit 7s ease-in-out infinite;
+}
+
+.design-flow-bottle {
+  filter: drop-shadow(5px 12px 9px rgb(13 54 43 / 0.22));
+  animation: design-flow-bottle 4.5s ease-in-out infinite;
+}
+
+@keyframes design-flow-orbit {
+  50% { transform: translate(-8px, 4px) scale(1.08); }
+}
+
+@keyframes design-flow-bottle {
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .design-flow-orbit,
+  .design-flow-bottle {
+    animation: none;
+  }
+}

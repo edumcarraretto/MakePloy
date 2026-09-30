@@ -6,7 +6,7 @@ import { ChatGPTLogo, GeminiLogo, MakeployLogo, ClaudeLogo } from '@/components/
 const ALL_MODELS = [
   { name: 'Claude', icon: ClaudeLogo, color: 'text-[#e5d9c5]' },
   { name: 'ChatGPT', icon: ChatGPTLogo, color: 'text-white' },
-  { name: 'Gêmeos', icon: GeminiLogo, color: 'text-blue-400' },
+  { name: 'Gemini', icon: GeminiLogo, color: 'text-blue-400' },
   { name: 'MAKEPLOY', icon: MakeployLogo, color: 'text-neutral-400' },
 ]
 

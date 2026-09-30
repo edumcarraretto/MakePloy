@@ -1,6 +1,6 @@
 import { JourneyPreviewCard } from '@/components/intelligence/JourneyPreviewCard'
 import { AIModelsPreview } from '@/components/intelligence/AIModelsPreview'
-import { MultiplayerAIPreview } from '@/components/intelligence/MultiplayerAIPreview'
+import { DesignUniquePreview } from '@/components/intelligence/DesignUniquePreview'
 import { ConnectedTechPreview } from '@/components/intelligence/ConnectedTechPreview'
 import { AmbientIntelligencePreview } from '@/components/intelligence/AmbientIntelligencePreview'
 import { DeepSearchPreview } from '@/components/intelligence/DeepSearchPreview'
@@ -62,10 +62,10 @@ export function MemoryAITableSection() {
 
               <div className="mb-6 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  O HISTÓRICO CONTINUA ÚTIL
+                  O PROJETO EVOLUI COM VOCÊ
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  Comece uma ideia ou traga o que já existe. O <strong className="text-white font-medium">histórico do projeto</strong> continua orientando mudanças e próximas versões.
+                  Comece do zero ou retome o que já existe. Ideias, arquivos e decisões ajudam a orientar cada nova versão.
                 </p>
               </div>
               
@@ -90,10 +90,10 @@ export function MemoryAITableSection() {
 
               <div className="mb-6 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  MODELOS DIFERENTES. UM CONTEXTO.
+                  VÁRIOS MODELOS. O MESMO PROJETO.
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  Pesquisa, análise, conteúdo e código avançam sem exigir que você explique o projeto novamente.
+                  Alterne entre modelos para pesquisar, escrever, analisar e programar com o contexto do projeto à mão.
                 </p>
               </div>
 
@@ -118,15 +118,15 @@ export function MemoryAITableSection() {
 
               <div className="mb-6 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  UMA BASE. MUITOS PRODUTOS.
+                  DESIGN ÚNICO
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  Sites, cursos, aplicações e SaaS partem do mesmo sistema sem perder liberdade de estrutura.
+                  Criamos visuais e conteúdos com identidade própria para seu projeto, sem aparência de modelo pronto.
                 </p>
               </div>
 
-              <div className="mt-auto flex-1 flex flex-col justify-end relative z-10">
-                <MultiplayerAIPreview />
+              <div className="relative z-10 -mx-4 -mb-4 mt-auto flex flex-1 flex-col justify-end sm:-mx-5 sm:-mb-5">
+                <DesignUniquePreview />
               </div>
             </motion.div>
 
@@ -146,10 +146,10 @@ export function MemoryAITableSection() {
 
               <div className="mb-6 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  INTEGRAÇÕES AO REDOR DO PROJETO
+                  FERRAMENTAS CONECTADAS AO PROJETO
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  Serviços, dados e ferramentas externas entram no fluxo sem fragmentar a operação.
+                  Conecte serviços e dados externos para consultar informações e executar tarefas no mesmo fluxo.
                 </p>
               </div>
 
@@ -174,10 +174,10 @@ export function MemoryAITableSection() {
 
               <div className="mb-6 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  O PRÓXIMO PASSO CONSIDERA OS ANTERIORES
+                  SUGESTÕES PARA O MOMENTO ATUAL
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  Objetivos, decisões e histórico ajudam a <strong className="text-white font-medium">definir ações</strong> coerentes com o estágio atual.
+                  A IA considera o estágio do projeto e as decisões anteriores para sugerir melhorias e próximos passos.
                 </p>
               </div>
 
@@ -202,10 +202,10 @@ export function MemoryAITableSection() {
 
               <div className="mb-auto relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  PESQUISA ANTES DA RESPOSTA
+                  PESQUISA PARA DECIDIR MELHOR
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  A MAKEPLOY investiga contexto e referências antes de propor uma direção.
+                  A MAKEPLOY analisa a tarefa e busca referências antes de propor uma direção.
                 </p>
               </div>
 
