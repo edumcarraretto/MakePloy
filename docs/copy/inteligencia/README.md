@@ -10,7 +10,7 @@
 
 | Ideia | Papel | Status |
 | --- | --- | --- |
-| [Card 01 — criação visual](cards/card-01-criacao-visual.md) | Mostrar um visual com identidade própria e liberdade para ajustar os detalhes. | Texto e primeira cena aplicados; transformação em discussão. |
+| [Card 01 — criação visual](cards/card-01-criacao-visual.md) | Mostrar um visual com identidade própria e liberdade para ajustar os detalhes. | Texto aplicado; duas galerias com montagem por partes e rolagem: oito lojas iniciais e oito artes MakePloy; transição pelos cliques na logo e na barra, sem abertura de produto. |
 | [Card 02 — pesquisa](cards/card-02-pesquisa.md) | Mostrar a investigação antes de uma resposta fundamentada. | Ideia proposta; texto, visual e posição em discussão. |
 | [Card 03 — guia de ferramentas](cards/card-03-guia-de-ferramentas.md) | Mostrar como a MakePloy indica as ferramentas úteis para cada tarefa e ajuda a pessoa a usá-las. | Ideia proposta; texto, visual e posição em discussão. |
 | [Card 04 — continuidade ao longo do tempo](cards/card-04-memoria-de-longo-prazo.md) | Mostrar como retomar uma criação após uma pausa longa usando histórico, arquivos e decisões relevantes. | Ideia proposta; duração, texto, visual e posição em discussão. |
