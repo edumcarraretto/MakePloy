@@ -42,7 +42,7 @@ export function MemoryAITableSection() {
             whileInView="visible"
             viewport={{ once: true, margin: '-70px' }}
             variants={{ visible: { transition: { staggerChildren: 0.09 } } }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6"
           >
 
             {/* ═══ Card 1: Jornada ═══ */}
@@ -200,27 +200,19 @@ export function MemoryAITableSection() {
                 }}
               />
 
-              <div className="mb-auto relative z-20">
+              <div className="mb-2 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  PESQUISA PARA DECIDIR MELHOR
+                  RESPOSTA COMEÇA NA PESQUISA.
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  A MAKEPLOY analisa a tarefa e busca referências antes de propor uma direção.
+                  Pesquisamos a fundo sites, referências e dados atualizados para chegar ao que importa.
                 </p>
               </div>
 
-              <div className="mt-auto flex-1 flex flex-col justify-end relative z-10">
+              <div className="flex-1 flex flex-col justify-center items-center relative z-10 w-full">
                 <DeepSearchPreview />
               </div>
 
-              {/* Fade right */}
-              <div
-                className="absolute top-0 right-0 bottom-0 z-30 pointer-events-none"
-                style={{
-                  width: '45%',
-                  background: 'linear-gradient(to right, transparent 0%, transparent 10%, rgb(10 10 10 / 0.1) 30%, rgb(10 10 10 / 0.4) 55%, rgb(10 10 10 / 0.8) 80%, var(--color-surface-inverse) 100%)',
-                }}
-              />
             </motion.div>
 
           </motion.div>

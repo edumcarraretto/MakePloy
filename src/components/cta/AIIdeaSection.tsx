@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { ArrowUp, ChevronDown, Check } from 'lucide-react'
 import { GradientText } from '@/components/text/GradientText'
 import { openEarlyAccess } from '@/lib/earlyAccess'
-import { ChatGPTLogo, ClaudeLogo, GeminiLogo } from '@/components/intelligence/AILogos'
+import { AI_MODELS } from '@/components/ui/ai-models'
 
 interface SuggestionOption {
   label: string
@@ -31,28 +31,6 @@ const ALL_SUGGESTIONS: SuggestionOption[] = [
     prompt:
       'Tenho uma aplicação existente e quero continuar seu desenvolvimento: adicionar novas funcionalidades, otimizar a experiência mobile e refatorar componentes mantendo a base de código limpa.',
   },
-]
-
-interface AIModelOption {
-  id: string
-  name: string
-  label: string | null
-  icon: React.ComponentType<{ className?: string }>
-  iconColor: string
-  provider: 'OpenAI' | 'Google' | 'Anthropic'
-}
-
-const AI_MODELS: AIModelOption[] = [
-  // OpenAI
-  { id: 'gpt-5-6-terra', name: 'GPT 5.6 Terra', label: null, icon: ChatGPTLogo, iconColor: 'text-white', provider: 'OpenAI' },
-  { id: 'gpt-5-6-sol', name: 'GPT 5.6 Sol', label: 'Entrar', icon: ChatGPTLogo, iconColor: 'text-white', provider: 'OpenAI' },
-  { id: 'gpt-5-6-luna', name: 'GPT 5.6 Luna', label: 'Entrar', icon: ChatGPTLogo, iconColor: 'text-white', provider: 'OpenAI' },
-  // Google
-  { id: 'gemini-3-1-pro', name: 'Gemini 3.1 Pro', label: 'Entrar', icon: GeminiLogo, iconColor: 'text-blue-400', provider: 'Google' },
-  { id: 'gemini-3-8-flash', name: 'Gemini 3.8 Flash', label: 'Entrar', icon: GeminiLogo, iconColor: 'text-blue-400', provider: 'Google' },
-  // Anthropic
-  { id: 'soneto-5', name: 'Soneto 5', label: 'Entrar', icon: ClaudeLogo, iconColor: 'text-[#d97757]', provider: 'Anthropic' },
-  { id: 'fabula-5', name: 'Fábula 5', label: 'Entrar', icon: ClaudeLogo, iconColor: 'text-[#d97757]', provider: 'Anthropic' },
 ]
 
 const PLACEHOLDER_SUGGESTIONS = [

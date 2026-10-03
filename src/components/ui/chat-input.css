@@ -1,0 +1,12 @@
+.makeploy-prompt-border[data-beam]::after {
+  background: conic-gradient(
+    var(--color-brand-coral),
+    var(--color-brand-orange),
+    var(--color-brand-yellow),
+    var(--color-brand-green),
+    var(--color-brand-blue),
+    var(--color-brand-magenta),
+    var(--color-brand-coral)
+  ) !important;
+  filter: none !important;
+}
