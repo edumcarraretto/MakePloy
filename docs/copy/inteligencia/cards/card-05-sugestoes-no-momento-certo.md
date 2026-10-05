@@ -1,6 +1,6 @@
 # Card 05 — sugestões ligadas ao momento atual
 
-**Status:** ideia escolhida para um dos seis cards; texto, visual e posição ainda em discussão.
+**Status:** título e descrição aprovados e aplicados no quinto card da grade atual; visual e posição final ainda em discussão.
 
 **Numeração:** ordem em que as ideias foram registradas, não posição final no grid.
 
@@ -10,13 +10,11 @@ Quando a pessoa fica sem saber o que fazer ou quer explorar uma nova ideia, a Ma
 
 O valor do card é responder à dúvida “E agora?”. O usuário propôs que as sugestões apareçam automaticamente na plataforma. Confirmar quando e como elas aparecem antes de transformar esse detalhe em promessa no texto final.
 
-## Rascunho de texto — não aprovado
+## Texto aprovado
 
-**Título:** Ideias que fazem sentido agora.
+**Título:** Sua ideia abre caminhos
 
-**Descrição:** A MakePloy olha o que você está fazendo e sugere melhorias ou novos caminhos. Você escolhe o que seguir.
-
-Este é apenas um ponto de partida. Escolher título e descrição junto com o usuário.
+**Descrição:** A MakePloy sugere melhorias e novas possibilidades para sua criação. Você escolhe o que seguir.
 
 ## Possível demonstração visual
 
@@ -30,4 +28,4 @@ O card de memória mostra o que a MakePloy guarda e recupera. Este mostra o que 
 
 - Confirmar quando as sugestões aparecem e quais informações são usadas.
 - Escolher um exemplo concreto e verdadeiro para o visual.
-- Escolher texto e posição final na sequência dos seis cards.
+- Escolher a posição final na sequência dos seis cards.

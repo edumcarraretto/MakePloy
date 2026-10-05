@@ -3,43 +3,68 @@
    Traços de circuito + chips de integração + logo central MAKEPLOY
    ========================================================= */
 
-import { useId } from 'react';
-import { SiClaude, SiDeepseek, SiGooglegemini } from 'react-icons/si';
+import { useId, useState, useEffect } from 'react';
+import { SiClaude, SiDeepseek, SiGooglegemini, SiWebflow, SiFramer, SiSupabase, SiReplit, SiV0, SiCursor } from 'react-icons/si';
 import { ChatGPTLogo } from './AILogos';
 import './RefinedConnectedTechPreview.css';
 
 /* Coordenadas em viewBox 400x250.
-   A caixa do núcleo vai de x=142 a x=258, e as linhas verticais
-   dos colchetes ficam em x=146 e x=254. Os traços terminam
-   exatamente nesses valores — encostam no núcleo em vez de
-   pararem no vazio.
-   Os que atravessam um chip passam pela coordenada exata dele. */
-const CORE_LEFT = 146;
-const CORE_RIGHT = 254;
+   O círculo central tem cx=200, cy=125, r=50.
+   Os traços encostam perfeitamente na borda do círculo. */
+const JUNCTIONS_LEFT = [
+  { x: 165.3, y: 89 },
+  { x: 153.4, y: 107 },
+  { x: 150, y: 125 },
+  { x: 153.4, y: 143 },
+  { x: 165.3, y: 161 },
+];
 
-/* alturas em que os traços encostam no núcleo */
-const JUNCTION_Y = [60, 78, 96, 114, 132];
+const JUNCTIONS_RIGHT = [
+  { x: 234.7, y: 89 },
+  { x: 246.6, y: 107 },
+  { x: 250, y: 125 },
+  { x: 246.6, y: 143 },
+  { x: 234.7, y: 161 },
+];
 
 const TRACES_LEFT = [
-  "M -100 18 C 50 18, 100 34, 146 60",
-  "M -100 46 C 28 46, 58 60, 80 60 S 120 70, 146 78",
-  "M -100 96 C 40 96, 100 96, 146 96",
-  "M -100 170 C 18 170, 36 132, 52 132 S 116 120, 146 114",
-  "M -100 222 C 60 222, 108 168, 146 132",
+  'M -100 47 C 50 47, 100 63, 165.3 89',
+  'M -100 75 C 28 75, 58 89, 80 89 S 120 99, 153.4 107',
+  'M -100 125 C 40 125, 100 125, 150 125',
+  'M -100 199 C 18 199, 36 161, 52 161 S 116 149, 153.4 143',
+  'M -100 251 C 60 251, 108 197, 165.3 161',
 ];
 
 const TRACES_RIGHT = [
-  "M 500 18 C 350 18, 300 34, 254 60",
-  "M 500 40 C 380 40, 358 75, 340 75 S 280 78, 254 78",
-  "M 500 96 C 360 96, 300 96, 254 96",
-  "M 500 170 C 380 170, 312 127, 296 127 S 272 118, 254 114",
-  "M 500 222 C 340 222, 292 168, 254 132",
+  'M 500 47 C 350 47, 300 63, 234.7 89',
+  'M 500 69 C 380 69, 358 104, 340 104 S 280 107, 246.6 107',
+  'M 500 125 C 360 125, 300 125, 250 125',
+  'M 500 199 C 380 199, 312 156, 296 156 S 272 147, 246.6 143',
+  'M 500 251 C 340 251, 292 197, 234.7 161',
 ];
 
-function Traces() {
+const LINE_COLORS: Record<string, string> = {
+  lovable: 'url(#mcp-lovable-line)',
+  replit: '#F26207',
+  bolt: '#FFFFFF',
+  bubble: '#0D4DFF',
+  cursor: '#EDECEC',
+  framer: '#0055FF',
+};
+
+const DOT_COLORS: Record<string, string> = {
+  lovable: '#FF7EB0',
+  replit: '#F26207',
+  bolt: '#FFFFFF',
+  bubble: '#0D4DFF',
+  cursor: '#EDECEC',
+  framer: '#0055FF',
+};
+
+function Traces({ activeLine }: { activeLine: number | null }) {
   const sides = [
-    { paths: TRACES_LEFT, id: "mcp-pulse-blue", x: CORE_LEFT, dot: "var(--color-brand-blue)" },
-    { paths: TRACES_RIGHT, id: "mcp-pulse-purple", x: CORE_RIGHT, dot: "var(--color-brand-magenta)" },
+    { paths: TRACES_LEFT, junctions: JUNCTIONS_LEFT, platforms: ['lovable', 'lovable', 'replit', 'bolt', 'bolt'] },
+    { paths: TRACES_RIGHT, junctions: JUNCTIONS_RIGHT, platforms: ['bubble', 'bubble', 'cursor', 'framer', 'framer'] },
   ];
 
   return (
@@ -51,118 +76,212 @@ function Traces() {
       style={{ overflow: "visible" }}
     >
       <defs>
-        <linearGradient id="mcp-pulse-blue" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="var(--color-brand-blue)" stopOpacity="0" />
-          <stop offset="50%" stopColor="var(--color-brand-blue)" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="var(--color-brand-blue)" stopOpacity="0" />
+        <linearGradient id="mcp-lovable-line" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#FF8E63" />
+          <stop offset="55%" stopColor="#FF7EB0" />
+          <stop offset="100%" stopColor="#4B73FF" />
         </linearGradient>
 
-        <linearGradient id="mcp-pulse-purple" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="var(--color-brand-magenta)" stopOpacity="0" />
-          <stop offset="50%" stopColor="var(--color-brand-magenta)" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="var(--color-brand-magenta)" stopOpacity="0" />
+        <linearGradient id="mcp-ring-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="var(--color-brand-blue)" />
+          <stop offset="100%" stopColor="var(--color-brand-magenta)" />
         </linearGradient>
       </defs>
 
-      {sides.map((side, s) =>
-        side.paths.map((d, i) => (
-          <g key={d}>
-            <path
-              d={d}
-              stroke="#1C1C22"
-              strokeWidth="1.3"
-              strokeLinecap="round"
-            />
-            <path
-              className="mcp__pulse"
-              d={d}
-              stroke={`url(#${side.id})`}
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              style={{
-                animationDelay: `${(i * 0.85 + s * 0.42).toFixed(2)}s`,
-              }}
-            />
-          </g>
-        ))
+      {sides.map((side, sideIndex) =>
+        side.paths.map((d, lineIndex) => {
+          const platform = side.platforms[lineIndex];
+          return <g key={d}>
+            <path d={d} stroke={LINE_COLORS[platform]} strokeOpacity="0.22" strokeWidth="1.3" strokeLinecap="round" />
+            {activeLine === sideIndex * side.paths.length + lineIndex && (
+              <path
+                className="mcp__pulse"
+                d={d}
+                pathLength="100"
+                stroke={LINE_COLORS[platform]}
+                strokeOpacity="0.65"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+              />
+            )}
+          </g>;
+        })
       )}
 
       {/* pontos de conexão na borda do núcleo */}
       {sides.map((side) =>
-        JUNCTION_Y.map((y) => (
+        side.junctions.map((pt, lineIndex) => (
           <circle
-            key={`${side.x}-${y}`}
-            cx={side.x}
-            cy={y}
+            key={`${pt.x}-${pt.y}`}
+            cx={pt.x}
+            cy={pt.y}
             r="1.6"
-            fill={side.dot}
-            opacity="0.55"
+            fill={DOT_COLORS[side.platforms[lineIndex]]}
+            opacity="0.5"
           />
         ))
       )}
 
-      {/* brackets */}
-      <g transform="translate(142, 38)">
-        <path
-          d="M26 4 H16 A12 12 0 0 0 4 16 V100 A12 12 0 0 0 16 112 H26"
-          stroke="var(--color-brand-blue)"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M90 4 H100 A12 12 0 0 1 112 16 V100 A12 12 0 0 1 100 112 H90"
-          stroke="var(--color-brand-magenta)"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+      {/* circulo central (substituindo brackets) */}
+      <circle
+        cx="200"
+        cy="125"
+        r="50"
+        fill="none"
+        stroke="url(#mcp-ring-grad)"
+        strokeWidth="1.8"
+      />
+    </svg>
+  );
+}
+
+/* --- logos oficiais das plataformas no-code --- */
+
+function LovableLogo() {
+  const maskId = useId();
+  const gradId = useId();
+  const fC = useId();
+  const fD = useId();
+  const fE = useId();
+  const fF = useId();
+
+  return (
+    <svg viewBox="0 0 121 122" width="19" height="19" fill="none" aria-hidden="true">
+      <title>Lovable</title>
+      <defs>
+        <mask id={maskId} width="121" height="122" x="0" y="0" maskUnits="userSpaceOnUse" style={{ maskType: 'alpha' }}>
+          <path
+            fill={`url(#${gradId})`}
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M36.069 0c19.92 0 36.068 16.155 36.068 36.084v13.713h12.004c19.92 0 36.069 16.156 36.069 36.084 0 19.928-16.149 36.083-36.069 36.083H0v-85.88C0 16.155 16.148 0 36.069 0Z"
+          />
+        </mask>
+        <linearGradient id={gradId} x1="40.453" y1="21.433" x2="76.933" y2="121.971" gradientUnits="userSpaceOnUse">
+          <stop offset="0.025" stopColor="#FF8E63" />
+          <stop offset="0.56" stopColor="#FF7EB0" />
+          <stop offset="0.95" stopColor="#4B73FF" />
+        </linearGradient>
+        <filter id={fC} width="235.52" height="235.16" x="-65" y="-52" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse">
+          <feGaussianBlur stdDeviation="18.2" />
+        </filter>
+        <filter id={fD} width="281.2" height="235.16" x="-79" y="-97" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse">
+          <feGaussianBlur stdDeviation="18.2" />
+        </filter>
+        <filter id={fE} width="235.52" height="215.38" x="-39" y="-102" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse">
+          <feGaussianBlur stdDeviation="18.2" />
+        </filter>
+        <filter id={fF} width="170.65" height="170.43" x="-22" y="-65" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse">
+          <feGaussianBlur stdDeviation="18.2" />
+        </filter>
+      </defs>
+      <g mask={`url(#${maskId})`}>
+        <g filter={`url(#${fC})`}><ellipse cx="52.738" cy="65.101" fill="#4B73FF" rx="81.373" ry="81.192" /></g>
+        <g filter={`url(#${fD})`}><ellipse cx="61.673" cy="20.547" fill="#FF66F4" rx="104.216" ry="81.192" /></g>
+        <g filter={`url(#${fE})`}><ellipse cx="78.666" cy="5.268" fill="#FF0105" rx="81.373" ry="71.304" /></g>
+        <g filter={`url(#${fF})`}><ellipse cx="63.121" cy="20.527" fill="#FE7B02" rx="48.937" ry="48.829" /></g>
       </g>
     </svg>
   );
 }
 
-/* --- marcas oficiais (paths extraídos de simple-icons) --- */
+function BoltLogo() {
+  return (
+    <svg viewBox="0 45.65 160 68.7" width="22" height="11" fill="none" aria-hidden="true">
+      <title>Bolt</title>
+      <path
+        fill="#FFFFFF"
+        d="M75.61 106.195c-14.747 0-21.962-8.468-21.962-19.136s10.04-24.157 24.782-24.157c14.746 0 21.96 8.47 21.96 19.137 0 10.668-10.038 24.156-24.78 24.156Zm.624-13.488c5.02 0 8.473-4.707 8.473-9.727 0-5.02-2.512-6.273-6.902-6.273-4.395 0-8.473 4.703-8.473 9.723 0 5.02 2.512 6.277 6.902 6.277Zm39.844 12.547h-15.371l12.547-57.098h15.375l-12.55 56.785Zm0 0 M30.117 106.195c-4.707 0-9.41-1.566-11.922-5.332l-.941 4.39L0 114.353l1.883-9.098L14.43 48.156h15.375L25.41 68.234c3.453-3.765 6.902-5.332 11.297-5.332 9.41 0 15.371 5.961 15.371 17.254 0 11.293-7.215 26.04-21.96 26.04Zm5.961-22.902c0 5.336-3.766 9.414-8.785 9.414-5.02 0-5.332-.941-6.902-2.824l2.511-10.352c1.883-1.883 3.766-2.824 6.274-2.824 3.765 0 6.902 2.824 6.902 6.902Zm0 0 M144.629 106.195c-8.785 0-15.375-3.136-15.375-10.351 0-7.215 0-2.196.316-3.137l3.45-15.375h-6.903l3.137-13.176h6.902l2.512-11.293 17.254-7.215-1.883 7.215-2.508 11.293H160l-3.137 13.176h-8.472l-2.196 10.04v1.882c0 1.883 1.254 3.453 3.766 3.453 2.508 0 1.883 0 2.195-.316v12.238c-1.566 1.254-4.39 1.566-7.215 1.566Zm0 0"
+      />
+    </svg>
+  );
+}
 
-const LOGOS = {
-  analytics: (
-    <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
-      <title>Google Analytics</title>
-      <path fill="#F9AB00" d="M22.84 2.9982v17.9987c.0086 1.6473-1.3197 2.9897-2.967 2.9984a2.9808 2.9808 0 01-.3677-.0208c-1.528-.226-2.6477-1.5558-2.6105-3.1V3.1204c-.0369-1.5458 1.0856-2.8762 2.6157-3.1 1.6361-.1915 3.1178.9796 3.3093 2.6158.014.1201.0208.241.0202.3619zM4.1326 18.0548c-1.6417 0-2.9726 1.331-2.9726 2.9726C1.16 22.6691 2.4909 24 4.1326 24s2.9726-1.3309 2.9726-2.9726-1.331-2.9726-2.9726-2.9726zm7.8728-9.0098c-.0171 0-.0342 0-.0513.0003-1.6495.0904-2.9293 1.474-2.891 3.1256v7.9846c0 2.167.9535 3.4825 2.3505 3.763 1.6118.3266 3.1832-.7152 3.5098-2.327.04-.1974.06-.3983.0593-.5998v-8.9585c.003-1.6474-1.33-2.9852-2.9773-2.9882z" />
+function BubbleLogo() {
+  return (
+    <svg width="19" height="19" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <title>Bubble</title>
+      <path
+        d="M8.43939 3.63487C7.18121 3.63487 5.94112 4.17502 4.99437 5.237V0H3.12085V8.81681C3.12085 8.81702 3.12085 8.81722 3.12085 8.81747C3.12085 11.6797 5.44115 14 8.30342 14C11.1657 14 13.486 11.6797 13.486 8.81747C13.486 5.95523 11.3016 3.63487 8.43939 3.63487ZM8.30342 12.0039C6.54358 12.0039 5.11694 10.5772 5.11694 8.81744C5.11694 7.0576 6.54358 5.63096 8.30342 5.63096C10.0632 5.63096 11.4899 7.0576 11.4899 8.81744C11.4899 10.5773 10.0632 12.0039 8.30342 12.0039Z"
+        fill="#FFFFFF"
+      />
+      <path
+        d="M1.75886 11.4368C1.05105 11.4368 0.477295 12.0106 0.477295 12.7183C0.477295 13.4261 1.05105 13.9999 1.75886 13.9999C2.46667 13.9999 3.04042 13.4261 3.04042 12.7183C3.04042 12.0106 2.46667 11.4368 1.75886 11.4368Z"
+        fill="#0D4DFF"
+      />
     </svg>
-  ),
-  github: (
-    <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
-      <title>GitHub</title>
-      <path fill="#F5F5F5" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+  );
+}
+
+function FlutterFlowLogo() {
+  return (
+    <svg width="19" height="19" viewBox="0 6 30 30" fill="none" aria-hidden="true">
+      <title>FlutterFlow</title>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M25.5304 7.46631C26.3902 7.46631 27.186 7.92462 27.5892 8.66966C27.9755 9.38331 27.9591 10.2243 27.5464 10.9223L27.5323 10.9458L23.9146 16.9074C23.5055 17.5816 22.767 18.0023 21.9776 18.0113L21.9518 18.0115L17.8207 18.0114L19.5377 21.8838L19.5446 21.8952L19.5551 21.9135C19.9595 22.6335 19.9496 23.4895 19.5303 24.1987L19.5162 24.2223L15.8985 30.184C15.4893 30.8581 14.7508 31.2789 13.9615 31.2879L13.9357 31.288L8.86521 31.288L5.22012 35.0753L5.21322 35.0823C4.87021 35.4258 4.40676 35.6174 3.92356 35.6174C3.80277 35.6174 3.6819 35.6054 3.56233 35.5814C2.97291 35.4629 2.4832 35.0644 2.24747 34.5149L2.24082 34.4992L0.322582 30.1613L0.312492 30.1447L0.302011 30.1268C0.30027 30.1238 0.298499 30.1206 0.29665 30.1173C-0.10772 29.3974 -0.0979261 28.5414 0.321374 27.8321L0.335502 27.8085L3.8443 22.0263L1.25884 16.1955L1.30622 16.1717L1.3055 16.1682C1.19611 15.6318 1.28417 15.0725 1.56512 14.5826L1.58064 14.556L1.59498 14.532L5.2127 8.57029C5.62186 7.89619 6.36044 7.47543 7.14972 7.46631H7.17548H25.5304ZM6.53453 31.2427L2.69069 31.2426L3.81966 33.8153L3.82244 33.8221C3.84115 33.8682 3.87142 33.8934 3.91648 33.9026C3.95667 33.9107 3.98919 33.9023 4.01994 33.8747L4.02532 33.8696L6.53453 31.2427ZM17.5229 22.3978H5.90385C5.89102 22.3978 5.87819 22.3983 5.86538 22.3991L5.86186 22.3994L9.0477 29.5783H13.9351C14.136 29.5783 14.3296 29.4723 14.4396 29.3021L14.4483 29.2882L18.0713 23.3229C18.1794 23.1449 18.1913 22.9385 18.1057 22.7527C18.0069 22.5384 17.7777 22.3978 17.5229 22.3978ZM4.69605 23.872L1.82063 28.6463C1.70621 28.8363 1.69958 29.0588 1.80204 29.2547L1.81291 29.2746L1.8187 29.2844L1.8303 29.3031L1.8533 29.3367L1.87897 29.3696L1.90353 29.3973L1.90779 29.4018L1.9244 29.4183L1.93883 29.4319C2.02928 29.5127 2.14109 29.5621 2.26441 29.5748L2.29212 29.5771L2.30816 29.5779L2.32848 29.5783H7.20721L4.69605 23.872ZM3.93994 18.023L5.20279 20.8761L5.22739 20.8679C5.44548 20.796 5.6735 20.757 5.90401 20.7535L5.93861 20.7532L17.2012 20.7532L15.9928 18.023L3.93994 18.023ZM25.4983 9.13065H13.8378L17.0246 16.3111H21.9103C22.1116 16.3111 22.3053 16.2051 22.4154 16.0348L22.4241 16.0208L26.0473 10.0556C26.1553 9.87773 26.1673 9.67143 26.0817 9.4858C25.985 9.27595 25.7632 9.13667 25.5146 9.13084L25.4983 9.13065ZM12.0528 9.13065H7.19416C6.99436 9.13065 6.80166 9.23641 6.69203 9.40642L6.68333 9.42035L3.06968 15.3857C2.9618 15.5637 2.94987 15.7705 3.03542 15.9565C3.13178 16.1662 3.35237 16.3051 3.59952 16.3109L3.61568 16.3111H15.2312L12.0528 9.13065Z"
+        fill="#4B39EF"
+      />
     </svg>
-  ),
-  reddit: (
-    <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
-      <title>Reddit</title>
-      <path fill="#FF4500" d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z" />
-    </svg>
-  ),
-  meta: (
-    <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
-      <title>Meta</title>
-      <path fill="#0866FF" d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z" />
-    </svg>
-  ),
+  );
+}
+
+const PLATFORM_LOGOS: Record<string, React.ReactNode> = {
+  lovable: <LovableLogo />,
+  bolt: <BoltLogo />,
+  v0: <SiV0 size={19} color="#FFFFFF" />,
+  bubble: <BubbleLogo />,
+  webflow: <SiWebflow size={19} color="#146EF5" />,
+  framer: <SiFramer size={19} color="#0055FF" />,
+  flutterflow: <FlutterFlowLogo />,
+  supabase: <SiSupabase size={19} color="#3ECF8E" />,
+  cursor: <SiCursor size={19} color="#EDECEC" />,
+  replit: <SiReplit size={19} color="#F26207" />,
 };
 
-/* posições batendo exatamente com o fim dos traços */
-const CHIPS = [
-  { id: "analytics", label: "Google Analytics", x: "20%", y: "24%" },
-  { id: "github", label: "GitHub", x: "13%", y: "52.8%" },
-  { id: "reddit", label: "Reddit", x: "85%", y: "30%" },
-  { id: "meta", label: "Meta", x: "74%", y: "50.8%" },
-] as const;
+const PLATFORM_RINGS: Record<string, string> = {
+  lovable: 'linear-gradient(135deg, #FF8E63, #FF7EB0 55%, #4B73FF)',
+  bolt: 'linear-gradient(#FFFFFF, #FFFFFF)',
+  v0: 'linear-gradient(#FFFFFF, #FFFFFF)',
+  bubble: 'linear-gradient(#0D4DFF, #0D4DFF)',
+  webflow: 'linear-gradient(#146EF5, #146EF5)',
+  framer: 'linear-gradient(#0055FF, #0055FF)',
+  flutterflow: 'linear-gradient(#4B39EF, #4B39EF)',
+  supabase: 'linear-gradient(#3ECF8E, #3ECF8E)',
+  cursor: 'linear-gradient(#EDECEC, #EDECEC)',
+  replit: 'linear-gradient(#F26207, #F26207)',
+};
+
+/* Seis plataformas fixas nas posições atuais. */
+const CHIP_SLOTS = [
+  { x: '18%', y: '32%', platform: 'lovable' },
+  { x: '5%', y: '50%', platform: 'replit' },
+  { x: '16%', y: '68%', platform: 'bolt' },
+  { x: '82%', y: '32%', platform: 'bubble' },
+  { x: '90%', y: '50%', platform: 'cursor' },
+  { x: '78%', y: '68%', platform: 'framer' },
+];
+
+const TRACE_COUNT = TRACES_LEFT.length + TRACES_RIGHT.length;
 
 /* --------------------------------------------------------- */
 
 export function ConnectedTechPreview({ variant = 'default' }: { variant?: 'default' | 'refined' }) {
   if (variant === 'refined') return <RefinedConnectedTechPreview />;
+
+  return <DefaultConnectedTechPreview />;
+}
+
+function DefaultConnectedTechPreview() {
+  const [activeLine, setActiveLine] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveLine((line) => (line + 1) % TRACE_COUNT);
+    }, 1350);
+    return () => window.clearInterval(timer);
+  }, []);
 
   return (
     <div className="mcp__stage flex-1 flex w-full justify-center items-end pb-0 sm:pb-2">
@@ -188,13 +307,16 @@ export function ConnectedTechPreview({ variant = 'default' }: { variant?: 'defau
         }
 
         .mcp__pulse {
-          stroke-dasharray: 22 460;
-          stroke-dashoffset: 482;
-          animation: mcp-travel 5s linear infinite;
+          stroke-dasharray: 12 100;
+          stroke-dashoffset: -30;
+          animation: mcp-travel 1.15s linear both;
         }
 
         @keyframes mcp-travel {
-          to { stroke-dashoffset: 0; }
+          0% { stroke-dashoffset: -30; opacity: 0; }
+          10% { opacity: 1; }
+          85% { opacity: 1; }
+          100% { stroke-dashoffset: -100; opacity: 0; }
         }
 
         /* ---- chips ---- */
@@ -206,18 +328,24 @@ export function ConnectedTechPreview({ variant = 'default' }: { variant?: 'defau
           display: grid;
           place-items: center;
           border-radius: 9999px;
-          background: #0B0B0F;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1.5px solid transparent;
           box-shadow:
             0 6px 18px -6px rgba(0, 0, 0, 0.95),
             inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .mcp__chip-inner {
+          display: grid;
+          place-items: center;
+          width: 21px;
+          height: 21px;
         }
 
         /* ---- núcleo ---- */
         .mcp__core {
           position: absolute;
           left: 50%;
-          top: 38.4%;
+          top: 50%;
           transform: translate(-50%, -50%);
           width: 116px;
           height: 116px;
@@ -294,18 +422,27 @@ export function ConnectedTechPreview({ variant = 'default' }: { variant?: 'defau
       `}</style>
 
       <div className="mcp">
-        <Traces />
+        <Traces activeLine={activeLine} />
 
-        {CHIPS.map((chip) => (
-          <div
-            key={chip.id}
-            className="mcp__chip"
-            style={{ left: chip.x, top: chip.y }}
-            title={chip.label}
-          >
-            {LOGOS[chip.id as keyof typeof LOGOS]}
-          </div>
-        ))}
+        {CHIP_SLOTS.map((slot) => {
+          const platformId = slot.platform;
+          return (
+            <div
+              key={platformId}
+              className="mcp__chip"
+              style={{
+                left: slot.x,
+                top: slot.y,
+                background: `linear-gradient(#0B0B0F, #0B0B0F) padding-box, ${PLATFORM_RINGS[platformId]} border-box`,
+              }}
+              title={platformId}
+            >
+              <div className="mcp__chip-inner">
+                {PLATFORM_LOGOS[platformId]}
+              </div>
+            </div>
+          );
+        })}
 
         <div className="mcp__core">
           <img
@@ -317,10 +454,6 @@ export function ConnectedTechPreview({ variant = 'default' }: { variant?: 'defau
           />
         </div>
 
-        <div className="mcp__badge">
-          <div className="mcp__dot" />
-          <span>MCP ONLINE</span>
-        </div>
       </div>
     </div>
   );
@@ -353,7 +486,7 @@ function RefinedConnectedTechPreview() {
           const upper = i % 2 === 0;
           const x = left ? 72 : 328;
           const y = upper ? 52 : 140;
-          const endX = left ? CORE_LEFT : CORE_RIGHT;
+          const endX = left ? 146 : 254;
           const endY = upper ? 78 : 114;
           const controlX = left ? 112 : 288;
           const path = `M ${x} ${y} C ${controlX} ${y}, ${controlX} ${endY}, ${endX} ${endY}`;

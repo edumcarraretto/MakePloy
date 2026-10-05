@@ -55,16 +55,15 @@ export function AmbientIntelligencePreview() {
     <div className="relative w-full max-w-[310px] mx-auto mt-4 pb-2 flex flex-col select-none">
       
       {/* ── 1. MAIN PILL (EXACT STADIUM/CAPSULE MATCH TO REFERENCE) ── */}
-      <div className="relative w-full h-[52px] rounded-full bg-[#111114] border border-white/[0.08] shadow-[0_12px_32px_rgba(0,0,0,0.8)] overflow-hidden mb-5 flex items-center justify-between px-5">
+      <div className="relative w-full h-[52px] rounded-full bg-black border border-white/[0.08] shadow-[0_12px_32px_rgba(0,0,0,0.8)] overflow-hidden mb-5 flex items-center justify-between px-5">
         
-        {/* Soft Multi-stop Ambient Glow on Bottom-Left */}
+        {/* Brilho suave com as cores da marca */}
         <div 
-          className="absolute inset-0 pointer-events-none z-0"
+          className="pointer-events-none absolute inset-0 z-0 opacity-[0.85]"
           style={{
-            background: `
-              radial-gradient(ellipse at 12% 100%, rgba(165, 115, 175, 0.45) 0%, transparent 50%),
-              radial-gradient(ellipse at 30% 100%, rgba(195, 55, 115, 0.5) 0%, transparent 60%)
-            `,
+            background: 'var(--gradient-brand)',
+            maskImage: 'linear-gradient(90deg, black 0%, black 18%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(90deg, black 0%, black 18%, transparent 100%)',
           }}
         />
 
@@ -88,31 +87,13 @@ export function AmbientIntelligencePreview() {
           </motion.div>
 
           <span className="text-[13.5px] font-medium text-white tracking-tight truncate">
-            Analisando sua criação
+            Preparando sugestões
           </span>
         </div>
 
-        {/* Right Side: Exact Flower Logo */}
+        {/* Logo oficial da MakePloy */}
         <div className="relative z-10 shrink-0 ml-3 flex items-center justify-center">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <defs>
-              <linearGradient id="flowerGradRef" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#f43f5e" />
-                <stop offset="40%" stopColor="#ec4899" />
-                <stop offset="75%" stopColor="#60a5fa" />
-                <stop offset="100%" stopColor="#3b82f6" />
-              </linearGradient>
-            </defs>
-            <g fill="url(#flowerGradRef)">
-              <circle cx="16" cy="10" r="5.2" />
-              <circle cx="21.2" cy="13" r="5.2" />
-              <circle cx="21.2" cy="19" r="5.2" />
-              <circle cx="16" cy="22" r="5.2" />
-              <circle cx="10.8" cy="19" r="5.2" />
-              <circle cx="10.8" cy="13" r="5.2" />
-            </g>
-            <path d="M16 9L17.3 14.7L23 16L17.3 17.3L16 23L14.7 17.3L9 16L14.7 14.7L16 9Z" fill="white" />
-          </svg>
+          <img src="/nova-logo-128.webp" alt="" width="24" height="24" className="h-6 w-6 object-contain" />
         </div>
       </div>
 
@@ -122,14 +103,14 @@ export function AmbientIntelligencePreview() {
         {/* Row 1 — Solid, purple square */}
         <AnimatedRow 
           phrases={[
-            "Melhorar a experiência do usuário",
-            "Ajustar a estrutura da interface",
-            "Destacar a proposta de valor"
+            "Trocar as cores da página",
+            "Criar uma versão pro celular",
+            "Resumir a descrição do produto"
           ]}
           intervalDelay={3500}
           targetOpacity={1}
           markerColor="bg-blue-500"
-          bgClass="bg-white/[0.04]"
+          bgClass="border border-white/[0.08] rounded-md"
           blurClass=""
           textColor="text-white/90"
           indentClass="ml-0"
@@ -138,14 +119,14 @@ export function AmbientIntelligencePreview() {
         {/* Row 2 — Solid, teal square, indented */}
         <AnimatedRow 
           phrases={[
-            "Otimizar o desempenho da página",
-            "Refinar a clareza do conteúdo",
-            "Fortalecer a conversão da interface"
+            "Ajustar o site para buscas no Google",
+            "Ver o que os concorrentes fazem",
+            "Sugerir novas imagens"
           ]}
           intervalDelay={4600}
           targetOpacity={0.85}
           markerColor="bg-[#0d9488]"
-          bgClass="bg-white/[0.04]"
+          bgClass="border border-white/[0.08] rounded-md"
           blurClass=""
           textColor="text-white/90"
           indentClass="ml-[36px]"
@@ -154,13 +135,13 @@ export function AmbientIntelligencePreview() {
         {/* Row 3 — Blurred, purple square */}
         <AnimatedRow 
           phrases={[
-            "Automatizar tarefas repetitivas",
-            "Melhorar a navegação da página"
+            "Conectar o domínio do site",
+            "Agendar a publicação"
           ]}
           intervalDelay={5200}
           targetOpacity={0.4}
           markerColor="bg-blue-700"
-          bgClass="bg-white/[0.02]"
+          bgClass=""
           blurClass="blur-[1.5px]"
           textColor="text-white/70"
           indentClass="ml-0"
@@ -169,13 +150,13 @@ export function AmbientIntelligencePreview() {
         {/* Row 4 — Heavily blurred, blue square, indented */}
         <AnimatedRow 
           phrases={[
-            "Preparar a criação para publicação",
-            "Organizar melhor os blocos da seção"
+            "Adicionar ícones e favicon",
+            "Preparar posts para redes sociais"
           ]}
           intervalDelay={6100}
           targetOpacity={0.15}
           markerColor="bg-[#3b82f6]"
-          bgClass="bg-white/[0.01]"
+          bgClass=""
           blurClass="blur-[2.5px]"
           textColor="text-white/40"
           indentClass="ml-[36px]"

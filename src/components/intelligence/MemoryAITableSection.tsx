@@ -130,7 +130,8 @@ export function MemoryAITableSection() {
               </div>
             </motion.div>
 
-            {/* ═══ Card 4: Tecnologia Conectada ═══ */}
+
+            {/* ═══ Card 4: Conexões com outras plataformas ═══ */}
             <motion.div
               variants={cardReveal}
               transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
@@ -146,10 +147,10 @@ export function MemoryAITableSection() {
 
               <div className="mb-6 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  FERRAMENTAS CONECTADAS AO PROJETO
+                  Criou lá. Evolua aqui
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  Conecte serviços e dados externos para consultar informações e executar tarefas no mesmo fluxo.
+                  Aproveite arquivos, código e materiais de outras plataformas para seguir criando na MakePloy.
                 </p>
               </div>
 
@@ -174,10 +175,10 @@ export function MemoryAITableSection() {
 
               <div className="mb-6 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  SUGESTÕES PARA O MOMENTO ATUAL
+                  SUA IDEIA ABRE CAMINHOS
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  A IA considera o estágio do projeto e as decisões anteriores para sugerir melhorias e próximos passos.
+                  A MakePloy sugere melhorias e novas possibilidades para sua criação. Você escolhe o que seguir.
                 </p>
               </div>
 
