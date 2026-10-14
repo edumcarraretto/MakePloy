@@ -1,9 +1,10 @@
-import { JourneyPreviewCard } from '@/components/intelligence/JourneyPreviewCard'
 import { AIModelsPreview } from '@/components/intelligence/AIModelsPreview'
+import { IdeaToWindowsPreview } from '@/components/intelligence/IdeaToWindowsPreview'
 import { DesignUniquePreview } from '@/components/intelligence/DesignUniquePreview'
 import { ConnectedTechPreview } from '@/components/intelligence/ConnectedTechPreview'
 import { AmbientIntelligencePreview } from '@/components/intelligence/AmbientIntelligencePreview'
 import { DeepSearchPreview } from '@/components/intelligence/DeepSearchPreview'
+
 import { motion } from 'motion/react'
 import { GradientText } from '@/components/text/GradientText'
 
@@ -45,11 +46,11 @@ export function MemoryAITableSection() {
             className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6"
           >
 
-            {/* ═══ Card 1: Jornada ═══ */}
+            {/* ═══ Card 1: Resultados do projeto ═══ */}
             <motion.div
               variants={cardReveal}
               transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative flex flex-col pt-6 px-6 pb-2 sm:pt-7 sm:px-7 sm:pb-3 md:aspect-square rounded-[22px] sm:rounded-[26px] border border-white/[0.08] bg-black hover:border-white/[0.16] shadow-[0_12px_36px_-10px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-300"
+              className="group relative flex flex-col p-6 sm:p-7 md:aspect-square rounded-[22px] sm:rounded-[26px] border border-white/[0.08] bg-black hover:border-white/[0.16] shadow-[0_12px_36px_-10px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-300"
             >
               {/* Top subtle hover glow */}
               <div
@@ -62,15 +63,15 @@ export function MemoryAITableSection() {
 
               <div className="mb-6 relative z-20">
                 <h3 className="text-white text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-2.5">
-                  O PROJETO EVOLUI COM VOCÊ
+                  DA IDEIA AOS PRIMEIROS RESULTADOS
                 </h3>
                 <p className="text-neutral-400 text-sm leading-relaxed font-normal">
-                  Comece do zero ou retome o que já existe. Ideias, arquivos e decisões ajudam a orientar cada nova versão.
+                  Publique sua criação e acompanhe os primeiros resultados conforme o projeto evolui.
                 </p>
               </div>
               
-              <div className="mt-auto flex-1 flex flex-col justify-end relative z-10">
-                <JourneyPreviewCard />
+              <div className="relative -mx-6 -mb-6 mt-auto min-h-[190px] flex-1 sm:-mx-7 sm:-mb-7 sm:min-h-[210px] md:min-h-0">
+                <IdeaToWindowsPreview />
               </div>
             </motion.div>
 
@@ -78,7 +79,7 @@ export function MemoryAITableSection() {
             <motion.div
               variants={cardReveal}
               transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative flex flex-col p-6 sm:p-7 md:aspect-square rounded-[22px] sm:rounded-[26px] border border-white/[0.08] bg-black hover:border-white/[0.16] shadow-[0_12px_36px_-10px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-300"
+              className="group relative flex min-h-[360px] flex-col p-6 sm:p-7 md:aspect-square md:min-h-0 rounded-[22px] sm:rounded-[26px] border border-white/[0.08] bg-black hover:border-white/[0.16] shadow-[0_12px_36px_-10px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-300"
             >
               <div
                 className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -97,7 +98,7 @@ export function MemoryAITableSection() {
                 </p>
               </div>
 
-              <div className="mt-auto flex-1 flex flex-col justify-end relative z-10">
+              <div className="absolute inset-0 z-10">
                 <AIModelsPreview />
               </div>
             </motion.div>

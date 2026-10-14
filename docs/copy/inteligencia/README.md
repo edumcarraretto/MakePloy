@@ -6,6 +6,10 @@
 
 **Descrição:** O que já existe, o que ainda falta descobrir e tudo o que pode ajudar se juntam em uma coisa só.
 
+## Primeiro card da grade — direção em avaliação
+
+O primeiro card agora explora a passagem da ideia aos primeiros resultados após a publicação. O texto provisório é “DA IDEIA AOS PRIMEIROS RESULTADOS”. A demonstração recria em SVG responsivo os elementos do print de 05/10/2026: painel claro, receita, indicador de crescimento, gráfico azul e caixa flutuante de faturas. O pedido anterior de marcar os dias 1 a 5 na linha permanece como possível ajuste futuro, pois essas marcações não existem na imagem original. Essa direção substituiu temporariamente o preview de etiquetas “Ideia”, “Criação”, “Lançamento” e “Escala”; título, conteúdo e visual ainda podem ser refinados com o usuário. A proposta anterior de continuidade ao longo do tempo continua registrada em `cards/card-04-memoria-de-longo-prazo.md`.
+
 ## Ideias registradas
 
 | Ideia | Papel | Status |
